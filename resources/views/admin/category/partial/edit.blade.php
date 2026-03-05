@@ -5,7 +5,7 @@
     @method('PUT')
 
     <div class="modal fade" id="editModal" tabindex="-1">
-         <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -22,33 +22,52 @@
                                value="{{ $data->name }}"
                                required>
                     </div>
+                     <div class="col-12">
+                                    <label for="type" class="form-label"><b>Type</b></label>
+                                    <select name="type" id="type" class="form-select" required>
+                                      <option value="book" {{ $data->type == 'book' ? 'selected' : '' }}>
+                                        Book
+                                    </option>
+                                    <option value="other" {{ $data->type == 'other' ? 'selected' : '' }}>
+                                        Other
+                                    </option>
+                                </select>
+                        </div>
 
                     <div class="mb-2">
                                     <label for="position" class="form-label"><b>Position</b></label>
                                     <select name="position" id="position" class="form-select" required>
-                                     <option value="header_parent" {{ $data->position == 'header_parent' ? 'selected' : '' }}>
-                                        Header Parent
-                                    </option>
-                                    <option value="header_child" {{ $data->position == 'header_child' ? 'selected' : '' }}>
-                                        Header Child
-                                    </option>
-                                     <option value="single_page" {{ $data->position == 'single_page' ? 'selected' : '' }}>
-                                        Single Page
+                                      <option value="header_top" {{ $data->position == 'header_top' ? 'selected' : '' }}>
+                                        Header Top
                                     </option>
 
-                                     <option value="left_side" {{ $data->position == 'left_side' ? 'selected' : '' }}>
-                                        Left Side
+                                    <option value="header" {{ $data->position == 'header' ? 'selected' : '' }}>
+                                        Header Middle
                                     </option>
-                                    <option value="feature_product" {{ $data->position == 'feature_product' ? 'selected' : '' }}>
-                                        Featured Product
+
+                                    <option value="mega_menu_parent" {{ $data->position == 'mega_menu_parent' ? 'selected' : '' }}>
+                                        Mega Menu Parent
                                     </option>
-                                    <option value="banner_section" {{ $data->position == 'banner_section' ? 'selected' : '' }}>
-                                        Banner Section
+                                    <option value="mega_menu_child" {{ $data->position == 'mega_menu_child' ? 'selected' : '' }}>
+                                        Mega Menu Child
                                     </option>
-                                    <option value="exclusive_collection" {{ $data->position == 'exclusive_collection' ? 'selected' : '' }}>
-                                        Exclusive Collection
+                                    <option value="homepage" {{ $data->position == 'homepage' ? 'selected' : '' }}>
+                                        Home Page
                                     </option>
-                                    <option value="footer_col1" {{ $data->position == 'footer_col1' ? 'selected' : '' }}>
+                                    <option value="homepage_banner_category" {{ $data->position == 'homepage_banner_category' ? 'selected' : '' }}>
+                                        Home Page->Banner Category
+                                    </option>
+                                    <option value="homepage_writter_category" {{ $data->position == 'homepage_writter_category' ? 'selected' : '' }}>
+                                        Home Page->Writter Category
+                                    </option>
+                                    <option value="homepage_others_category" {{ $data->position == 'homepage_others_category' ? 'selected' : '' }}>
+                                        Home Page->Others Category
+                                    </option>
+                                    <option value="homepage_brands_category" {{ $data->position == 'homepage_brands_category' ? 'selected' : '' }}>
+                                        Home Page->Brands Category
+                                    </option>
+
+                                    <option value="footer" {{ $data->position == 'footer' ? 'selected' : '' }}>
                                         Footer Column1
                                     </option>
 
@@ -62,13 +81,12 @@
                             <label for="url" class="form-label">URL: <span class="text-danger">*</span></label>
                             <input type="text" name="url" id="url" class="form-control" value="{{  $data->getRawOriginal('url') }}" required>
                         </div>
-                    
-                   <div class="mb-2">
-                    <label for="description" class="form-label"><b>Description</b></label>
-                    <textarea class="form-control description" id="edit_description" name="description" cols="30" rows="10"
-                        placeholder="Description">{!! old('description', $data->description) !!}</textarea>
+                    <div class="mb-2">
+                        <label class="form-label">Description</label>
+                        <textarea name="description"
+                                  class="form-control"
+                                  rows="3">{{ $data->description }}</textarea>
                     </div>
-                  
                      <div class="mb-2">
                         <label for="image" class="form-label">Image</label>
                         <input type="file"

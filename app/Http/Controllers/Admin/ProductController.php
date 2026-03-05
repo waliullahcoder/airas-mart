@@ -13,7 +13,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Attribute;
 use App\Models\ProductTag;
-use App\Models\ProductVariant;
+use App\Models\ProductEdition;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\AttributeValue;
@@ -21,7 +21,7 @@ use App\Services\ProductService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\ProductVariantService;
-
+use Yajra\DataTables\Facades\DataTables;
 class ProductController extends Controller
 {
     public $path;
@@ -45,11 +45,26 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index()
+    // {
+    //     return HelperClass::resourceDataView($this->model::with(['category', 'uom'])->where('product_type', 'book')->orderBy('id', 'desc'), 'thumbnail', null, $this->path, $this->title);
+    // }
+
     public function index()
     {
-        return HelperClass::resourceDataView($this->model::with(['category', 'uom'])->where('product_type', 'socks')->orderBy('id', 'desc'), 'thumbnail', null, $this->path, $this->title);
+        return HelperClass::resourceDataView(
+            $this->model::with(['category', 'uom','edition'])
+                ->select('id','code','name','category_id','uom_id','thumbnail','status')
+                ->where('product_type', 'book')
+                ->orderBy('id', 'desc'),
+            'thumbnail',
+            null,
+            $this->path,
+            $this->title
+        );
     }
 
+    
     public function skuCombination(Request $request)
     {
         if ($request->ajax()) {
@@ -92,15 +107,34 @@ class ProductController extends Controller
         }
 
         $title = $this->create_title;
-        $brands = Brand::where('status', true)->orderBy('id', 'desc')->get();
-        $uoms = Uom::where('status', true)->orderBy('id', 'desc')->get();
-        $subcategories = Category::whereNotNull('parent_id')->where('status', true)->orderBy('id', 'desc')->get();
-        $vendors = Vendor::where('status', true)->orderBy('id', 'desc')->get();
-        $attributes = Attribute::where('status', true)->orderBy('id', 'desc')->get();
-        $authors = Author::where('status', true)->orderBy('id', 'desc')->get();
-        $publications = Publication::where('status', true)->orderBy('id', 'desc')->get();
+        $brands = Brand::where('status', true)->orderBy('name', 'asc')->get();
+        $uoms = Uom::where('status', true)->orderBy('name', 'asc')->get();
+        $subcategories = Category::whereNotNull('parent_id')->where('status', true)->orderBy('name', 'asc')->get();
+        $vendors = Vendor::where('status', true)->orderBy('name', 'asc')->get();
+        $attributes = Attribute::where('status', true)->orderBy('name', 'asc')->get();
+        $authors = Author::where('status', true)->orderBy('name', 'asc')->get();
+        $publications = Publication::where('status', true)->orderBy('name', 'asc')->get();
         return view("admin.{$this->path}.create", compact('title', 'brands', 'uoms', 'subcategories', 'vendors', 'attributes', 'authors', 'publications'));
     }
+
+     /**
+     * Generate Code No.
+     */
+    public function codeNo()
+    {
+        // Current date in YYYYMMDD format
+         $date = date('Ymd');
+        // Last product
+        $last = $this->model::withTrashed()->orderBy('id', 'desc')->first();
+        if ($last && $last->id) {
+            // CODE + date + last id
+            return 'COD' . $date . $last->id +1;
+        } else {
+            // No product yet
+            return 'COD' . $date . '1';
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -123,36 +157,22 @@ class ProductController extends Controller
 
         try {
             DB::transaction(function () use ($request) {
+            
+            // $product = $this->productService->store($request->except(['_token', 'choice']));
+            // ✅ generate code
+            $data = $request->except(['_token','choice']);
+            $data['code'] = $this->codeNo();
 
-                // ✅ PRODUCT STORE
-                $product = $this->productService
-                    ->store($request->except(['_token', 'choice']));
+            // ✅ PRODUCT STORE
+            $product = $this->productService->store($data);
 
                 // ✅ VARIANT (safe)
-            //   if ($request->filled('variant')) {
-            //         $this->productVariantService->store(
-            //             $request->only(['variant', 'purchase_price', 'sale_price', 'sku']),
-            //             $product
-            //         );
-            //     }
-
-         if ($request->filled('v_variants')) {
-            foreach ($request->v_variants as $key => $variant) {
-                ProductVariant::create([
-                    'product_id' => $product->id,
-                    'variant' => $variant,
-                    'size' => $request->v_size[$key] ?? null,
-                    'purchase_price' => $request->v_purchase_price[$key] ?? 0,
-                    'regular_price' => $request->v_regular_price[$key] ?? 0,
-                    'discount' => $request->v_discount[$key] ?? 0,
-                    'discount_type' => $request->v_discount_type[$key] ?? 'percent',
-                    'sale_price' => $request->v_sale_price[$key] ?? 0,
-                    'status' => true,
-                ]);
-            }
-        }
-
-
+                if ($request->filled('choice_no')) {
+                    $this->productVariantService->store(
+                        $request->only(['choice_no', 'purchase_price', 'sale_price', 'sku']),
+                        $product
+                    );
+                }
 
                 // ✅ IMAGES (NULL SAFE)
                 if ($request->hasFile('images')) {
@@ -167,6 +187,15 @@ class ProductController extends Controller
                 // ✅ VENDORS (NULL SAFE)
                 if (!empty($request->vendor_id)) {
                     $product->vendors()->attach($request->vendor_id);
+                }
+
+                //Edition
+                if (!empty($request->edition_name)) {
+                    ProductEdition::create([
+                        'product_id' => $product->id,
+                        'name' => $request->edition_name,
+                        'status' => true,
+                    ]);
                 }
 
                 // ✅ TAGS (NULL SAFE)
@@ -257,13 +286,13 @@ class ProductController extends Controller
         }
 
         $additionalData = [
-            'brands' => Brand::where('status', true)->orderBy('id', 'desc')->get(),
-            'uoms' => Uom::where('status', true)->orderBy('id', 'desc')->get(),
-            'categories' => Category::where('status', true)->orderBy('id', 'desc')->get(),
-            'vendors' => Vendor::where('status', true)->orderBy('id', 'desc')->get(),
-            'attributes' => Attribute::where('status', true)->orderBy('id', 'desc')->get()
+            'brands' => Brand::where('status', true)->orderBy('name', 'asc')->get(),
+            'uoms' => Uom::where('status', true)->orderBy('name', 'asc')->get(),
+            'categories' => Category::where('status', true)->orderBy('name', 'asc')->get(),
+            'vendors' => Vendor::where('status', true)->orderBy('name', 'asc')->get(),
+            'publications' => Publication::where('status', true)->orderBy('name', 'asc')->get(),
+            'attributes' => Attribute::where('status', true)->orderBy('name', 'asc')->get()
         ];
-
         return HelperClass::resourceDataEdit($this->model, $id, $this->path, $this->edit_title, $additionalData);
     }
 
@@ -283,39 +312,22 @@ class ProductController extends Controller
             DB::transaction(function () use ($request, $id) {
 
                 $product = $this->model::findOrFail($id);
-
+                $data = $request->except(['_token','choice']);
+                if(empty($request->code)){
+                    $date = date('Ymd');
+                    $data['code'] = 'COD' . $date . $id;
+                }
                 // ✅ PRODUCT UPDATE
-                $product = $this->productService
-                    ->update($request->except(['_token', 'choice']), $product);
+                $product = $this->productService->update($data, $product);
+                // $product = $this->productService->update($request->except(['_token', 'choice']), $product);
 
                 // ✅ VARIANT (NULL SAFE)
-                // if ($request->filled('variants')) {
-                //     $this->productVariantService->store(
-                //         $request->only(['variants', 'purchase_price', 'sale_price', 'sku']),
-                //         $product
-                //     );
-                // }
-
-             // Delete old variants
-                $product->variants()->delete();
-
-                // Insert new/updated variants
-                if ($request->filled('v_variants')) {
-                    foreach ($request->v_variants as $key => $variant) {
-                        ProductVariant::create([
-                            'product_id' => $product->id,
-                            'variant' => $variant,
-                            'size' => $request->v_size[$key] ?? null,
-                            'purchase_price' => $request->v_purchase_price[$key] ?? 0,
-                            'regular_price' => $request->v_regular_price[$key] ?? 0,
-                            'discount' => $request->v_discount[$key] ?? 0,
-                            'discount_type' => $request->v_discount_type[$key] ?? 'percent',
-                            'sale_price' => $request->v_sale_price[$key] ?? 0,
-                            'status' => true,
-                        ]);
-                    }
+                if ($request->filled('choice_no')) {
+                    $this->productVariantService->store(
+                        $request->only(['choice_no', 'purchase_price', 'sale_price', 'sku']),
+                        $product
+                    );
                 }
-
 
                 // ======================
                 // ✅ IMAGES (NULL SAFE)
@@ -348,6 +360,23 @@ class ProductController extends Controller
                     $product->vendors()->sync($request->vendor_id);
                 } else {
                     $product->vendors()->detach();
+                }
+
+                 //Edition
+                if (!empty($request->edition_name)) {
+                    $existedition = ProductEdition::where('product_id', $product->id)->first();
+                    if ($existedition) {
+                        $existedition->update(['name' => $request->edition_name]);
+                    }else{
+                    ProductEdition::create([
+                        'product_id' => $product->id,
+                        'name' => $request->edition_name,
+                        'status' => true,
+                        ]);
+                    }
+                    
+                }else{
+                    return back()->withErrors('Edition name is required');
                 }
 
                 // ======================

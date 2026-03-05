@@ -31,27 +31,21 @@ $menus = Category::whereNull('parent_id')
         'name',
         'url as menu_url',
         'name as category_name',
-        'image as image',
-        'description',
         'slug as category_slug',
         'position'
     )
     ->get()
     ->groupBy('position');
 
-$data['header_parent']         = $menus['header_parent']        ?? collect();
-$data['header_child']      = $menus['header_child']            ?? collect();
-$data['left_side']        = $menus['left_side']  ?? collect();
-$data['single_page']        = $menus['single_page']  ?? collect();
-$data['feature_product'] = $menus['feature_product']       ?? collect();
-$data['banner_section'] = $menus['banner_section']       ?? collect();
-$data['exclusive_collection'] = $menus['exclusive_collection']       ?? collect();
-$data['footer_col1'] = $menus['footer_col1']       ?? collect();
-$data['footer_col2'] = $menus['footer_col2']       ?? collect();
+$data['top_menus']         = $menus['header_top']        ?? collect();
+$data['middle_menus']      = $menus['header']            ?? collect();
+$data['mega_menus']        = $menus['mega_menu_parent']  ?? collect();
+$data['footer_col1_menus'] = $menus['footer']       ?? collect();
+$data['footer_col2_menus'] = $menus['footer_col2']       ?? collect();
 
-$data['header_child'] = Category::whereNotNull('parent_id')
+$data['sub_menus'] = Category::whereNotNull('parent_id')
     ->where('status', 1)
-    ->where('position', 'header_child')
+    ->where('position', 'mega_menu_child')
     ->select(
         'id',
         'name',
@@ -61,46 +55,46 @@ $data['header_child'] = Category::whereNotNull('parent_id')
     ->get()
     ->groupBy('parent_id');
 
-    return $data;
+return $data;
 
 
+
+        // $menus = Menu::where('menus.status', true)
+        // ->join('categories', 'menus.category_id', '=', 'categories.id')
+        // ->select(
+        //     'menus.*',
+        //     'categories.name as category_name',
+        //     'categories.slug as category_slug'
+        // )
+        // ->get()
+        // ->groupBy('position');
+
+        // $data['top_menus']         = $menus['header_top']   ?? collect();
+        // $data['middle_menus']      = $menus['header']       ?? collect();
+        // $data['mega_menus']        = $menus['mega_menu']    ?? collect();
+        // $data['footer_col1_menus'] = $menus['footer_col1']  ?? collect();
+        // $data['footer_col2_menus'] = $menus['footer_col2']  ?? collect();
+
+
+        // $data['sub_menus'] = DB::table('menu_items')
+        //     ->get()
+        //     ->groupBy('menu_id');
+        // return $data;
     }
 
      public function getSubCategoryData($category_id){
              return DB::table('categories')
             ->where('parent_id', $category_id)
-            ->where('status', 1)
-            ->orderBy('id', 'desc')
             ->get();
-     }
-     public function singleDetails($id){
-        return DB::table('categories')
-            ->where('id', $id)
-            ->where('status', 1)
-            ->orderBy('id', 'desc')
-            ->first();
      }
 
  public function getProductData($cat_id)
 {
+   
 $categories = Category::where('parent_id', $cat_id)
-    ->where('status', 1)
-    ->with([
-        'products' => function ($q) {
-            $q->where('status', 1)
-              ->orderBy('id', 'desc')
-              ->with([
-                  'variants' => function ($v) {
-                      $v->where('status', 1)
-                        ->orderBy('id', 'desc');
-                  }
-              ]);
-        }
-    ])
-    ->orderBy('id', 'desc')
-    ->get();
-
-return $categories;
+        ->with('products','products.variants')
+        ->get();
+       return $categories;
 }
 
 //--------------Home Page----------------//
@@ -182,23 +176,12 @@ $get_sub_category_product_all = Category::whereNotNull('parent_id')->with('produ
 
  public function singleCategoryPage($sub_cat_id)
 {
-    $single_sub_category = Category::where('id', $sub_cat_id)
-        ->where('status', 1)
-        ->with([
-            'products' => function ($q) {
-                $q->where('status', 1)
-                  ->orderBy('id', 'desc')
-                  ->with(['variants' => function ($v) {
-                      $v->where('status', 1)
-                        ->orderBy('id', 'desc');
-                  }]);
-            }
-        ])
-        ->firstOrFail();
-
-    return $single_sub_category;
-}
-
+   
+    $single_sub_category = Category::with('products','products.variants')
+        ->where('id', $sub_cat_id)
+        ->first();
+        return $single_sub_category;
+    }
 
 public function productDetails($id)
 {

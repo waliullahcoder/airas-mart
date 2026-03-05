@@ -1,73 +1,67 @@
 @extends('layouts.frontend.app')
 
 @section('content')
-<div class="contact-form spad">
+<div class="auth-page py-5">
     <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-80">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
 
-            {{-- Left Image --}}
-            <div class="col-lg-6 d-none d-lg-block">
-                <img src="{{ asset(file_exists($settings->page_heading_bg) ? $settings->page_heading_bg : 'frontend/images/banner-1.png') }}" 
-                     alt="Login Image" 
-                     class="img-fluid rounded shadow">
-            </div>
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
 
-            {{-- Login Form --}}
-            <div class="col-lg-6">
-                <div class="card shadow-sm p-4">
-                    <div class="contact__form__title text-center mb-4">
-                        <h2>Login Now</h2>
-                    </div>
+                        <h4 class="text-center mb-3">Login to your account</h4>
+                        <p class="text-center text-muted mb-4">
+                            Welcome back! Please login to continue
+                        </p>
 
-                    <form method="POST" action="">
-                        @csrf
+                        <form method="POST" action="">
+                            @csrf
 
-                        {{-- Email --}}
-                        <div class="mb-3">
-                            <input type="email"
-                                   name="email"
-                                   class="form-control @error('email') is-invalid @enderror"
-                                   placeholder="Email"
-                                   value="{{ old('email') }}"
-                                   required>
-                            @error('email')
-                                <span class="text-danger small">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        {{-- Password --}}
-                        <div class="mb-3">
-                            <input type="password"
-                                   name="password"
-                                   class="form-control @error('password') is-invalid @enderror"
-                                   placeholder="Password"
-                                   required>
-                            @error('password')
-                                <span class="text-danger small">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        {{-- Submit --}}
-                        <div class="text-center">
-                            <button type="submit" class="site-btn w-100">Login</button>
-                        </div>
-
-                        {{-- Global Error --}}
-                        @if(session('error'))
-                            <div class="alert alert-danger mt-3 text-center">
-                                {{ session('error') }}
+                            <!-- EMAIL -->
+                            <div class="mb-3">
+                                <label class="form-label">Email address</label>
+                                <input type="email"
+                                       name="email"
+                                       value="{{ old('email') }}"
+                                       class="form-control"
+                                       required>
                             </div>
-                        @endif
 
-                        {{-- Signup Link --}}
+                            <!-- PASSWORD -->
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password"
+                                       name="password"
+                                       class="form-control"
+                                       required>
+                            </div>
+
+                            <!-- REMEMBER -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <input type="checkbox" name="remember" id="remember">
+                                    <label for="remember">Remember me</label>
+                                </div>
+                                <a href="" class="small">
+                                    Forgot password?
+                                </a>
+                            </div>
+
+                            <!-- BUTTON -->
+                            <button type="submit" class="btn btn-danger w-100">
+                                Login
+                            </button>
+                        </form>
+
                         <p class="text-center mt-3 mb-0">
                             Don't have an account?
                             <a href="{{ route('auth.signupPage') }}">Sign up</a>
                         </p>
-                    </form>
-                </div>
-            </div>
 
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('uom_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('brand_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('publication_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('product_type')->default('others');
+            $table->enum('product_type', ['book', 'other'])->default('book');
             $table->string('barcode')->nullable()->unique();
             $table->string('file')->nullable();
             $table->string('thumbnail')->nullable();

@@ -50,6 +50,7 @@ class CategoryController extends Controller
         $this->model::create([
             'parent_id' => $request->parent_id,
             'name' => $request->name,
+            'type' => $request->type,
             'position' => $request->position,
             'url' => $request->url,
             'slug' => HelperClass::generateUniqueSlug($this->model, 'slug', $request->name),
@@ -92,6 +93,7 @@ class CategoryController extends Controller
         $data->update([
             'parent_id' => $request->parent_id,
             'name' => $request->name,
+            'type' => $request->type,
             'position' => $request->position,
             'url' => $request->url,
            // 'slug' => HelperClass::generateUniqueSlug($this->model, 'slug', $request->name, $id),

@@ -1,4 +1,4 @@
-<div class="navbar-header bg-white shadow-sm" style="background-color: #d5e8fc !important">
+<div class="navbar-header bg-white shadow-sm">
     <div class="px-sm-3 px-10px d-flex gap-2 align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-3">
             <button class="brand-toggle btn btn-sm px-0 d-flex @if (Session::has('sidebar-collapse')) active @endif">
@@ -25,7 +25,7 @@
 
         <div class="d-flex align-items-center">
             <div class="dropdown ms-sm-3 header-item topbar-user">
-                <button type="button" class="btn btn-light rounded-0 border-0" data-bs-toggle="dropdown" style="background-color: #d5e8fc;">
+                <button type="button" class="btn btn-light rounded-0 border-0" data-bs-toggle="dropdown">
                     <span class="d-flex align-items-center">
                         <img class="rounded-circle img-fit lazyload"
                             data-src="{{ file_exists(Auth::user()->image) ? asset(Auth::user()->image) : asset('backend/images/avatar/default/profile.jpg') }}"

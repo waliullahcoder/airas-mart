@@ -23,6 +23,7 @@
                     <input type="text" class="form-control" id="name" name="name"
                         value="{{ old('name', $data->name) }}" placeholder="Name" required>
                 </div>
+                <input type="hidden"  name="code" value="{{ old('code', $data->code) }}">
                 <div class="col-sm-6">
                     <label for="category_id" class="form-label"><b>Category <span class="text-danger">*</span></b></label>
                     <select class="form-select select" name="category_id" id="category_id"
@@ -58,7 +59,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="{{Auth::user()->role_status==0 ? 'col-sm-12' : 'col-sm-6'}}">
+                <div class="col-6">
                     <label for="vendor_id" class="form-label"><b>Suppliers</b></label>
                     <select name="vendor_id[]" id="vendor_id" class="form-select select" data-placeholder="Select Vendors"
                         multiple>
@@ -70,257 +71,46 @@
                         @endforeach
                     </select>
                 </div>
-                
-                @if(Auth::user()->role_status!=0)
+                 <div class="col-sm-6">
+                    <label for="publication_id" class="form-label"><b>Publication <span class="text-danger">*</span></b></label>
+                    <select class="form-select select" name="publication_id" id="publication_id"
+                        data-placeholder="Select Publication" required>
+                        <option value=""></option>
+                        @foreach ($additionalData['publications'] as $item)
+                            <option value="{{ $item->id }}" {{ $data->publication_id == $item->id ? 'selected' : '' }}>
+                                {{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="col-6">
-                    <label for="status" class="form-label"><b>Status</b></label>
-                    <select name="status" id="status" class="form-select select">
-    
-                    <option value="">Select Status</option>
-                    <option value="0" {{ old('status', $data->status) == 0 ? 'selected' : '' }}>
-                        Inactive
-                    </option>
-                    <option value="1" {{ old('status', $data->status) == 1 ? 'selected' : '' }}>
-                        Active
-                    </option>
-                </select>
-                </div>
-                @endif
-
-                <div class="col-sm-12">
-                    <label for="product_type" class="form-label">
-                        <b>Product Type <span class="text-danger">*</span></b>
-                    </label>
-
-                    <select class="form-select select"
-                        name="product_type"
-                        id="product_type"
-                        data-placeholder="Product Type"
-                        required>
-
-                        <option value="socks" {{ old('product_type', $data->product_type ?? '') == 'socks' ? 'selected' : '' }}>Socks</option>
-                        <option value="clothes" {{ old('product_type', $data->product_type ?? '') == 'clothes' ? 'selected' : '' }}>Clothes</option>
-                        <option value="sanitary" {{ old('product_type', $data->product_type ?? '') == 'sanitary' ? 'selected' : '' }}>Sanitary</option>
-                        <option value="electric" {{ old('product_type', $data->product_type ?? '') == 'electric' ? 'selected' : '' }}>Electric</option>
-                        <option value="electronic" {{ old('product_type', $data->product_type ?? '') == 'electronic' ? 'selected' : '' }}>Electronic</option>
-                        <option value="frozen" {{ old('product_type', $data->product_type ?? '') == 'frozen' ? 'selected' : '' }}>Frozen</option>
-                        <option value="beverages" {{ old('product_type', $data->product_type ?? '') == 'beverages' ? 'selected' : '' }}>Beverages</option>
-                        <option value="bakery" {{ old('product_type', $data->product_type ?? '') == 'bakery' ? 'selected' : '' }}>Bakery</option>
-                        <option value="grocery" {{ old('product_type', $data->product_type ?? '') == 'grocery' ? 'selected' : '' }}>Grocery</option>
-                        <option value="others" {{ old('product_type', $data->product_type ?? '') == 'others' ? 'selected' : '' }}>Others</option>
-                    </select>
-                </div>
-
-
-               <div class="col-12">
-    <label class="form-label"><b>Product Variants</b></label>
-
-    <div id="variant-wrapper">
-
-        @if(isset($data) && $data->variants->count() > 0)
-            @foreach($data->variants as $variant)
-            <div class="variant-item border rounded p-3 mb-3">
-                <div class="row g-2">
-
-                    <div class="col-md-1">
-                        <input type="text" name="v_variants[]" value="{{ $variant->variant }}" class="form-control" placeholder="Color (Red)">
-                    </div>
-
-                    <div class="col-md-1">
-                        <input type="text" name="v_size[]" value="{{ $variant->size }}" class="form-control" placeholder="Size (XL)">
-                    </div>
-
-                    <div class="col-md-2">
-                        <input type="number" step="0.01" name="v_purchase_price[]" value="{{ $variant->purchase_price }}" class="form-control" placeholder="Purchase Price">
-                    </div>
-
-                    <div class="col-md-2">
-                        <input type="number" step="0.01" name="v_regular_price[]" value="{{ $variant->regular_price }}" class="form-control v_regular_price" placeholder="Regular Price">
-                    </div>
-
-                    <div class="col-md-1">
-                        <input type="number" step="0.01" name="v_discount[]" value="{{ $variant->discount }}" class="form-control v_discount" placeholder="Disc">
-                    </div>
-
-                    <div class="col-md-2">
-                        <input type="number" step="0.01" name="v_sale_price[]" value="{{ $variant->sale_price }}" class="form-control v_sale_price" placeholder="Sale" readonly>
-                    </div>
-
-                    <div class="col-md-1">
-                        <select name="v_discount_type[]" class="form-select v_discount_type">
-                            <option value="percent" {{ $variant->discount_type == 'percent' ? 'selected' : '' }}>%</option>
-                            <option value="fixed" {{ $variant->discount_type == 'fixed' ? 'selected' : '' }}>৳</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-1 d-flex">
-                        <button type="button" class="btn btn-danger remove-variant w-100">✕</button>
-                    </div>
-
-                </div>
-            </div>
-            @endforeach
-        @else
-            {{-- Default first row for create --}}
-            <div class="variant-item border rounded p-3 mb-3">
-                <div class="row g-2">
-
-                    <div class="col-md-3">
-                        <input type="text" name="v_variants[]" class="form-control" placeholder="Color (Red)">
-                    </div>
-
-                    <div class="col-md-3">
-                        <input type="text" name="v_size[]" class="form-control" placeholder="Size (XL)">
-                    </div>
-
-                    <div class="col-md-2">
-                        <input type="number" step="0.01" name="v_purchase_price[]" class="form-control" placeholder="Purchase Price">
-                    </div>
-
-                    <div class="col-md-2">
-                        <input type="number" step="0.01" name="v_regular_price[]" class="form-control v_regular_price" placeholder="Regular Price">
-                    </div>
-
-                    <div class="col-md-1">
-                        <input type="number" step="0.01" name="v_discount[]" class="form-control v_discount" placeholder="Disc">
-                    </div>
-
-                    <div class="col-md-2">
-                        <input type="number" step="0.01" name="v_sale_price[]" class="form-control v_sale_price" placeholder="Sale" readonly>
-                    </div>
-
-                    <div class="col-md-1">
-                        <select name="v_discount_type[]" class="form-select v_discount_type">
-                            <option value="percent">%</option>
-                            <option value="fixed">৳</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-1 d-flex">
-                        <button type="button" class="btn btn-danger remove-variant w-100">✕</button>
-                    </div>
-
-                </div>
-            </div>
-        @endif
-
-    </div>
-
-    <button type="button" id="add-variant" class="btn btn-primary btn-sm">+ Add More</button>
-</div>
-
-{{-- JS --}}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    const wrapper = document.getElementById('variant-wrapper');
-    const addBtn = document.getElementById('add-variant');
-
-    function calculateSalePrice(row) {
-        let regular = parseFloat(row.querySelector('.v_regular_price')?.value) || 0;
-        let discount = parseFloat(row.querySelector('.v_discount')?.value) || 0;
-        let type = row.querySelector('.v_discount_type')?.value;
-
-        let sale = regular;
-
-        if (type === 'percent') {
-            sale = regular - (regular * discount / 100);
-        } else {
-            sale = regular - discount;
-        }
-
-        if (sale < 0) sale = 0;
-
-        row.querySelector('.v_sale_price').value = sale.toFixed(2);
-    }
-
-    function updateRemoveButtons() {
-        let rows = document.querySelectorAll('.variant-item');
-        rows.forEach((row, index) => {
-            let btn = row.querySelector('.remove-variant');
-            btn.style.display = index === 0 ? 'none' : 'block';
-        });
-    }
-
-    document.addEventListener('input', function(e){
-        if (e.target.classList.contains('v_regular_price') || e.target.classList.contains('v_discount')){
-            let row = e.target.closest('.variant-item');
-            calculateSalePrice(row);
-        }
-    });
-
-    document.addEventListener('change', function(e){
-        if (e.target.classList.contains('v_discount_type')){
-            let row = e.target.closest('.variant-item');
-            calculateSalePrice(row);
-        }
-    });
-
-    addBtn.addEventListener('click', function () {
-        let html = `
-        <div class="variant-item border rounded p-3 mb-3">
-            <div class="row g-2">
-
-                <div class="col-md-3">
-                    <input type="text" name="v_variants[]" class="form-control" placeholder="Color (Red)">
-                </div>
-
-                <div class="col-md-3">
-                    <input type="text" name="v_size[]" class="form-control" placeholder="Size (XL)">
-                </div>
-
-                <div class="col-md-2">
-                    <input type="number" step="0.01" name="v_purchase_price[]" class="form-control" placeholder="Purchase">
-                </div>
-
-                <div class="col-md-2">
-                    <input type="number" step="0.01" name="v_regular_price[]" class="form-control v_regular_price" placeholder="Regular">
-                </div>
-
-                <div class="col-md-1">
-                    <input type="number" step="0.01" name="v_discount[]" class="form-control v_discount" placeholder="Disc">
-                </div>
-
-                <div class="col-md-2">
-                    <input type="number" step="0.01" name="v_sale_price[]" class="form-control v_sale_price" placeholder="Sale" readonly>
-                </div>
-
-                <div class="col-md-1">
-                    <select name="v_discount_type[]" class="form-select v_discount_type">
-                        <option value="percent">%</option>
-                        <option value="fixed">৳</option>
-                    </select>
-                </div>
-
-                <div class="col-md-1 d-flex">
-                    <button type="button" class="btn btn-danger remove-variant w-100">✕</button>
-                </div>
-
-            </div>
-        </div>
-        `;
-        wrapper.insertAdjacentHTML('beforeend', html);
-        updateRemoveButtons();
-    });
-
-    document.addEventListener('click', function(e){
-        if(e.target.classList.contains('remove-variant')){
-            e.target.closest('.variant-item').remove();
-            updateRemoveButtons();
-        }
-    });
-
-    updateRemoveButtons();
-});
-</script>
-
-
-
-                <div class="col-12">
                     <label for="tags" class="form-label"><b>Tags</b></label>
                     <input type="text" class="form-control" id="tags" name="tags[]"
                         value="{{ json_encode($data->tags->pluck('name')->toArray()) }}" placeholder="Tags">
                 </div>
+                   @php
+                        // Existing edition for this product (edit mode)
+                        $existingEdition = App\Models\ProductEdition::where('product_id', $data->id)->first();
+                    @endphp
+
+                    <div class="col-sm-6">
+                        <label for="edition_name" class="form-label"><b>Edition <span class="text-danger">*</span></b></label>
+                        <select name="edition_name" id="edition_name"
+                            class="form-control @error('edition_name') is-invalid @enderror" required>
+                            @php
+                                $editions = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh'];
+                            @endphp
+                            @foreach($editions as $ed)
+                                <option value="{{ $ed }} Edition"
+                                    {{ (old('edition_name') == $ed . ' Edition' || ($existingEdition && $existingEdition->name == $ed . ' Edition')) ? 'selected' : '' }}>
+                                    {{ $ed }} Edition
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('edition_name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 <div class="col-12">
                     <div class="row g-2">
                         <label for="favorite" class="col-sm-3 col-md-3 col-lg-2 control-label"><b>Is Favorite:</b></label>

@@ -6,10 +6,14 @@ use App\HelperClass;
 use App\Models\Store;
 use App\Models\Vendor;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderItem;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ProductTag;
 
 class PurchaseOrderController extends Controller
@@ -33,7 +37,14 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        return HelperClass::resourceDataView($this->model::orderBy('id', 'desc'), null, null, $this->path, $this->title, ['purchaseReceipts']);
+        return HelperClass::resourceDataView(
+            $this->model::with(['store', 'vendor'])->orderBy('id', 'desc'),
+            null,
+            null,
+            $this->path,
+            $this->title,
+            ['purchaseReceipts'] // optional extra relations
+        );
     }
 
     function getBreadcrumb(Category $category)
@@ -148,7 +159,7 @@ class PurchaseOrderController extends Controller
         }
 
         $title = $this->create_title;
-        $products = Product::with('variants')->get();
+        $products = Product::get();
         $stores = Store::where('status', true)->get();
         $vendors = Vendor::where('status', true)->get();
         return view("admin.{$this->path}.create", compact('title', 'products', 'stores', 'vendors'));
@@ -160,27 +171,97 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'code' => 'nullable|unique:stores,code'
+            'vendor_id' => 'required',
+            'order_date' => 'required',
+            'items' => 'required|array|min:1'
         ]);
 
-        $this->model::create([
-            'name' => $request->name,
-            'code' => $request->code,
-            'location' => $request->location,
-            'address' => $request->address,
-            'remarks' => $request->remarks
+        try {
+            DB::transaction(function () use ($request) {
+        $purchase = PurchaseOrder::create([
+            'po_number' => $this->poNumber(),
+            'vendor_id' => $request->vendor_id,
+            'store_id' => $request->store_id,
+            'order_date' => $request->order_date,
+            'expected_date' => $request->expected_date,
+            'discount_amount' => $request->discount_amount,
+            'total_amount' => $request->total_amount,
+            'tax_amount' => $request->tax_amount,
+            'grand_total' => $request->grand_total,
+            'paid_amount' => $request->paid_amount,
+            'due_amount' => $request->grand_total-$request->paid_amount,
+            'payment_type' => $request->payment_type,
+            'notes' => $request->notes,
         ]);
+
+        foreach ($request->items as $item) {
+          
+            $productId = $item['product_id'];
+            $qty = $item['quantity'];
+
+            PurchaseOrderItem::create([
+                'purchase_order_id' => $purchase->id,
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+                'unit_price' => $item['unit_price'],
+                'discount' => $item['discount'] ?? 0,
+            ]);
+
+             // 🔥 Stock Update
+                $variant = ProductVariant::where([
+                    'product_id' => $productId
+                ])->first();
+
+                if ($variant) {
+                    $variant->increment('stock', $qty);
+                } else {
+                $product = Product::find($productId);
+                    ProductVariant::create([
+                        'product_id' => $productId,
+                        'stock' => $qty,
+                        'purchase_price' => $product->purchase_price,
+                        'regular_price' => $product->regular_price,
+                        'sale_price' => $product->sale_price,
+                        'discount_type' => $product->discount_type,
+                        'discount' => $product->discount,
+                        'status' => true,
+                        'created_by' => Auth::id(),
+                        'updated_by' => Auth::id(),
+                    ]);
+                }
+                // Stock update end
+            }
+
+
+           });
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
 
         return redirect()->route("admin.{$this->path}.index")->withSuccessMessage('Created Successfully!');
+    }
+    /**
+     * Generate PO No.
+     */
+    public function poNumber()
+    {
+        $data = PurchaseOrder::withTrashed()->select(['po_number'])->whereDate('created_at', '>=', date('Y-m-01'))->whereDate('created_at', '<=', date('Y-m-t'))->orderBy('id', 'desc')->first();
+        if ($data) {
+            $trim = (int)str_replace("PONO", '', $data->po_number) + 1;
+            return "PONO" . $trim;
+        } else {
+            return "PONO" . date('ym') . '001';
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $purchaseOrder = PurchaseOrder::with(['vendor', 'store', 'items.product'])->findOrFail($id);
+
+        return view('admin.purchase-order.show', compact('purchaseOrder'));
     }
 
     /**

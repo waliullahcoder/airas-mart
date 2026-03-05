@@ -25,7 +25,6 @@ class SettingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // dd($request->all());
         $request->validate([
             'favicon' => 'image|nullable',
             'logo' => 'image|nullable',
@@ -33,6 +32,7 @@ class SettingController extends Controller
             'placeholder' => 'image|nullable',
             'meta_image' => 'image|nullable',
         ]);
+
         $data = Setting::firstOrNew([]);
 
         $data->app_name = $request->app_name;
@@ -64,6 +64,9 @@ class SettingController extends Controller
         $data->sms_api_url = $request->sms_api_url;
         $data->sms_api_key = $request->sms_api_key;
         $data->sms_api_id = $request->sms_api_id;
+        $data->tax = $request->tax;
+        $data->discount = $request->discount;
+        $data->discount_type = $request->discount_type;
 
         // Images
         if ($request->hasFile('meta_image')) {

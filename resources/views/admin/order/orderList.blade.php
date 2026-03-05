@@ -31,6 +31,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Order No</th>
+                                    <th>Client</th>
                                     <th>Total</th>
                                     <th>Payment</th>
                                     <th>Status</th>
@@ -45,6 +46,7 @@
                                         <td>
                                             <strong>{{ $order->order_number }}</strong>
                                         </td>
+                                        <td>{{ $order->user->name ?? 'N/A' }}</td>
                                         <td>৳ {{ number_format($order->total,2) }}</td>
                                         <td class="text-capitalize">
                                             {{ $order->payment_method }}
@@ -56,7 +58,7 @@
                                                     @case('processing') bg-primary @break
                                                     @case('confirmed') bg-success @break
                                                     @case('shipped') bg-info @break
-                                                    @case('delivered') bg-success @break
+                                                    @case('delivered') bg-secondary text-dark @break
                                                     @case('cancelled') bg-danger @break
                                                     @default bg-secondary
                                                 @endswitch
@@ -74,7 +76,7 @@
                                             <a href="{{ route('admin.orders.invoice',$order->id) }}" class="btn btn-outline-success" target="_blank">📄</a>
                                             <a href="{{ route('admin.orders.track',$order->id) }}" class="btn btn-outline-warning">🔄</a>
                                             <!-- STATUS MODAL BUTTON -->
-                                             @if(!in_array($order->status,['delivered','cancelled'])) 
+                                            @if(!in_array($order->status, ['delivered', 'cancelled']))
                                             <button
                                                 class="btn btn-outline-dark"
                                                 data-bs-toggle="modal"
@@ -94,6 +96,64 @@
                                 @endforelse
                             </tbody>
                         </table>
+
+                        {{-- Paginator section --}}
+                        <style>
+                        .pagination .page-link {
+                            color: #333;
+                            border-radius: 6px;
+                        }
+
+                        .pagination .page-item.active .page-link {
+                            background: #0d6efd;
+                            border-color: #0d6efd;
+                            color: #fff;
+                        }
+
+                        .pagination .page-link:hover {
+                            background: #f1f1f1;
+                        }
+                        </style>
+                         @if ($orders->hasPages())
+                            <div class="d-flex justify-content-center mt-4">
+                                <nav>
+                                    <ul class="pagination pagination-sm">
+
+                                        {{-- Previous --}}
+                                        @if ($orders->onFirstPage())
+                                            <li class="page-item disabled">
+                                                <span class="page-link">«</span>
+                                            </li>
+                                        @else
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $orders->previousPageUrl() }}" rel="prev">«</a>
+                                            </li>
+                                        @endif
+
+                                        {{-- Page Numbers --}}
+                                        @foreach ($orders->getUrlRange(1, $orders->lastPage()) as $page => $url)
+                                            <li class="page-item {{ $page == $orders->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                            </li>
+                                        @endforeach
+
+                                        {{-- Next --}}
+                                        @if ($orders->hasMorePages())
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $orders->nextPageUrl() }}" rel="next">»</a>
+                                            </li>
+                                        @else
+                                            <li class="page-item disabled">
+                                                <span class="page-link">»</span>
+                                            </li>
+                                        @endif
+
+                                    </ul>
+                                </nav>
+                            </div>
+                        @endif
+                        {{-- End paginator --}}
+
                         @forelse($orders as $order)
                         <!-- STATUS UPDATE MODAL -->
                         <div class="modal fade" id="statusModal{{ $order->id }}" tabindex="-1">

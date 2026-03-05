@@ -59,10 +59,10 @@
                                 <textarea name="description" id="description" class="form-control" rows="3" placeholder="Footer Description">{{ old('description', $data->description ?? '') }}</textarea>
                             </div>
 
-                            {{-- Marquee --}}
+                            {{-- Google Map --}}
                             <div class="col-12">
-                                <label for="google_map" class="form-label"><b>Marquee Message</b></label>
-                                <textarea name="google_map" id="google_map" class="form-control" rows="3" placeholder="Marquee Message">{{ old('google_map', $data->google_map ?? '') }}</textarea>
+                                <label for="google_map" class="form-label"><b>Google Map</b></label>
+                                <textarea name="google_map" id="google_map" class="form-control" rows="3" placeholder="Google Map">{{ old('google_map', $data->google_map ?? '') }}</textarea>
                             </div>
 
                             <div class="col-sm-6">
@@ -175,6 +175,32 @@
                                 </select>
                             </div>
 
+                            <div class="col-lg-3 col-sm-6">
+                                <label for="tax" class="form-label"><b>Tax(%)</b></label>
+                                <input type="text" name="tax" id="tax" class="form-control"
+                                    placeholder="Tax(%)"
+                                    value="{{ old('tax', $data->tax ?? '') }}">
+                            </div>
+
+                            <div class="col-lg-6 col-sm-6">
+                                <label for="discount_type" class="form-label"><b>Discount Type</b></label>
+                                <select name="discount_type" id="banner_two_status" class="form-select" required>
+                                    <option value="percent"
+                                        {{ $data->discount_type == 'percent' ? 'selected' : '' }}>
+                                        Percent</option>
+                                    <option value="amount"
+                                        {{ $data->discount_type == 'amount' ? 'selected' : '' }}>
+                                        Amount</option>
+                                    
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <label for="discount" class="form-label"><b>Discount</b></label>
+                                <input type="text" name="discount" id="discount" class="form-control"
+                                    placeholder="Discount Value"
+                                    value="{{ old('discount', $data->discount ?? '') }}">
+                            </div>
+
                             {{-- Social Links --}}
                             <div class="col-12">
                                 <label for="socialLinks" class="form-label"><b>Social Links</b></label>
@@ -185,7 +211,6 @@
                                             ['youtube', '#FF0000', 'youtube'],
                                             ['twitter', '#1D9BF0', 'twitter'],
                                             ['instagram', '#0077B7', 'instagram'],
-                                            ['linkedin', '#5964f3', 'linkedin'],
                                             ['pinterest', '#E33E2B', 'pinterest'],
                                             ['whatsapp', '#47C756', 'whatsapp'],
                                         ];

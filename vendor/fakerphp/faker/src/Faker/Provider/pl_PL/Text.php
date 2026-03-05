@@ -1561,7 +1561,7 @@ fosforescencja wiosennego śniegu mętniała i gasła i nadchodziła czarna i
 gęsta oćma przed świtem. Niektórzy z nas zasypiali w ciepłym śniegu,
 inni domacywali się w gęstwinie bram swych domów, wchodzili omackiem do
 ciemnych wnętrzy, w sen rodziców i braci, w dalszy ciąg głębokiego
-chrapania, które dRadixali na swych spóźnionych drogach. Te nocne seanse
+chrapania, które doganiali na swych spóźnionych drogach. Te nocne seanse
 pełne były dla mnie tajemnego uroku, nie mogłem i teraz pominąć
 sposobności, by nie zaglądnąć na moment do sali rysunkowej,
 postanawiając, że nie pozwolę się tam zatrzymać dłużej nad krótką

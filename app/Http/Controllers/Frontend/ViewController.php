@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Slider;
 use App\Models\Product;
+use App\Models\Review;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
 use App\Models\HomeSection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,59 +22,79 @@ class ViewController extends Controller
     public function index()
     {
         $menus = $this->frontEndService->getMenu();
-        // Base query for active products
-        $activeProductsQuery = Product::where('status', 1);
+        $slides = Slider::where('status', true)->get();
+        //Homepage Category all
+        $get_sub_categories_all = $this->frontEndService->getSubCategoryHomePageOnly();
+        // $get_sub_category_product_all = $this->frontEndService->getSubCategoryHomePageProductOnly();
 
-        // Featured Products (latest 8)
-        $featuredProducts = (clone $activeProductsQuery)
-            ->orderBy('id', 'desc')
-            ->take(8)
-            ->get();
+        // //ট্রেন্ডিং বইসমূহ and নতুন প্রকাশিত বই
+        $get_sub_category_trends_new_book_product_only = $this->frontEndService->getSubCategoryTrendsNewBookProductOnly();
+        //Banner add category
+        $get_sub_category_banner_only = $this->frontEndService->getSubCategoryBannerOnly();
+        //সিয়ান যুগপূর্তি অফার and রবিউল আউয়াল সীরাত গ্রন্থমালা
+        $get_sub_category_sian_jugpuerti_nrobiul_aual_product_only = $this->frontEndService->getSubCategorySianJugpuertiNrobiulAualProductOnly();
+        //জনপ্রিয় লেখক
+        $get_sub_category_writer_only = $this->frontEndService->getSubCategoryWriterOnly();
+        //আতর ও সুগন্ধি পণ্য
+        $get_sub_category_atar_sugondhi_product_only = $this->frontEndService->getSubCategoryAtarSugondhiProductOnly();
+        //অন্যান্য পণ্য
+        $get_sub_category_others_only = $this->frontEndService->getSubCategoryOthersOnly();
+        //ব্র্যান্ডসমূহ
+        $get_sub_category_brand_only = $this->frontEndService->getSubCategoryBrandOnly();
+ 
 
-        // Latest Products (latest 3)
-        $latests = (clone $activeProductsQuery)
-            ->orderBy('id', 'desc')
-            ->take(3)
-            ->get();
-
-        // Top Rated Products (rating >= 4) - make sure 'rating' column exists
-       $toprated = Product::with('reviews')
-                ->where('status', 1)
-                ->whereHas('reviews', function($query) {
-                    $query->selectRaw('product_id, AVG(rating) as avg_rating')
-                        ->groupBy('product_id')
-                        ->havingRaw('AVG(rating) >= ?', [1]);
-                })
-                ->take(3)
-                ->get();
-        // Products with reviews (latest 3)
-        $reviewedproducts = Product::with('reviews')
-            ->where('status', 1)
-            ->has('reviews')
-            ->orderBy('id', 'desc')
-            ->take(3)
-            ->get();
+        $homeSections = HomeSection::orderBy('serial', 'asc')->get();
         return view('frontend.home', compact(
+            'slides', 
+            'homeSections',
             'menus',
-            'featuredProducts',
-            'latests',
-            'toprated',
-            'reviewedproducts'
+            'get_sub_categories_all',
+            'get_sub_category_trends_new_book_product_only',
+            'get_sub_category_banner_only',
+            'get_sub_category_sian_jugpuerti_nrobiul_aual_product_only',
+            'get_sub_category_writer_only',
+            'get_sub_category_atar_sugondhi_product_only',
+            'get_sub_category_others_only',
+            'get_sub_category_brand_only'
         ));
     }
+
+    //Global search home
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+        
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+                            ->orWhere('slug', 'LIKE', "%{$query}%")
+                            ->limit(10)
+                            ->get()
+                            ->map(function($product){
+                                return [
+                                    'id' => $product->id,
+                                    'name' => $product->name,
+                                    'slug' => $product->slug,
+                                    'thumbnail' => asset($product->thumbnail), // ✅ full URL
+                                    'sale_price'=> $product->sale_price,
+                                    'regular_price'=> $product->regular_price,
+                                    'authors'   => $product->authors->pluck('name')->implode(', '), // all authors as string
+                                ];
+                            });
+        return response()->json($products);
+    }
+
     public function categoryPage($cat_id, $slug, $menu)
     {
         $menus = $this->frontEndService->getMenu();
         $authors = $this->frontEndService->getAuthor();
         $publications = $this->frontEndService->getPublication();
         $subcategories = $this->frontEndService->getProductData($cat_id);
-         $featuredProducts = Product::where('status', 1)
-        ->orderBy('id', 'desc')
-        ->take(8)
-        ->get();
-        return view('frontend.categories.index', compact('menus','subcategories','authors','publications','featuredProducts'));
+        $bookcat_count = Category::where('type', 'book')->where('parent_id', $cat_id)->count();
+        $relatedProducts = Product::where('category_id', $cat_id)
+                    ->latest()
+                    ->take(8)
+                    ->get();
+        return view('frontend.categories.index', compact('menus','subcategories','authors','publications','bookcat_count','relatedProducts'));
     }
-
     public function singleCategoryPage($sub_cat_id)
     {
         $single_sub_category = $this->frontEndService->singleCategoryPage($sub_cat_id);
@@ -79,18 +102,203 @@ class ViewController extends Controller
         $subcategories = $this->frontEndService->getProductData($sub_cat_id);
         $authors = $this->frontEndService->getAuthor();
         $publications = $this->frontEndService->getPublication();
-         $featuredProducts = Product::where('status', 1)
-        ->orderBy('id', 'desc')
-        ->take(8)
-        ->get();
-        return view('frontend.categories.single_sub_category_page', compact('menus','subcategories','single_sub_category','authors','publications','featuredProducts'));
+        $bookcat_count = Category::where('type', 'book')->where('id', $sub_cat_id)->count();
+        $relatedProducts = Product::where('category_id', $sub_cat_id)
+                    ->latest()
+                    ->take(8)
+                    ->get();
+        return view('frontend.categories.single_sub_category_page', compact('menus','subcategories','single_sub_category','authors','publications','bookcat_count','relatedProducts'));
     }
+
+    //Category Page Left Filter
+   public function filterProducts(Request $request)
+    {
+        $publicationIds = $request->publications ?? [];
+        $authorIds      = $request->authors ?? [];
+        $priceSort      = $request->price_sort ?? null; // low_high / high_low
+        $priceRanges    = $request->price_ranges ?? [];
+
+        $subcategories = Category::where('type', 'book')
+            ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
+
+                // Publication filter
+                if (!empty($publicationIds)) {
+                    $query->whereIn('publication_id', $publicationIds);
+                }
+
+                // Author filter via many-to-many
+                if (!empty($authorIds)) {
+                    $query->whereHas('authors', function($q) use ($authorIds) {
+                        $q->whereIn('author_id', $authorIds);
+                    });
+                }
+                // Price sorting // low_high / high_low
+                if(!empty($priceSort)) {
+                if ($priceSort === 'low_high') {
+                    $query->orderBy('sale_price', 'asc');
+                } elseif ($priceSort === 'high_low') {
+                    $query->orderBy('sale_price', 'desc');
+                }
+                }
+
+                // Price Range filter
+                if (!empty($priceRanges)) {
+                    $query->where(function($q) use ($priceRanges){
+                        foreach($priceRanges as $range){
+                            if($range === '0-200'){
+                                $q->orWhereBetween('sale_price', [0,200]);
+                            } elseif($range === '201-500'){
+                                $q->orWhereBetween('sale_price', [201,500]);
+                            } elseif($range === '500+'){
+                                $q->orWhere('sale_price', '>', 500);
+                            }
+                        }
+                    });
+                }
+
+
+            })
+            ->with(['products' => function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
+
+                if (!empty($publicationIds)) {
+                    $query->whereIn('publication_id', $publicationIds);
+                }
+
+                if (!empty($authorIds)) {
+                    $query->whereHas('authors', function($q) use ($authorIds) {
+                        $q->whereIn('author_id', $authorIds);
+                    });
+                }
+                // Price sorting // low_high / high_low
+                if(!empty($priceSort)) {
+                    if ($priceSort === 'low_high') {
+                    $query->orderBy('sale_price', 'asc');
+                    } elseif ($priceSort === 'high_low') {
+                        $query->orderBy('sale_price', 'desc');
+                    }
+                }
+
+                 // Price Range filter
+                if (!empty($priceRanges)) {
+                $query->where(function($q) use ($priceRanges){
+                    foreach($priceRanges as $range){
+                        if($range === '0-200'){
+                            $q->orWhereBetween('sale_price', [0,200]);
+                        } elseif($range === '201-500'){
+                            $q->orWhereBetween('sale_price', [201,500]);
+                        } elseif($range === '500+'){
+                            $q->orWhere('sale_price', '>', 500);
+                        }
+                    }
+                });
+                }
+
+
+            }])
+            ->get();
+
+        return view('frontend.categories.partials.product_list', compact('subcategories'))->render();
+    }
+
+    //Sub Category Page Left Filter
+    public function subFilterProducts(Request $request)
+    {
+       
+        $publicationIds = $request->publications ?? [];
+        $authorIds      = $request->authors ?? [];
+        $priceSort      = $request->price_sort ?? null; // low_high / high_low
+        $priceRanges    = $request->price_ranges ?? [];
+
+        $single_sub_category = Category::where('type', 'book')
+            ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
+
+                // Publication filter
+                if (!empty($publicationIds)) {
+                    $query->whereIn('publication_id', $publicationIds);
+                }
+
+                // Author filter via many-to-many
+                if (!empty($authorIds)) {
+                    $query->whereHas('authors', function($q) use ($authorIds) {
+                        $q->whereIn('author_id', $authorIds);
+                    });
+                }
+                // Price sorting // low_high / high_low
+                if(!empty($priceSort)) {
+                if ($priceSort === 'low_high') {
+                    $query->orderBy('sale_price', 'asc');
+                } elseif ($priceSort === 'high_low') {
+                    $query->orderBy('sale_price', 'desc');
+                }
+                }
+
+                // Price Range filter
+                if (!empty($priceRanges)) {
+                    $query->where(function($q) use ($priceRanges){
+                        foreach($priceRanges as $range){
+                            if($range === '0-200'){
+                                $q->orWhereBetween('sale_price', [0,200]);
+                            } elseif($range === '201-500'){
+                                $q->orWhereBetween('sale_price', [201,500]);
+                            } elseif($range === '500+'){
+                                $q->orWhere('sale_price', '>', 500);
+                            }
+                        }
+                    });
+                }
+
+
+            })
+            ->with(['products' => function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
+
+                if (!empty($publicationIds)) {
+                    $query->whereIn('publication_id', $publicationIds);
+                }
+
+                if (!empty($authorIds)) {
+                    $query->whereHas('authors', function($q) use ($authorIds) {
+                        $q->whereIn('author_id', $authorIds);
+                    });
+                }
+                // Price sorting // low_high / high_low
+                if(!empty($priceSort)) {
+                    if ($priceSort === 'low_high') {
+                    $query->orderBy('sale_price', 'asc');
+                    } elseif ($priceSort === 'high_low') {
+                        $query->orderBy('sale_price', 'desc');
+                    }
+                }
+
+                 // Price Range filter
+                if (!empty($priceRanges)) {
+                $query->where(function($q) use ($priceRanges){
+                    foreach($priceRanges as $range){
+                        if($range === '0-200'){
+                            $q->orWhereBetween('sale_price', [0,200]);
+                        } elseif($range === '201-500'){
+                            $q->orWhereBetween('sale_price', [201,500]);
+                        } elseif($range === '500+'){
+                            $q->orWhere('sale_price', '>', 500);
+                        }
+                    }
+                });
+                }
+
+
+            }])
+            ->first();
+    return view('frontend.categories.partials.sub_product_list', 
+    compact('single_sub_category'))->render();
+    }
+
+    
     public function productDetails($id)
     {
         $menus = $this->frontEndService->getMenu();
         $product = $this->frontEndService->productDetails($id);
         $relatedProducts = $this->frontEndService->productAll();
-        return view('frontend.products.productDetails', compact('product','menus','relatedProducts'));
+        $review_count=Review::where('product_id', $id)->where('user_id',Auth::id())->count();
+        return view('frontend.products.productDetails', compact('product','menus','relatedProducts','review_count'));
     }
 
     public function signinPage()
@@ -102,16 +310,5 @@ class ViewController extends Controller
     {
         $menus = $this->frontEndService->getMenu();
         return view('frontend.auth.signup',compact('menus'));
-    }
-    public function contactPage()
-    {
-        $menus = $this->frontEndService->getMenu();
-        return view('frontend.contacts.contact',compact('menus'));
-    }
-    public function singleDetails($id)
-    {
-        $menus = $this->frontEndService->getMenu();
-        $singleDetail = $this->frontEndService->singleDetails($id);
-        return view('frontend.page.single',compact('menus','singleDetail'));
     }
 }

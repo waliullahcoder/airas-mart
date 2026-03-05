@@ -5,13 +5,39 @@ namespace App\Models;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class PurchaseOrder extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['po_number', 'store_id', 'vendor_id', 'order_date', 'expected_date', 'total_amount', 'discount_amount', 'tax_amount', 'grand_total', 'status', 'notes', 'created_by', 'updated_by', 'deleted_by'];
+
+    // Mass assignable fields
+    protected $fillable = [
+        'po_number',
+        'store_id',
+        'vendor_id',
+        'order_date',
+        'expected_date',
+        'total_amount',
+        'discount_amount',
+        'tax_amount',
+        'grand_total',
+        'paid_amount',
+        'due_amount',
+        'payment_type',
+        'status',
+        'notes',
+        'created_by',
+        'updated_by',
+        'deleted_by'
+    ];
+
+    // Append formatted dates to JSON automatically
     protected $appends = ['orderDate', 'expectedDate'];
 
+    /**
+     * Booted method to handle created_by, updated_by, deleted_by, and soft deletes
+     */
     protected static function booted()
     {
         // Automatically set created_by and updated_by
@@ -24,15 +50,11 @@ class PurchaseOrder extends Model
             $order->updated_by = Auth::id();
         });
 
-        // Soft delete children and set deleted_by
+        // Handle soft deletes for children and set deleted_by
         static::deleting(function ($order) {
             if (! $order->isForceDeleting()) {
-                // Set deleted_by on children
-                $order->items()->update([
-                    'deleted_by' => Auth::id(),
-                ]);
-
-                // Soft delete children
+                // Soft delete items and set deleted_by
+                $order->items()->update(['deleted_by' => Auth::id()]);
                 $order->items()->delete();
 
                 // Set deleted_by on parent
@@ -43,15 +65,16 @@ class PurchaseOrder extends Model
 
         // Restore children and clear deleted_by
         static::restoring(function ($order) {
-            $order->items()->withTrashed()->update([
-                'deleted_by' => null,
-            ]);
+            $order->items()->withTrashed()->update(['deleted_by' => null]);
             $order->items()->restore();
 
             $order->deleted_by = null;
         });
     }
 
+    /**
+     * Relationships
+     */
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id');
@@ -72,7 +95,7 @@ class PurchaseOrder extends Model
         return $this->hasMany(PurchaseReceipt::class);
     }
 
-    // Optional: track users
+    // Track users
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -88,13 +111,16 @@ class PurchaseOrder extends Model
         return $this->belongsTo(User::class, 'deleted_by');
     }
 
-    public function getOrderDateAttribute()
+    /**
+     * Accessors for formatted dates
+     */
+    public function getOrderDateAttribute($value)
     {
-        return date('d-m-Y', strtotime($this->order_date));
+        return $value ? Carbon::parse($value)->format('d-m-Y') : null;
     }
 
-    public function getExpectedDateAttribute()
+    public function getExpectedDateAttribute($value)
     {
-        return date('d-m-Y', strtotime($this->expected_date));
+        return $value ? Carbon::parse($value)->format('d-m-Y') : null;
     }
 }

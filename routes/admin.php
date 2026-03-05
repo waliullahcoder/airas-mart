@@ -28,6 +28,21 @@ use App\Http\Controllers\Admin\{
     MenuItemController,
     ReportController,
     AdminOrderController,
+    ProductionController,
+    ClientController,
+    SalesOfficerController,
+    SalesController,
+    CollectionController,
+    SalesReturnController,
+    RegionController,
+    AreaController,
+    TerritoryController,
+    InvestorController,
+    InvestController,
+    ProfitDistributionController,
+    InvestorPaymentController,
+    InvestSattlementController,
+    ExpenseController
 };
 
 Route::middleware('guest')->group(function () {
@@ -56,6 +71,71 @@ Route::group(['middleware' => ['admin']], function () {
     Route::post('/admin/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])
     ->name('orders.updateStatus');
 
+      // Production
+    Route::resource('/production', ProductionController::class);
+    Route::get('/production/{id}/print', [ProductionController::class, 'print'])->name('production.print');
+      // Store
+    Route::resource('/store', StoreController::class);
+
+    //stock
+    Route::get('/stock-status', [ReportController::class, 'stockStatus'])->name('stock-status.index');
+// Region
+    Route::resource('/region', RegionController::class);
+
+    // Area
+    Route::resource('/area', AreaController::class);
+
+    // Territory
+    Route::resource('/territory', TerritoryController::class);
+    // Client
+    Route::resource('/client', ClientController::class);
+
+    // Sales Officer
+    Route::resource('/sales-officer', SalesOfficerController::class);
+
+    // Sales
+    Route::resource('/sales', SalesController::class);
+
+    // Expense
+    Route::resource('/expense', ExpenseController::class);
+
+    // Collection
+    Route::resource('/collection', CollectionController::class);
+
+    // Sales Return
+    Route::resource('/sales-return', SalesReturnController::class);
+
+    // Investor
+    Route::resource('/investor', InvestorController::class);
+
+    // Invest
+    Route::resource('/invest', InvestController::class);
+
+    // Profit Distribution
+    Route::resource('/profit-distribution', ProfitDistributionController::class);
+    // Investor Payment
+    Route::resource('/investor-payment', InvestorPaymentController::class);
+
+    // Invest Sattlement
+    Route::resource('/invest-sattlement', InvestSattlementController::class);
+    Route::get('/investor-statement', [ReportController::class, 'investorStatement'])->name('investor-statement.index');
+
+     // Accounting
+    Route::get('/coa-list', [ReportController::class, 'coaList'])->name('coa-list.index');
+    Route::get('/voucher-list', [ReportController::class, 'voucherList'])->name('voucher-list.index');
+    Route::get('/cash-book', [ReportController::class, 'cashBook'])->name('cash-book.index');
+    Route::get('/bank-book', [ReportController::class, 'bankBook'])->name('bank-book.index');
+    Route::get('/transaction-ledger', [ReportController::class, 'transactionLedger'])->name('transaction-ledger.index');
+    Route::get('/cash-flow-statement', [ReportController::class, 'cashFlowStatement'])->name('cash-flow-statement.index');
+    Route::get('/general-ledger', [ReportController::class, 'generalLedger'])->name('general-ledger.index');
+    Route::get('/income-statement', [ReportController::class, 'incomeStatement'])->name('income-statement.index');
+    Route::get('/trial-balance', [ReportController::class, 'trialBalance'])->name('trial-balance.index');
+    Route::get('/balance-sheet', [ReportController::class, 'balanceSheet'])->name('balance-sheet.index');
+    Route::get('/head-details', [ReportController::class, 'headDetails'])->name('head-details.index');
+
+    Route::get('/sales-report', [ReportController::class, 'salesReport'])->name('sales-report.index');
+    Route::get('/collection-report', [ReportController::class, 'collectionReport'])->name('collection-report.index');
+    Route::get('/sales-return-report', [ReportController::class, 'salesReturnReport'])->name('sales-return-report.index');
 
     // Admin Setting
     Route::resource('/admin-settings', AdminSettingController::class);
@@ -112,16 +192,6 @@ Route::group(['middleware' => ['admin']], function () {
     // Brand
     Route::resource('/brand', BrandController::class);
 
-
-    //Permission check
-    Route::get('/debug-role', function () {
-        $user = auth()->user();
-
-        return [
-            'roles' => $user->getRoleNames(),
-            'permissions' => $user->getAllPermissions(),
-        ];
-    });
     // Product
     Route::resource('/product', ProductController::class);
     Route::post('/product/sku-combination', [ProductController::class, 'skuCombination'])->name('product.sku-combination');

@@ -28,7 +28,7 @@
                                 <img
                                     src="{{ auth()->user()->image
                                         ? asset(auth()->user()->image)
-                                        : asset('frontend/images/user.png') }}"
+                                        : asset('frontend/images/user/user.png') }}"
                                     class="rounded-circle mb-3"
                                     width="140"
                                     height="140"

@@ -20,9 +20,6 @@ Route::get('/login', function () {
     return redirect()->route('auth.signinPage');
 })->name('login');
 Route::get('/signup', [ViewController::class, 'signupPage'])->name('auth.signupPage');
-Route::get('/contact', [ViewController::class, 'contactPage'])->name('contactPage');
-
-Route::get('/details/{id}', [ViewController::class, 'singleDetails'])->name('singleDetails');
 
 Route::post('/signin', [UserController::class, 'signinPost'])->name('user.signinPost');
 Route::post('/signup', [UserController::class, 'signupPost'])->name('user.signupPost');
@@ -105,6 +102,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/products/search', [ViewController::class, 'search'])->name('products.search');
 //Categories
 Route::get('/category/{id}/{slug}/{menu}', [ViewController::class, 'categoryPage'])->name('category.index');
 Route::get('/signle/sub/category/{id}', [ViewController::class, 'singleCategoryPage'])->name('category.singleCategoryPage');
@@ -112,7 +110,10 @@ Route::get('/signle/sub/category/{id}', [ViewController::class, 'singleCategoryP
 //Products
 Route::get('/product/details/{id}', [ViewController::class, 'productDetails'])->name('product.details');
 
-
+Route::get('/filter-products', [ViewController::class, 'filterProducts'])
+    ->name('filter.products');
+Route::get('/filter-sub-products', [ViewController::class, 'subFilterProducts'])
+    ->name('filter.sub.products');
 
 
 

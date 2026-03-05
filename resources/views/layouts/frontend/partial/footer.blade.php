@@ -1,68 +1,93 @@
-<footer class="footer spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer__about">
-                        <div class="footer__about__logo">
-                            <a href="{{route('home')}}"><img src="{{ asset(file_exists($settings->logo) ? $settings->logo : 'frontend/images/logo.png') }}" alt="" loading="lazy" decoding="async"></a>
-                        </div>
-                        <ul>
-                            <li>{{ $settings->description ?? 'Description' }}</li>
-                            
-                        </ul>
-                    </div>
+<footer class="footer-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="pb-3">
+                    <a href="{{ Route('home') }}">
+                        <img src="{{ asset(file_exists($settings->logo) ? $settings->logo : 'frontend/images/logo/logo.jpg') }}"
+                            height="50" alt="{{ $settings->app_name }}">
+                    </a>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
-                    <div class="footer__widget">
-                        <h6>Useful Links</h6>
-                        <ul>
-                            @foreach ($menus['footer_col1'] as $menu)
-                            <li><a href="{{ route('singleDetails', $menu->category_id) }}">{{ $menu->name }}</a></li>
-                            @endforeach
-                           
-                        </ul>
-                        <ul>
-                            @foreach ($menus['footer_col2'] as $menu)
-                            <li><a href="{{ route('singleDetails', $menu->category_id) }}">{{ $menu->name }}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="footer__widget">
-                        <h6>Address</h6>
-                        <p>{{ $settings->address ?? 'Address' }}</p>
-                      
-                        <div class="footer__widget__social">
-                            <a href="{{ $settings->facebook_page ?? '#' }}" target="_blank"><i class="fa fa-facebook"></i></a>
-                            <a href="{{ $settings->instagram ?? '#' }}" target="_blank"><i class="fa fa-instagram"></i></a>
-                            <a href="{{ $settings->twitter ?? '#' }}" target="_blank"><i class="fa fa-twitter"></i></a>
-                            <a href="{{ $settings->pinterest ?? '#' }}" target="_blank"><i class="fa fa-pinterest"></i></a>
-                            <a href="{{ $settings->linkedin ?? '#' }}" target="_blank"><i class="fa fa-linkedin"></i></a>
-                        </div>
-                    </div>
-                </div>
+                <p>{{ $settings->description }}</p>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Radix can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved | This Website is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://radix.com.bd" target="_blank">Radix</a>
-  <!-- Link back to Radix can't be removed. Template is licensed under CC BY 3.0. --></p></div>
-                        <div class="footer__copyright__payment"><img src="frontend/images/payment-item.png" alt="" loading="lazy" decoding="async"></div>
-                    </div>
-                </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <h5 class="footer-title">প্রয়োজনীয় লিংক</h5>
+                <ul class="footer-list">
+                    @foreach ($menus['footer_col1_menus'] as $menu)
+                    <li class="footer-item"><a class="footer-link" href="{{ $menu->menu_url }}">{{ $menu->name }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <h5 class="footer-title">জনপ্রিয়</h5>
+                <ul class="footer-list">
+                    @foreach ($menus['footer_col2_menus'] as $menu)
+                    <li class="footer-item"><a class="footer-link" href="{{ $menu->menu_url }}">{{ $menu->name }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4 col-6">
+                <h5 class="footer-title">যোগাযোগ</h5>
+                <ul class="footer-contact">
+                    <li class="footer-contact-item">
+                        <i class="fa fa-map-marker-alt"></i>&nbsp;Head Office: <br>
+                        {!! $settings->address !!}
+                    </li>
+                    <li class="footer-contact-item">
+                        <i class="fa fa-mobile-alt"></i>&nbsp;Phone:<br><a
+                            href="tel:+88{{ $settings->primary_phone }}">{{ $settings->primary_phone }}</a>
+                    </li>
+                    <li class="footer-contact-item">
+                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;<span>{{ $settings->primary_email }}</span>
+                    </li>
+                    <li class="footer-contact-item pt-2">
+                        @if ($settings->facebook_page)
+                            <a class="social-link" target="_blank" href="{{ $settings->facebook_page }}" rel="noopener">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                        @endif
+                        @if ($settings->youtube)
+                            &nbsp;&nbsp;
+                            <a class="social-link" target="_blank" href="{{ $settings->youtube }}" rel="noopener">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        @endif
+                        @if ($settings->instagram)
+                            &nbsp;&nbsp;
+                            <a class="social-link" target="_blank" href="{{ $settings->instagram }}" rel="noopener">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        @endif
+                        @if ($settings->twitter)
+                            &nbsp;&nbsp;
+                            <a class="social-link" target="_blank" href="{{ $settings->twitter }}" rel="noopener">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        @endif
+                        @if ($settings->linkedin)
+                            &nbsp;&nbsp;
+                            <a class="social-link" target="_blank" href="{{ $settings->linkedin }}" rel="noopener">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        @endif
+                    </li>
+                </ul>
             </div>
         </div>
-        <script>
-    window.addEventListener("scroll", function () {
-        let header = document.querySelector(".sticky-header");
-        if (window.scrollY > 100) {
-            header.classList.add("sticky-active");
-        } else {
-            header.classList.remove("sticky-active");
-        }
-    });
-</script>
+    </div>
+</footer>
+<div class="footer-bottom py-3">
+    <div class="container">
+        <div class="copyright">Copyright © {{ date('Y') }} {{ $settings->app_name }}</div>
+    </div>
+</div>
+<!-- End Footer -->
 
-    </footer>
+<div class="scrollTop" style="display: none;">
+    <svg width="28" height="28" stroke-width="4" aria-hidden="true">
+        <path d="M24.5 4.66663H3.5V6.27079H24.5V4.66663Z" fill="currentColor"></path>
+        <path
+            d="M14 8.19898L5.84953 16.3495L6.98385 17.4838L13.1979 11.2697L13.1979 24.5H14.8021L14.8021 11.2697L21.0162 17.4838L22.1505 16.3495L14 8.19898Z"
+            fill="currentColor"></path>
+    </svg>
+</div>

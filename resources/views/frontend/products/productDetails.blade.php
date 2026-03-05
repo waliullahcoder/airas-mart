@@ -3,44 +3,163 @@
 @extends('layouts.frontend.app')
 
 @section('content')
- <!-- Product Details Section Begin -->
-<section class="product-details spad product-card">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__pic">
-                        <div class="product__details__pic__item">
-                            <img class="product__details__pic__item--large product-img" src="{{ asset($product->thumbnail) }}" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="product__details__pic__slider owl-carousel">
-                            @if(isset($product->thumbnail))
-                            <img data-imgbigurl="{{ asset($product->thumbnail) }}" src="{{ asset($product->thumbnail) }}" alt="" loading="lazy" decoding="async">
-                            @endif
-                           @if(isset($product->images) && !empty($product->images))
-                            @foreach ($product->images as $item)
-                            <img data-imgbigurl="{{ asset($item->image) }}" src="{{ asset($item->image) }}" alt="" loading="lazy" decoding="async">
-                            @endforeach
-                            @endif
-                            
+<style>
+.small-thumb {
+    transition: 0.3s;
+    border: 2px solid transparent;
+}
+
+.small-thumb:hover {
+    transform: scale(1.05);
+}
+.product-card img{
+    width:20%
+}
+.gap-2{
+    gap:0px !important;
+}
+.active-thumb {
+    border: 2px solid #dc3545;
+}
+</style>
+<div class="product-details-page py-4">
+    <div class="container">
+
+        <!-- TOP SECTION -->
+        <div class="row g-4">
+
+            <!-- PRODUCT CARD (JS TARGET FOR FLYING IMAGE) -->
+            <div class="col-lg-9">
+                <div class="product-card">
+
+                    <div class="row g-4">
+                     <!-- LEFT : PRODUCT IMAGE -->
+                    <div class="col-lg-4">
+                        <div class="bg-white border rounded p-3">
+
+                            <!-- MAIN IMAGE -->
+                            <div class="text-center mb-3">
+                                <img id="productThumbnail"
+                                    class="img-fluid rounded product-img"
+                                    src="{{ asset($product->thumbnail) }}"
+                                    alt="{{ $product->name }}"
+                                    style="cursor:pointer; max-height:500px; width:100%; object-fit:contain;"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#imageModal">
+                            </div>
+
+                            <!-- SMALL THUMBNAILS -->
+                            <div class="d-flex justify-content-center gap-2 flex-wrap">
+
+                                {{-- Default Thumbnail --}}
+                                <img src="{{ asset($product->thumbnail) }}"
+                                    class="img-thumbnail small-thumb active-thumb"
+                                    width="70"
+                                    style="cursor:pointer;"
+                                    onclick="changeImage(this)">
+                                {{-- Extra Images --}}
+                                @foreach($product->images->take(4) as $image)
+                                    <img src="{{ asset($image->image) }}"
+                                        class="img-thumbnail small-thumb"
+                                        width="70"
+                                        style="cursor:pointer;"
+                                        onclick="changeImage(this)">
+                                @endforeach
+
+                            </div>
+
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="product__details__text">
-                        <h3>{{ $product->name }}</h3>
-                        <h4 class="title">CODE-{{ $product->id }}</h4>
-                    
-                         <!-- RATING -->
+                    <!-- IMAGE ZOOM MODAL -->
+                    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content bg-white rounded shadow-lg border-0">
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title">{{ $product->name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center p-3">
+                                    <img id="modalImage"
+                                        src="{{ asset($product->thumbnail) }}"
+                                        class="img-fluid rounded"
+                                        style="max-height:80vh; width:auto;">
+                                </div>
+                                <div class="modal-footer justify-content-between border-0">
+                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <div>
+                                        <button class="btn btn-sm btn-primary" id="zoomIn">+</button>
+                                        <button class="btn btn-sm btn-primary" id="zoomOut">-</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                    function changeImage(element) {
+
+                        // Change main image
+                        let mainImage = document.getElementById('productThumbnail');
+                        mainImage.src = element.src;
+
+                        // Change modal image also
+                        document.getElementById('modalImage').src = element.src;
+
+                        // Active border remove
+                        document.querySelectorAll('.small-thumb').forEach(img => {
+                            img.classList.remove('active-thumb');
+                        });
+
+                        // Active border add
+                        element.classList.add('active-thumb');
+                    }
+                    </script>
+                    <script>
+                    let zoomLevel = 1;
+                    const modalImage = document.getElementById('modalImage');
+
+                    document.getElementById('zoomIn').addEventListener('click', () => {
+                        zoomLevel += 0.1;
+                        modalImage.style.transform = `scale(${zoomLevel})`;
+                    });
+
+                    document.getElementById('zoomOut').addEventListener('click', () => {
+                        if(zoomLevel > 0.2) zoomLevel -= 0.1;
+                        modalImage.style.transform = `scale(${zoomLevel})`;
+                    });
+                    </script>
+
+
+                        <!-- RIGHT : PRODUCT DETAILS -->
+                        <div class="col-lg-8">
+                            <div class="bg-white border rounded p-3">
+
+                                <h2 class="mb-2">{{ $product->name }}</h2>
+
+                                <!-- BADGES -->
+                                <div class="mb-2">
+                                    @if($product->best_seller)
+                                        <span class="badge bg-success">Best Seller</span>
+                                    @endif
+                                    @if($product->new_arrival)
+                                        <span class="badge bg-primary">New Arrival</span>
+                                    @endif
+                                    @if($product->trending)
+                                        <span class="badge bg-warning text-dark">Trending</span>
+                                    @endif
+                                </div>
+
+                                <!-- RATING -->
                                 @php
                                     $avgRating   = round($product->averageRating(), 1); // e.g. 4.5
                                     $reviewCount = $product->reviews->count();          // total users
                                 @endphp
-                         <div class="product__details__rating">
+
+                                <div class="mb-2 text-warning">
                                     @for($i = 1; $i <= 5; $i++)
                                         @if($i <= floor($avgRating))
-                                            <span>★</span>
+                                            ★
                                         @elseif($i - $avgRating < 1)
-                                             ☆
+                                            ☆
                                         @else
                                             ☆
                                         @endif
@@ -51,281 +170,260 @@
                                         · {{ $reviewCount }} {{ $reviewCount == 1 ? 'review' : 'reviews' }})
                                     </span>
                                 </div>
-                        <div class="product__details__option">
-                            <div class="size-wrapper">
-                                <span class="label-title">Size:</span>
-                                @if($product->variants->count() > 0)
-                                @foreach ($product->variants as $variant)
-                                @php
-                                    $id = 'size-'.$variant->variant ?? 'NA';
-                                @endphp
-                                <div class="size-option">
-                                    <input type="radio" id="{{ $id }}" name="variant_id" value="{{ $variant->id }}">
-                                    <label for="{{ $id }}">{{ $variant->size ?? 'NA' }}</label>
+
+
+                                <!-- SHORT DESCRIPTION -->
+                                <div class="mb-3 text-muted">
+                                    {!! $product->short_description !!}
                                 </div>
-                                @endforeach
-                                @endif
-                            </div>
-                        </div>
-                        <div class="product__details__price"><del>৳{{ number_format($product->regular_price) }} </del> ৳{{ number_format($product->sale_price) }}</div>
-                       
-                        <!-- <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
+
+                                <!-- PRICE -->
+                                <div class="mb-4">
+                                    @if($product->sale_price > 0)
+                                        <h3 class="text-danger">
+                                            {{ number_format($product->sale_price, 2) }} ৳
+                                            <del class="fs-6 text-muted ms-2">
+                                                {{ number_format($product->regular_price, 2) }} ৳
+                                            </del>
+                                        </h3>
+                                    @else
+                                        <h3 class="text-danger">
+                                            {{ number_format($product->regular_price, 2) }} ৳
+                                        </h3>
+                                    @endif
                                 </div>
-                            </div>
-                        </div> -->
-                        <a href="#" class="primary-btn add-to-cart" data-variant_id="{{ $product->variants[0]->id ?? null }}" data-id="{{ $product->id }}">ADD TO CARD</a>
-                        @php
-                        $alreadyWishlisted = auth()->check() &&
-                        auth()->user()->wishlists()->where('product_id', $product->id)->exists();
-                        @endphp
+
+                                <!-- ACTION BUTTONS -->
+                                <div class="d-flex gap-2 mb-4" style="gap:0.5rem !important">
+                                    <button class="btn btn-danger add-to-cart"
+                                            data-id="{{ $product->id }}" {{$product->variants->sum('stock')>0 ? '' : 'disabled'}}>
+                                        Add to Cart
+                                    </button>
+                                    {{-- <button class="btn btn-outline-secondary">
+                                        Wishlist
+                                    </button> --}}
+                                    @php
+                                        $alreadyWishlisted = auth()->check() &&
+                                            auth()->user()->wishlists()->where('product_id', $product->id)->exists();
+                                    @endphp
                                     @if($alreadyWishlisted)
-                                        <button class="heart-icon" disabled>
-                                            <span class="icon_heart_alt"></span> Wishlisted
+                                        <button class="btn btn-sm btn-danger" disabled>
+                                            ❤️ Wishlisted
                                         </button>
                                     @else
                                         <form action="{{ route('wishlist.store', $product->id) }}"
                                             method="POST"
                                             class="d-inline">
                                             @csrf
-                                            <button class="heart-icon">
-                                               <span class="icon_heart_alt"></span> Add to Wishlist
+                                            <button class="btn btn-outline-danger btn-sm"{{$product->variants->sum('stock')>0 ? '' : 'disabled'}}>
+                                                🤍 Add to Wishlist
                                             </button>
                                         </form>
                                     @endif
-                        <ul>
-                            @if($product->variants->count() > 0)
-                            <li><b>Availability</b> <span>{{ $product->variants[0]['stock'] &&  $product->variants[0]['stock'] >0 ? 'In Stock' : 'Out Stock' }}</span></li>
-                            <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
-                            <li><b>Quantity</b> <span>{{ $product->variants[0]['stock']  &&  $product->variants[0]['stock'] >0 ? $product->variants[0]['stock'] : '0' }}</span></li>
-                            @endif
-                            @php
-                                $currentUrl = urlencode(url()->current());
-                                $title = urlencode($singleDetail->name ?? $product->name ?? 'Check this out');
-                            @endphp
-                            <li>
-                            <b>Share on</b>
-                            <div class="share">
-
-                                {{-- Facebook --}}
-                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ $currentUrl }}" 
-                                target="_blank">
-                                    <i class="fa fa-facebook"></i>
-                                </a>
-
-                                {{-- Twitter --}}
-                                <a href="https://twitter.com/intent/tweet?url={{ $currentUrl }}&text={{ $title }}" 
-                                target="_blank">
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-
-                                {{-- LinkedIn --}}
-                                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $currentUrl }}" 
-                                target="_blank">
-                                    <i class="fa fa-linkedin"></i>
-                                </a>
-
-                                {{-- Pinterest --}}
-                                <a href="https://pinterest.com/pin/create/button/?url={{ $currentUrl }}" 
-                                target="_blank">
-                                    <i class="fa fa-pinterest"></i>
-                                </a>
-                                    {{-- WhatsApp --}}
-                                    <a href="https://api.whatsapp.com/send?text={{ $title }}%20{{ $currentUrl }}" 
-                                    target="_blank" class="wa">
-                                      💬 WhatsApp 🟢
-                                    </a>
-
 
                                 </div>
-                             </li>
 
-                        </ul>
+                                <!-- META INFO -->
+                                <table class="table table-sm">
+                                    <tr>
+                                        <th width="150">SKU</th>
+                                        <td>{{ $product->sku ?? 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>CODE NUMBER</th>
+                                        <td>{{ $product->code }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Product Type</th>
+                                        <td>{{ ucfirst($product->product_type) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status</th>
+                                        <td>
+                                            @if($product->variants->sum('stock')>0)
+                                                <span class="text-success">In Stock</span>
+                                            @else
+                                                <span class="text-danger">Out of Stock</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Stock</th>
+                                        <td>{{ $product->variants->sum('stock') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Author</th>
+                                        <td>{{$product->authors->pluck('name')->implode(', ')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Publication</th>
+                                        <td>{{$product->publication->name ?? 'N/A'}}</td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="col-lg-12">
-                    <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="false">Information</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" aria-selected="false">Reviews <span>({{ $product->reviews->count() }})</span></a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <h6>Products Description</h6>
-                                    <p>{!! $product->description !!}</p>
-                                </div>
+            </div>
+
+            <!-- RELATED PRODUCTS -->
+            <div class="col-lg-3">
+                <div class="bg-white border rounded p-3">
+                    <h6 class="mb-3">Related Products</h6>
+
+                    @foreach($relatedProducts ?? [] as $item)
+                        <div class="d-flex mb-3">
+                            <img src="{{ asset($item->thumbnail) }}"
+                                 class="me-2 rounded"
+                                 width="60"
+                                 alt="">
+                            <div>
+                                <a href="{{ route('product.details', $item->id) }}"
+                                   class="small fw-semibold d-block">
+                                    {{ $item->name }}
+                                </a>
+                                <p>{{ $item->code }}</p><br>
+                                <span class="text-danger small">
+                                    {{ number_format($item->sale_price ?? $item->regular_price, 2) }} ৳
+                                </span>
                             </div>
-                            <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <h6>Products Infomation</h6>
-                                     <p>{!! $product->short_description !!}</p>
-                                    <table class="table table-bordered">
+                        </div>
+                    @endforeach
+
+                </div>
+            </div>
+
+        </div>
+        <!-- END TOP -->
+
+        <!-- BOTTOM SECTION -->
+        <div class="row mt-5">
+            <div class="col-12">
+
+                <div class="bg-white border rounded">
+
+                    <!-- TABS -->
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#description">
+                                Description
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#information">
+                                Information
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#reviews">
+                                Reviews ({{ $product->reviews->count() }})
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content p-4">
+
+                        <div class="tab-pane fade show active" id="description">
+                            {!! $product->description !!}
+                        </div>
+
+                        <div class="tab-pane fade" id="information">
+                            <table class="table table-bordered">
                                 <tr>
-                                    <th>Category ID</th>
-                                    <td>{{ $product->category->name?? 'NA' }}</td>
+                                    <th>Category</th>
+                                    <td>{{ $product->category->name??'N/A' }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Brand ID</th>
-                                    <td>{{ $product->brand->name?? 'NA' }}</td>
+                                    <th>Authors</th>
+                                    <td>{{ $product->authors->pluck('name')->implode(', ') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Vendors</th>
-                                    <td>{{ $product->vendors->pluck('name')->implode(', ') }}</td>
+                                    <th>Publication</th>
+                                    <td>{{ $product->publication->name ?? 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Barcode</th>
                                     <td>{{ $product->barcode }}</td>
                                 </tr>
                             </table>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <div class="product__details__tab__desc">
-                                    <h6>Products Review</h6>
-                                    <h6 class="mb-3">
-                                        Customer Reviews ({{ $product->reviews->count() }})
-                                    </h6>
-                                    @forelse($product->reviews as $review)
-                                        <div class="border-bottom pb-2 mb-3">
-                                            <strong>{{ $review->user->name }}</strong>
-
-                                            <div class="text-warning review-rating">
-                                                @for($i=1;$i<=5;$i++)
-                                                    {{ $i <= $review->rating ? '★' : '☆' }}
-                                                @endfor
-                                            </div>
-
-                                            <p class="mb-0 text-muted">
-                                                {{ $review->review }}
-                                            </p>
-                                        </div>
-                                    @empty
-                                        <p class="text-muted">No reviews yet.</p>
-                                    @endforelse
-
-                                    {{-- REVIEW FORM --}}
-                                    @auth
-                                        <hr>
-                                        <h6>Write a Review</h6>
-
-                                        <style>
-                                        .review-box {
-                                            background: #ffffff;
-                                            padding: 30px;
-                                            border-radius: 15px;
-                                            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-                                        }
-
-                                        .review-box h5 {
-                                            font-weight: 600;
-                                            margin-bottom: 20px;
-                                        }
-
-                                        .star-rating {
-                                            direction: rtl;
-                                            display: inline-flex;
-                                        }
-
-                                        .star-rating input {
-                                            display: none;
-                                        }
-
-                                        .star-rating label {
-                                            font-size: 28px;
-                                            color: #ddd;
-                                            cursor: pointer;
-                                            transition: 0.3s;
-                                        }
-
-                                        .star-rating input:checked ~ label,
-                                        .star-rating label:hover,
-                                        .star-rating label:hover ~ label {
-                                            color: #ffc107;
-                                        }
-
-                                        .review-box textarea {
-                                            border-radius: 10px;
-                                            resize: none;
-                                        }
-
-                                        .review-btn {
-                                            background: linear-gradient(45deg, #ff6a00, #ffb347);
-                                            border: none;
-                                            padding: 10px 25px;
-                                            border-radius: 30px;
-                                            color: #fff;
-                                            font-weight: 600;
-                                            transition: 0.3s;
-                                        }
-
-                                        .review-btn:hover {
-                                            opacity: 0.9;
-                                            transform: translateY(-2px);
-                                        }
-                                        </style>
-
-
-                                        <div class="review-box mt-4">
-                                            <h5>Write a Review</h5>
-
-                                            <form method="POST" action="{{ route('review.store', $product->id) }}">
-                                                @csrf
-
-                                                {{-- Star Rating --}}
-                                                <div class="mb-3">
-                                                    <label class="form-label d-block mb-2">Your Rating</label>
-
-                                                    <div class="star-rating">
-                                                        @for($i=5;$i>=1;$i--)
-                                                            <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" required/>
-                                                            <label for="star{{ $i }}">★</label>
-                                                        @endfor
-                                                    </div>
-                                                </div>
-
-                                                {{-- Review Text --}}
-                                                <div class="mb-3">
-                                                    <label class="form-label">Your Review</label>
-                                                    <textarea name="review"
-                                                    rows="6"
-                                                    class="form-control"
-                                                    style="width:100%; min-height:150px; padding:10px"
-                                                    placeholder="Share your experience about this product..."></textarea>
-
-                                                </div>
-
-                                                <button type="submit" class="review-btn">
-                                                    Submit Review
-                                                </button>
-                                            </form>
-                                        </div>
-
-                                    @else
-                                        <p class="text-muted mt-3">
-                                            Please <a href="{{ route('login') }}">login</a> to write a review.
-                                        </p>
-                                    @endauth
-                                    
-                                </div>
-                            </div>
                         </div>
+
+                        
+
+                            {{-- REVIEW LIST --}}
+                        <div class="tab-pane fade" id="reviews">
+                            <h6 class="mb-3">
+                                Customer Reviews ({{ $product->reviews->count() }})
+                            </h6>
+                            @forelse($product->reviews as $review)
+                                <div class="border-bottom pb-2 mb-3">
+                                    <strong>{{ $review->user->name }}</strong>
+
+                                    <div class="text-warning">
+                                        @for($i=1;$i<=5;$i++)
+                                            {{ $i <= $review->rating ? '★' : '☆' }}
+                                        @endfor
+                                    </div>
+
+                                    <p class="mb-0 text-muted">
+                                        {{ $review->review }}
+                                    </p>
+                                </div>
+                            @empty
+                                <p class="text-muted">No reviews yet.</p>
+                            @endforelse
+
+                            {{-- REVIEW FORM --}}
+                            @auth
+                                @if($review_count == 0)
+                                <hr>
+                                <h6>Write a Review</h6>
+
+                                <form method="POST" action="{{ route('review.store', $product->id) }}">
+                                    @csrf
+
+                                    <div class="mb-2">
+                                        <label class="form-label">Rating</label>
+                                        <select name="rating" class="form-select" required>
+                                            <option value="">Select Rating</option>
+                                            @for($i=5;$i>=1;$i--)
+                                                <option value="{{ $i }}">{{ $i }} Star</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Review</label>
+                                        <textarea name="review" rows="3"
+                                                class="form-control"
+                                                placeholder="Write your experience..."></textarea>
+                                    </div>
+
+                                    <button class="btn btn-primary btn-sm">
+                                        Submit Review
+                                    </button>
+                                </form>
+                                @endif
+                            @else
+                                <p class="text-muted mt-3">
+                                    Please <a href="{{ route('login') }}">login</a> to write a review.
+                                </p>
+                            @endauth
+                        </div>
+
+                            {{-- REVIEW LIST \\\\--}}
+
+
+                            
                     </div>
+
                 </div>
+
             </div>
         </div>
-    </section>
-    <!-- Product Details Section End -->
 
-
-
+    </div>
+</div>
 @endsection

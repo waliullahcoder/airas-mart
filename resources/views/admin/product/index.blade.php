@@ -1,124 +1,100 @@
 @extends('layouts.admin.index_app')
 
 @section('content')
-    @php
-        $currentRouteName = \Request::route()->getName();
-        $ajaxUrl = route($currentRouteName);
-        $deletePermission = str_replace('index', 'destroy', $currentRouteName);
-        $deleteUrl = route($deletePermission, 0);
-   
-    @endphp
-    <table class="dataTable table align-middle" style="width:100%">
-        <thead>
-            <tr class="text-nowrap">
-                <th></th>
-                <th>Thumbnail</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>UOM</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
+@php
+    $currentRouteName = \Request::route()->getName();
+    $ajaxUrl = route($currentRouteName);
+    $deletePermission = str_replace('index', 'destroy', $currentRouteName);
+    $deleteUrl = route($deletePermission, 0);
+@endphp
 
-        @can($deletePermission)
+<div class="card">
+    <div class="card-body">
+        <table class="dataTable table table-bordered table-hover align-middle w-100">
+            <thead>
+                <tr class="text-nowrap align-middle">
+                    <th></th>
+                    <th>Thumbnail</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Edition</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+
+            @can($deletePermission)
             <tfoot>
                 <tr>
                     <th class="text-center">
-                        <div class="custom-control custom-checkbox mx-auto">
-                            <div id="regular_all_select">
-                                <input type="checkbox" class="custom-control-input" id="selectAll">
-                                <label class="custom-control-label" for="selectAll"></label>
-                            </div>
-                            <div id="trash_all_select" style="display: none;">
-                                <input type="checkbox" class="custom-control-input" id="trash_selectAll">
-                                <label class="custom-control-label" for="trash_selectAll"></label>
-                            </div>
-                        </div>
+                        <input type="checkbox" id="selectAll">
                     </th>
-                    <th colspan="6">
+                    <th colspan="7">
                         <div class="text-end">
-                            <button type="button" id="bulk_delete" name="bulk_delete" data-url="{{ $deleteUrl }}"
-                                class="btn btn-xs btn-danger">
-                                Delete
-                            </button>
-                            <button type="button" id="trash_bulk_delete" name="bulk_delete" data-url="{{ $deleteUrl }}"
-                                class="btn btn-xs btn-danger" style="display: none;">
-                                Delete
-                            </button>
+                            <button type="button" id="bulk_delete" data-url="{{ $deleteUrl }}"
+                                class="btn btn-xs btn-danger">Delete</button>
                         </div>
                     </th>
                 </tr>
             </tfoot>
-        @endcan
-    </table>
+            @endcan
+        </table>
+    </div>
+</div>
 @endsection
 
 @push('js')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.dataTable').dataTable({
-                processing: true,
-                serverSide: true,
-                responsive: true,
-                ajax: {
-                    url: "{{ $ajaxUrl }}",
-                    type: "GET",
-                    data: function(data) {
-                        data.type = $('#filter').val();
+<script>
+$(document).ready(function() {
+
+    var table = $('.dataTable').DataTable({
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        ajax: {
+            url: "{{ $ajaxUrl }}",
+            type: "GET",
+            data: function(d) {
+                d.type = $('#filter').val();
+            }
+        },
+        columns: [
+            { data: "checkbox", name: "checkbox", orderable: false, searchable: false, className: "text-center", width: '30px' },
+            { data: 'thumbnail', name: 'thumbnail', orderable: false, searchable: false, width: '70px' },
+            { data: 'code', name: 'code' },
+            { data: 'name', name: 'name' },
+            { data: 'category.name', name: 'category.name', defaultContent: '', width: '150px' },
+            { data: 'edition.name', name: 'edition.name', defaultContent: '', width: '100px' },
+            { data: 'status', name: 'status', orderable: false, searchable: false, className: 'text-center', width: '90px' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, className: 'text-end', width: '120px' }
+        ],
+        fnDrawCallback: function() {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+
+            // Status toggle ajax
+            $('.status-toggle').off('change').on('change', function(){
+                let id = $(this).data('id');
+                let status = $(this).is(':checked') ? 'active' : 'inactive';
+
+                $.ajax({
+                    url: route("admin.product.edit",d.id),
+                    method: 'get',
+                    data: { id: id, status: status, _token: '{{ csrf_token() }}' },
+                    success: function(res){
+                        console.log(res);
                     }
-                },
-                columns: [{
-                        data: "checkbox",
-                        name: "checkbox",
-                        orderable: false,
-                        searchable: false,
-                        className: "text-center",
-                        width: '20'
-                    },
-                    {
-                        data: 'thumbnail',
-                        name: 'thumbnail',
-                        orderable: false,
-                        searchable: false,
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'category.name',
-                        name: 'category.name',
-                        defaultContent: '',
-                    },
-                    {
-                        data: 'uom.name',
-                        name: 'uom.name',
-                        defaultContent: '',
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
-                        orderable: false,
-                        searchable: false,
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false,
-                        className: "text-end",
-                        width: '90'
-                    }
-                ],
-                fnDrawCallback: function() {
-                    const tooltips = document.querySelectorAll('.tt');
-                    tooltips.forEach(t => {
-                        new bootstrap.Tooltip(t);
-                    });
-                }
+                });
             });
-        });
-    </script>
+        }
+    });
+
+    // Select All checkbox
+    $(document).on('change', '#selectAll', function() {
+        $('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+    });
+
+});
+</script>
 @endpush

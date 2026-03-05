@@ -126,9 +126,9 @@
 @php
     $subtotal = $order->items->sum('total');
     $discount = $subtotal * 0.10;
-    $tax = $subtotal * 0.05;
-    $grandTotal = $subtotal - $discount+ $tax;
-
+    $afterDiscount = $subtotal - $discount;
+    $tax = $afterDiscount * 0.05;
+    $grandTotal = $afterDiscount + $tax;
 @endphp
 
 {{-- ITEMS --}}
@@ -153,9 +153,6 @@
                 <td style="text-align:right;">৳ {{ number_format($item->total,2) }}</td>
             </tr>
             @endforeach
-            <tr>
-                <td colspan="5">Notes:{{ $order->comments }}</td>
-            </tr>
         </tbody>
     </table>
 </div>

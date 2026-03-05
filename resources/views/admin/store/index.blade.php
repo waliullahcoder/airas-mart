@@ -12,16 +12,14 @@
             <tr class="text-nowrap">
                 <th></th>
                 <th>Name</th>
-                <th>Code</th>
-                <th>Location</th>
+                <th>Type</th>
                 <th>Address</th>
-                <th>Remarks</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody></tbody>
-
+        <tbody>
+        </tbody>
         @can($deletePermission)
             <tfoot>
                 <tr>
@@ -37,7 +35,7 @@
                             </div>
                         </div>
                     </th>
-                    <th colspan="7">
+                    <th colspan="5">
                         <div class="text-end">
                             <button type="button" id="bulk_delete" name="bulk_delete" data-url="{{ $deleteUrl }}"
                                 class="btn btn-xs btn-danger">
@@ -64,7 +62,10 @@
                 responsive: true,
                 ajax: {
                     url: "{{ $ajaxUrl }}",
-                    type: "GET"
+                    type: "GET",
+                    data: function(data) {
+                        data.type = $('#filter').val();
+                    }
                 },
                 columns: [{
                         data: "checkbox",
@@ -79,20 +80,12 @@
                         name: 'name'
                     },
                     {
-                        data: 'code',
-                        name: 'code'
-                    },
-                    {
-                        data: 'location',
-                        name: 'location'
+                        data: 'type',
+                        name: 'type'
                     },
                     {
                         data: 'address',
                         name: 'address'
-                    },
-                    {
-                        data: 'remarks',
-                        name: 'remarks'
                     },
                     {
                         data: 'status',
@@ -106,6 +99,7 @@
                         orderable: false,
                         searchable: false,
                         className: "text-end",
+                        width: '90'
                     },
                 ],
                 "fnDrawCallback": function(oSettings) {

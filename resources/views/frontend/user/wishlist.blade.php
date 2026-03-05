@@ -51,6 +51,11 @@
                                             CODE-{{ $product->id }}
                                         </b>
 
+                                        <p class="product-card-author truncate-text"
+                                        style="--lines: 2;">
+                                            {!! $product->short_description !!}
+                                        </p>
+
                                         <span class="product-card-price">
 
                                             {{-- SALE PRICE --}}
@@ -81,7 +86,7 @@
                                     {{-- ADD TO CART --}}
                                     <button class="btn btn-sm btn-danger add-to-cart"
                                             data-id="{{ $product->id }}">
-                                       🛒 Add to Cart ➕
+                                        Add to Cart
                                     </button>
 
                                     {{-- REMOVE FROM WISHLIST --}}

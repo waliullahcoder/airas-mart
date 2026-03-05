@@ -4,119 +4,270 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <meta name="description" content="Radix Collection Ltd. is a trusted stock Moja Factory and Moja fashion brand in Bangladesh, delivering premium quality apparel with modern design and reliable manufacturing.">
-    <meta name="keywords" content="Radix Collection Ltd, Stock Factory manufacturer Bangladesh, fashion brand Bangladesh, apparel factory, Moja production company">
-
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{ $settings->title }}</title>
     <link rel="shortcut icon"
         href="{{ asset(file_exists($settings->favicon) ? $settings->favicon : 'frontend/images/logo/favicon.png') }}"
         type="image/x-icon">
     @include('layouts.frontend.partial.styles')
-
+    
+   
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
-
-   
-    <!-- Mobile Menu -->
-   @include('layouts.frontend.partial.mobile_menu')
-    <!-- Mobile Menu End -->
-    <!-- Header Section Begin -->
     @include('layouts.frontend.partial.header')
-    <!-- Header Section End -->
-
-   
-    <!-- Latest Product Section Begin -->
-     @yield('content')
-    <!-- Latest Product Section End -->
-
-
-    <!-- Footer Section Begin -->
+    @yield('content')
+    <script type="text/javascript" src="{{ asset('frontend/js/sweetalert2@11.js') }}"></script>
+    @include('layouts.frontend.partial.alert')
     @include('layouts.frontend.partial.footer')
-    <!-- Footer Section End -->
-
-    <!-- Js Plugins -->
-    
     @include('layouts.frontend.partial.scripts')
+    {{-- <script type="text/javascript" src="{{ asset('frontend/js/jquery-3.6.0.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
+{{-- Cat page for filterleft side --}}
 <script>
-$(document).ready(function () {
+$(document).ready(function(){
 
-    $('.add-to-cart').click(function (e) {
-        e.preventDefault();
+    $(document).on('change', '.publication-filter, .author-filter, input[name="price_sort"], .price-range-filter', function(){
 
-        let button = $(this);
+        let publications = [];
+        let authors = [];
+        let priceSort = $('input[name="price_sort"]:checked').val() || null;
+        let priceRanges = [];
 
-        let productId = button.data('id');
-        // 🔥 Existing variant_id button data
-        let variantId = button.data('variant_id');
-
-        // 🔥 Selected size jodi undefined hoy
-        if (variantId === undefined) {
-            variantId = $('input[name="variant_id"]:checked').val();
-        }
-
-        // 🔥 Check
-        if (!variantId) {
-            alert('Please select a size');
-            return;
-        }
-
-        let image = button.closest('.product-card').find('.product-img');
-        let cart = $('.cart-icon');
-
-        if (!image.length) {
-            console.warn('Product image not found for flying animation');
-            return;
-        }
-
-        let flyingImg = image.clone()
-             .css({
-                position: 'absolute',
-                zIndex: 9999, // increase z-index
-                width: image.width(),
-                top: image.offset().top,
-                left: image.offset().left,
-                pointerEvents: 'none', // prevent hover issues
-            })
-            .appendTo('body');
-
-        flyingImg.animate({
-            top: cart.offset().top,
-            left: cart.offset().left,
-            width: 20,
-            height: 20,
-            opacity: 0.5
-        }, 700, function () {
-            flyingImg.remove();
+        $('.publication-filter:checked').each(function(){
+            publications.push($(this).val());
         });
 
-        $.post("{{ route('cart.add') }}", {
-            _token: "{{ csrf_token() }}",
-            product_id: productId,
-            variant_id: variantId,
-        }, function (res) {
-            $('.cart-count').text(res.count);
+        $('.author-filter:checked').each(function(){
+            authors.push($(this).val());
         });
+
+         $('.price-range-filter:checked').each(function(){
+            priceRanges.push($(this).val());
+        });
+
+
+        // যদি যেকোনো একটাও checked থাকে
+        if(publications.length > 0 || authors.length > 0 || priceSort != null || priceRanges.length > 0){
+
+            $.ajax({
+                url: "{{ route('filter.products') }}",
+                type: "GET",
+                data: { 
+                    publications: publications,
+                    authors: authors,
+                    price_sort: priceSort,
+                    price_ranges: priceRanges
+                },
+                success: function(response){
+                    $('#default-products').hide();
+                    $('#filtered-products').html(response).show();
+                }
+            });
+
+        }else{
+
+            // সব unchecked হলে default show
+            $('#filtered-products').hide().html('');
+            $('#default-products').show();
+        }
 
     });
 
 });
 </script>
 
+
+{{--Sub Cat page for filterleft side --}}
 <script>
+$(document).ready(function(){
+
+    $(document).on('change', '.publication-filter-sub, .author-filter-sub, .author-filter-sub, input[name="price_sort_sub"], .price-range-filter-sub', function(){
+
+        let publications = [];
+        let authors = [];
+        let priceSort = $('input[name="price_sort_sub"]:checked').val() || null;
+        let priceRanges = [];
+
+        $('.publication-filter-sub:checked').each(function(){
+            publications.push($(this).val());
+        });
+
+        $('.author-filter-sub:checked').each(function(){
+            authors.push($(this).val());
+        });
+
+         $('.price-range-filter-sub:checked').each(function(){
+            priceRanges.push($(this).val());
+        });
+
+
+        // যদি যেকোনো একটাও checked থাকে
+        if(publications.length > 0 || authors.length > 0 || priceSort != null || priceRanges.length > 0){
+
+            $.ajax({
+                url: "{{ route('filter.sub.products') }}",
+                type: "GET",
+                data: { 
+                    publications: publications,
+                    authors: authors,
+                    price_sort: priceSort,
+                    price_ranges: priceRanges
+                },
+                success: function(response){
+                    $('#default-products-sub').hide();
+                    $('#filtered-products-sub').html(response).show();
+                }
+            });
+
+        }else{
+
+            // সব unchecked হলে default show
+            $('#filtered-products-sub').hide().html('');
+            $('#default-products-sub').show();
+        }
+
+    });
+
+});
+</script>
+
+    {{-- // AJAX Live Search --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+<script>
+$(document).ready(function(){
+
+    $('#product-search-input').on('keyup', function(){
+        let query = $(this).val();
+        if(query.length >= 2) {
+            $.ajax({
+                url: "{{ route('products.search') }}",
+                method: "GET",
+                data: { query: query },
+                success: function(data) {
+                    let html = '';
+                    if(data.length > 0){
+                        html += '<ul class="list-group list-group-flush">';
+                        data.forEach(function(item){
+                            html += `<li class="list-group-item p-2 d-flex justify-content-between align-items-center product-card">
+                                        <a href="/product/details/${item.id}" class="d-flex align-items-center gap-2 text-decoration-none text-dark flex-grow-1">
+                                            <img class="product-img" src="${item.thumbnail}" style="position:relative; z-index:999;width:50px; height:50px; border-radius:10px;" alt="${item.name}">
+                                            <div>
+                                                <strong>${item.name}</strong><br>
+                                                <small>${item.authors}</small>
+                                            </div>
+                                        </a>
+                                        <div class="text-end ms-3">
+                                            <div><del>৳${item.regular_price}</del> <strong>৳${item.sale_price}</strong></div>
+                                            <button class="btn btn-sm btn-primary mt-1 add-to-cart-btn add-to-cart" data-id="${item.id}">Add to Cart</button>
+                                        </div>
+                                    </li>`;
+                        });
+                        html += '</ul>';
+                        $('#search-results').html(html).fadeIn();
+                    } else {
+                        $('#search-results').html('<div class="p-2">কোন প্রোডাক্ট পাওয়া যায়নি</div>').fadeIn();
+                    }
+                }
+            });
+        } else {
+            $('#search-results').fadeOut();
+        }
+    });
+
+    // Click outside to hide results
+    $(document).on('click', function(e){
+        if(!$(e.target).closest('.search-area').length){
+            $('#search-results').fadeOut();
+        }
+    });
+
+    // Add to cart button click
+    $(document).on('click', '.add-to-cart-btn', function(){
+        let productId = $(this).data('id');
+        // AJAX call to add product to cart
+        $.ajax({
+            url: '/cart/add',
+            method: 'POST',
+            data: {
+                product_id: productId,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response){
+                alert('Product added to cart!');
+                // Optionally, update cart count here
+            }
+        });
+    });
+
+});
+</script>
+
+{{-- Add to cart --}}
+<script>
+$(document).on('click', '.add-to-cart', function(e) {
+    e.preventDefault();
+
+    let button = $(this);
+
+    let productId = button.data('id');
+    let variantId = button.data('variant_id');
+    let image = button.closest('.product-card').find('.product-img');
+    let cart = $('.cart-icon');
+
+    if (!image.length) {
+        console.warn('Product image not found for flying animation');
+        return;
+    }
+
+    let flyingImg = image.clone()
+        .css({
+            position: 'absolute',
+            zIndex: 999,
+            width: image.width(),
+            top: image.offset().top,
+            left: image.offset().left
+        })
+        .appendTo('body');
+
+    flyingImg.animate({
+        top: cart.offset().top,
+        left: cart.offset().left,
+        width: 20,
+        opacity: 0.5
+    }, 700, function () {
+        flyingImg.remove();
+    });
+
+    $.post("{{ route('cart.add') }}", {
+        _token: "{{ csrf_token() }}",
+        product_id: productId,
+        variant_id: variantId
+    }, function (res) {
+        $('.cart-count').text(res.count);
+    });
+
+});
+</script>
+
+{{-- Cart update --}}
+@php
+    $tax = $settings->tax/100;
+    $discount = $settings->discount;
+    $discount_type = $settings->discount_type;
+@endphp
+<script>  
 $(document).ready(function () {
 
     function calculateCart() {
         let subtotal = 0;
+    // Inject PHP values into JS
+    const TAX_RATE = {{ $tax }};
+    const DISCOUNT_RATE = {{ $discount }};
+    const DISCOUNT_TYPE = '{{ $discount_type }}';
+
 
         $('.cart-item').each(function () {
             let price = parseFloat($(this).data('price'));
@@ -124,8 +275,15 @@ $(document).ready(function () {
             subtotal += price * qty;
         });
 
-        let discount = subtotal * 0.10;
-        let tax      = subtotal * 0.05;
+         // ✅ discount calculation
+        let discount = 0;
+        if(DISCOUNT_TYPE === 'percent') {
+            discount = subtotal * (DISCOUNT_RATE / 100);
+        } else if(DISCOUNT_TYPE === 'amount') {
+            discount = DISCOUNT_RATE;
+        }
+
+        let tax      = subtotal * TAX_RATE;
         let total    = subtotal - discount + tax;
 
         $('#subtotal').text('৳ ' + subtotal.toFixed(2));
@@ -171,6 +329,4 @@ $(document).ready(function () {
 </script>
 </body>
 
-
 </html>
-

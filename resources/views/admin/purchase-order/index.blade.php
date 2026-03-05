@@ -13,14 +13,11 @@
                 <th></th>
                 <th>PO No.</th>
                 <th>Order Date</th>
-                <th>Expected Date</th>
-                <th>Store</th>
                 <th>Supplier</th>
                 <th>Total Amount</th>
                 <th>Discount</th>
                 <th>Tax</th>
                 <th>Grand Total</th>
-                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -60,85 +57,60 @@
 @endsection
 
 @push('js')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var table = $('.dataTable').dataTable({
-                processing: true,
-                serverSide: true,
-                responsive: true,
-                ajax: {
-                    url: "{{ $ajaxUrl }}",
-                    type: "GET"
-                },
-                columns: [{
-                        data: "checkbox",
-                        name: "checkbox",
-                        orderable: false,
-                        searchable: false,
-                        className: "text-center",
-                        width: '20'
-                    },
-                    {
-                        data: 'po_number',
-                        name: 'po_number'
-                    },
-                    {
-                        data: 'orderDate',
-                        name: 'orderDate',
-                        orderable: false,
-                        searchable: false,
-                    },
-                    {
-                        data: 'expectedDate',
-                        name: 'expectedDate',
-                        orderable: false,
-                        searchable: false,
-                    },
-                    {
-                        data: 'store.name',
-                        name: 'store.name',
-                        defaultContent: ''
-                    },
-                    {
-                        data: 'vendor.name',
-                        name: 'vendor.name',
-                        defaultContent: ''
-                    },
-                    {
-                        data: 'total_amount',
-                        name: 'total_amount'
-                    },
-                    {
-                        data: 'discount_amount',
-                        name: 'discount_amount'
-                    },
-                    {
-                        data: 'tax_amount',
-                        name: 'tax_amount'
-                    },
-                    {
-                        data: 'grand_total',
-                        name: 'grand_total'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false,
-                        className: "text-end",
-                    },
-                ],
-                "fnDrawCallback": function(oSettings) {
-                    const tooltips = document.querySelectorAll('.tt');
-                    tooltips.forEach(t => {
-                        new bootstrap.Tooltip(t);
-                    });
+<script type="text/javascript">
+$(document).ready(function() {
+    var table = $('.dataTable').dataTable({
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        ajax: {
+            url: "{{ $ajaxUrl }}",
+            type: "GET"
+        },
+        columns: [
+            { data: "checkbox", name: "checkbox", orderable: false, searchable: false, className: "text-center", width: '20' },
+            { data: 'po_number', name: 'po_number' },
+            { data: 'order_date', name: 'order_date', orderable: false, searchable: false },
+            { data: 'vendor.name', name: 'vendor.name', defaultContent: '' },
+            { data: 'total_amount', name: 'total_amount' },
+            { data: 'discount_amount', name: 'discount_amount' },
+            { data: 'tax_amount', name: 'tax_amount' },
+            { data: 'grand_total', name: 'grand_total' },
+            { 
+                data: 'actions', 
+                name: 'actions', 
+                orderable: false, 
+                searchable: false, 
+                className: "text-end",
+                render: function(data, type, row) {
+                    let showUrl = "{{ route('admin.purchase-order.show', ':id') }}";
+                    showUrl = showUrl.replace(':id', row.id);
+
+                    let buttons = `
+                        <a href="${showUrl}" class="btn btn-sm btn-info" title="Show">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                    `;
+
+                    @can($deletePermission)
+                        buttons += `
+                            <button type="button" data-id="${row.id}" class="btn btn-sm btn-danger delete-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        `;
+                    @endcan
+
+                    return buttons;
                 }
+            }
+        ],
+        "fnDrawCallback": function(oSettings) {
+            const tooltips = document.querySelectorAll('.tt');
+            tooltips.forEach(t => {
+                new bootstrap.Tooltip(t);
             });
-        });
-    </script>
+        }
+    });
+});
+</script>
 @endpush

@@ -7,7 +7,7 @@
     @csrf
     <!-- Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-         <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="addModalLabel">Add New Category</h1>
@@ -24,7 +24,7 @@
                     
                                         $categories = \App\Models\Category::with(['children'])
                                         ->whereNull('parent_id')
-                                        ->whereIn('position', ['header_parent', 'left_side', 'feature_product', 'banner_section', 'exclusive_collection', 'footer_col1', 'footer_col2'])
+                                        ->whereIn('position', ['mega_menu_parent', 'header', 'homepage'])
                                         ->where('status', 1)
                                         ->orderBy('name', 'asc')
                                         ->get();
@@ -35,31 +35,50 @@
                             </select>
                         </div>
                         <div class="col-12">
+                                    <label for="type" class="form-label"><b>Type</b></label>
+                                    <select name="type" id="type" class="form-select" required>
+                                      <option value="book" {{ old('book') == 'book' ? 'selected' : '' }}>
+                                        Book
+                                    </option>
+                                    <option value="other" {{ old('other') == 'other' ? 'selected' : '' }}>
+                                        Other
+                                    </option>
+                                </select>
+                        </div>
+                        <div class="col-12">
                                     <label for="position" class="form-label"><b>Position</b></label>
-                                     <select name="position" id="position" class="form-select" required>
-                                    <option value="header_parent" {{ old('position') == 'header_parent' ? 'selected' : '' }}>
-                                        Header Parent
-                                    </option>
-                                    <option value="header_child" {{ old('position') == 'header_child' ? 'selected' : '' }}>
-                                        Header Child
-                                    </option>
-                                    <option value="single_page" {{ old('position') == 'single_page' ? 'selected' : '' }}>
-                                        Single Page
+                                    <select name="position" id="position" class="form-select" required>
+                                      <option value="header_top" {{ old('position') == 'header_top' ? 'selected' : '' }}>
+                                        Header Top
                                     </option>
 
-                                     <option value="left_side" {{ old('position') == 'left_side' ? 'selected' : '' }}>
-                                        Left Side
+                                    <option value="header" {{ old('position') == 'header' ? 'selected' : '' }}>
+                                        Header Middle 
                                     </option>
-                                    <option value="feature_product" {{ old('position') == 'feature_product' ? 'selected' : '' }}>
-                                        Featured Product
+
+                                     <option value="mega_menu_parent" {{ old('position') == 'mega_menu_parent' ? 'selected' : '' }}>
+                                        Mega Menu Parent
                                     </option>
-                                    <option value="banner_section" {{ old('position') == 'banner_section' ? 'selected' : '' }}>
-                                        Banner Section
+                                    <option value="mega_menu_child" {{ old('position') == 'mega_menu_child' ? 'selected' : '' }}>
+                                        Mega Menu Child
                                     </option>
-                                    <option value="exclusive_collection" {{ old('position') == 'exclusive_collection' ? 'selected' : '' }}>
-                                        Exclusive Collection
+                                    <option value="homepage" {{ old('position') == 'homepage' ? 'selected' : '' }}>
+                                        Home Page
                                     </option>
-                                    <option value="footer_col1" {{ old('position') == 'footer_col1' ? 'selected' : '' }}>
+                                    <option value="homepage_banner_category" {{ old('position') == 'homepage_banner_category' ? 'selected' : '' }}>
+                                        Home Page->Banner Category
+                                    </option>
+                                    <option value="homepage_writter_category" {{ old('position') == 'homepage_writter_category' ? 'selected' : '' }}>
+                                        Home Page->Writter Category
+                                    </option>
+                                    <option value="homepage_others_category" {{ old('position') == 'homepage_others_category' ? 'selected' : '' }}>
+                                        Home Page->Others Category
+                                    </option>
+                                    <option value="homepage_brands_category" {{ old('position') == 'homepage_brands_category' ? 'selected' : '' }}>
+                                        Home Page->Brands Category
+                                    </option>
+
+                                    <option value="footer" {{ old('position') == 'footer' ? 'selected' : '' }}>
                                         Footer Column1
                                     </option>
 
@@ -83,13 +102,11 @@
                             <input type="file" name="image" id="image" class="form-control" accept="image/*">
                         </div>
 
-                        
                         <div class="col-12">
-                            <label for="description" class="form-label"><b>Description</b></label>
-                            <textarea class="form-control description" id="description" name="description" cols="30" rows="10"
-                            placeholder="Description"></textarea>
-                            </div>
+                            <label for="description" class="form-label">Description:</label>
+                            <textarea name="description" cols="17" rows="3" id="description" class="form-control"></textarea>
                         </div>
+                    </div>
                 </div>
                 <div class="modal-footer p-1">
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>

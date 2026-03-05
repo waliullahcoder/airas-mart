@@ -1,15 +1,14 @@
+<!-- Stylesheets -->
+<link rel="stylesheet" href="<?php echo e(asset('frontend/css/plugin.css')); ?>">
+<?php echo $__env->yieldPushContent('plugin'); ?>
+<link rel="stylesheet" href="<?php echo e(asset('frontend/css/fonts.googleapis.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend/css/swiper-bundle.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend/css/custom.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend/css/style.css')); ?>">
+<link rel=" stylesheet" href="<?php echo e(asset('frontend/css/responsive.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend/css/all.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('frontend/css/order.css')); ?>">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;">
 
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/bootstrap.min.css')); ?>" type="text/css" fetchpriority="high">
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/font-awesome.min.css')); ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/elegant-icons.css')); ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/nice-select.css')); ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/jquery-ui.min.css')); ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/owl.carousel.min.css')); ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/slicknav.min.css')); ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/custom.css')); ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo e(asset('frontend/css/style.css')); ?>" type="text/css">
-<link rel="stylesheet" href="<?php echo e(asset('frontend/css/order.css')); ?>"><?php /**PATH D:\laragon\www\airas-mart\resources\views/layouts/frontend/partial/styles.blade.php ENDPATH**/ ?>
+<?php echo $__env->yieldPushContent('css'); ?>
+<?php /**PATH D:\laragon\www\airas-mart\resources\views/layouts/frontend/partial/styles.blade.php ENDPATH**/ ?>

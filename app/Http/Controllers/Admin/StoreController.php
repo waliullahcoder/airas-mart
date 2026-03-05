@@ -6,6 +6,7 @@ use App\HelperClass;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class StoreController extends Controller
 {
@@ -28,7 +29,7 @@ class StoreController extends Controller
      */
     public function index()
     {
-        return HelperClass::resourceDataView($this->model::orderBy('id', 'desc'), null, null, $this->path, $this->title, ['purchaseOrders']);
+        return HelperClass::resourceDataView($this->model::orderBy('id', 'desc'), null, null, $this->path, $this->title, ['productions', 'sales']);
     }
 
     /**
@@ -51,11 +52,12 @@ class StoreController extends Controller
         ]);
 
         $this->model::create([
-            'name' => $request->name,
             'code' => $request->code,
-            'location' => $request->location,
+            'type' => is_array($request->type) ? implode(',', $request->type) : NULL,
+            'name' => $request->name,
             'address' => $request->address,
-            'remarks' => $request->remarks
+            'remarks' => $request->remarks,
+            'created_by' => Auth::id(),
         ]);
 
         return redirect()->route("admin.{$this->path}.index")->withSuccessMessage('Created Successfully!');
@@ -89,11 +91,12 @@ class StoreController extends Controller
 
         $data = $this->model::findOrFail($id);
         $data->update([
-            'name' => $request->name,
             'code' => $request->code,
-            'location' => $request->location,
+            'type' => is_array($request->type) ? implode(',', $request->type) : NULL,
+            'name' => $request->name,
             'address' => $request->address,
-            'remarks' => $request->remarks
+            'remarks' => $request->remarks,
+            'updated_by' => Auth::id(),
         ]);
 
         return redirect()->route("admin.{$this->path}.index")->withSuccessMessage('Updated Successfully!');

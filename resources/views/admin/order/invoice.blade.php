@@ -136,20 +136,20 @@
     <table>
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Variant</th>
+                <th style="text-align: left;">Product</th>
+                <th style="text-align: left;">Category</th>
                 <th class="text-center">Qty</th>
-                <th class="text-right">Price</th>
-                <th class="text-right">Total</th>
+                <th class="text-center">Price</th>
+                <th style="text-align: right;">Total</th>
             </tr>
         </thead>
         <tbody>
             @foreach($order->items as $item)
             <tr>
                 <td>{{ $item->product->name }}</td>
-                <td>{{ optional($item->productVariant)->name ?? '-' }}</td>
+                <td> {{ $item->product->category->name ?? '-' }}</td>
                 <td style="text-align:center;">{{ $item->qty }}</td>
-                <td style="text-align:right;">৳ {{ number_format($item->price,2) }}</td>
+                <td style="text-align:center;">৳ {{ number_format($item->price,2) }}</td>
                 <td style="text-align:right;">৳ {{ number_format($item->total,2) }}</td>
             </tr>
             @endforeach
