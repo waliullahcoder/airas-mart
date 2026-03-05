@@ -161,7 +161,7 @@ $(document).ready(function(){
                                         </a>
                                         <div class="text-end ms-3">
                                             <div><del>৳${item.regular_price}</del> <strong>৳${item.sale_price}</strong></div>
-                                            <button class="btn btn-sm btn-primary mt-1 add-to-cart-btn add-to-cart" data-id="${item.id}">Add to Cart</button>
+                                            <button class="btn btn-sm btn-primary mt-1 add-to-cart-btn add-to-cart" data-id="${item.id}"><span>+</span></button>
                                         </div>
                                     </li>`;
                         });
@@ -184,7 +184,7 @@ $(document).ready(function(){
         }
     });
 
-    // Add to cart button click
+    // <span>+</span> button click
     $(document).on('click', '.add-to-cart-btn', function(){
         let productId = $(this).data('id');
         // AJAX call to add product to cart
@@ -205,7 +205,7 @@ $(document).ready(function(){
 });
 </script>
 
-{{-- Add to cart --}}
+{{-- <span>+</span> --}}
 <script>
 $(document).on('click', '.add-to-cart', function(e) {
     e.preventDefault();

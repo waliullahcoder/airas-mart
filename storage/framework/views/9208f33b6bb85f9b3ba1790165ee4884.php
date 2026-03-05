@@ -96,12 +96,9 @@
                                 <div class="p-sm-2 p-1">
                                     <div class="product-card-wrapper">
                                         <div class="product-card">
-                                            <div class="discount-badge">
-                                                <span class="product-discount"><?php echo e(number_format($product->discount)); ?></span>
-                                            </div>
                                             
                                            <a href="<?php echo e(route('product.details', $product->id)); ?>">
-                                            <figure class="product-card-image ratio" style="--bs-aspect-ratio: 150%">
+                                            <figure class="product-card-image ratio" style="--bs-aspect-ratio: 100%">
                                                 <img class="object-fit-contain product-img" src="<?php echo e(asset($product->thumbnail)); ?>"
                                                     alt="">
                                             </figure>
@@ -135,7 +132,7 @@
                                             <div class="product-card-action">
                                                 <button class="btn btn-sm btn-danger add-to-cart"
                                                             data-id="<?php echo e($product->id); ?>">
-                                                            Add to Cart
+                                                           <span>+</span>
                                                         </button>
                                             </div>
                                         </div>
@@ -230,7 +227,7 @@
                                             <div class="product-card-action">
                                                 <button class="btn btn-sm btn-danger add-to-cart"
                                                             data-id="<?php echo e($product->id); ?>">
-                                                            Add to Cart
+                                                            <span>+</span>
                                                         </button>
                                             </div>
                                         </div>
@@ -339,7 +336,7 @@
                                             <div class="product-card-action">
                                                 <button class="btn btn-sm btn-danger add-to-cart"
                                                             data-id="<?php echo e($product->id); ?>">
-                                                            Add to Cart
+                                                            <span>+</span>
                                                         </button>
                                             </div>
                                         </div>

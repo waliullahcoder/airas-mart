@@ -33,10 +33,6 @@
                                     <div class="p-sm-2 p-1">
                                         <div class="product-card-wrapper">
                                             <div class="product-card">
-
-                                                <div class="discount-badge">
-                                                    <span class="product-discount">{{number_format($product->discount)}}</span>
-                                                </div>
                                         <a class="z-2" href="{{route('product.details', $product->id)}}">
                                                 <figure class="product-card-image ratio" style="--bs-aspect-ratio: 130%">
                                                   
@@ -73,7 +69,7 @@
                                                    <button class="btn btn-sm btn-danger add-to-cart"
                                                         data-variant_id="{{ $product->variants[0]->id ?? null }}"
                                                         data-id="{{ $product->id }}">
-                                                    Add to Cart
+                                                    <span>+</span>
                                                 </button>
                                                 </div>
 

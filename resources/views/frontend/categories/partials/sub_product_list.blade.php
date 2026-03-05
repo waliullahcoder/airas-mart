@@ -3,11 +3,6 @@
         <div class="col-6 col-md-4 col-lg-3"> <!-- Mobile 2, Tablet 3, Desktop 4 -->
             <div class="product-card-wrapper">
                 <div class="product-card">
-
-                    <div class="discount-badge">
-                        <span class="product-discount">{{ number_format($product->discount) }}</span>
-                    </div>
-
                     <a class="z-2" href="{{ route('product.details', $product->id) }}">
                         <figure class="product-card-image ratio" style="--bs-aspect-ratio: 130%">
                             <img class="object-fit-contain product-img"
@@ -40,7 +35,7 @@
                     <div class="product-card-action">
                         <button class="btn btn-sm btn-danger add-to-cart"
                                 data-id="{{ $product->id }}">
-                            Add to Cart
+                            <span>+</span>
                         </button>
                     </div>
 
