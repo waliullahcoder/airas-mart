@@ -928,8 +928,7 @@ del .Price-amount {
 
 /* =============== Footer CSS =============== */
 .footer-section {
-    border-top: 1px solid rgb(204, 204, 204);
-    background-color: #f7f7f7;
+    background-color: rgb(10, 10, 10);
     padding-block: 2.5rem 1.5rem;
 }
 
@@ -937,11 +936,13 @@ del .Price-amount {
     font-weight: 600;
     font-size: 1.2rem;
     margin-bottom: 0.8rem;
+    color: white;
 }
 
 .footer-link {
     display: inline-block;
     padding: 0.3rem 0;
+    color: white;
 }
 
 .footer-link:hover {
@@ -950,6 +951,7 @@ del .Price-amount {
 
 .footer-contact-item {
     margin-bottom: 0.5rem;
+    color: white;
 }
 
 .social-link {
@@ -958,8 +960,8 @@ del .Price-amount {
 
 .footer-bottom {
     text-align: center;
-    background-color: #f7f7f7;
-    border-top: 1px solid rgb(204, 204, 204);
+      color: #fdfdfd;
+   background-color: #000;
 }
 
 /* =============== Footer CSS =============== */
