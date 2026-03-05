@@ -21,7 +21,7 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
                 <?php if(count($slides) > 1): ?>
-                    <div class="swiper-arrow-btn swiper-button-prev">
+                    <!-- <div class="swiper-arrow-btn swiper-button-prev">
                         <svg width="11" height="16" viewBox="0 0 11 16" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -36,7 +36,7 @@
                                 d="M9.7637 0.333588C10.1815 0.741772 10.1815 1.42208 9.77223 1.83026L3.5905 7.99554L9.7637 14.1608C10.1815 14.5775 10.1815 15.2493 9.7637 15.666C9.3459 16.0827 8.67231 16.0827 8.25451 15.666L1.16897 8.59931C0.836434 8.26767 0.836434 7.73192 1.16897 7.40027L8.25451 0.333588C8.67231 -0.0831001 9.3459 -0.0831001 9.7637 0.333588Z"
                                 fill="#333333"></path>
                         </svg>
-                    </div>
+                    </div> -->
                 <?php endif; ?>
                 <div class="swiper-pagination"></div>
             </div>
@@ -47,7 +47,7 @@
 
     
     <!-- End Category Wise Products -->
-<div class="featured-category-section py-4">
+<!-- <div class="featured-category-section py-4">
         <div class="container">
             <div class="position-relative">
                 <div class="swiper carousel" id="category-swiper" data-items="2" data-xl-items="6" data-lg-items="5"
@@ -70,7 +70,7 @@
                 <?php echo $__env->make('layouts.frontend.partial.svgbutton', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
             </div>
         </div>
-    </div>
+    </div> -->
     
     <!-- End Category Wise Products -->
 
@@ -173,7 +173,7 @@
     <!-- End Banner Category -->
 
     <!-- সিয়ান যুগপূর্তি অফার and রবিউল আউয়াল সীরাত গ্রন্থমালা -->
-    <?php $__currentLoopData = $get_sub_category_sian_jugpuerti_nrobiul_aual_product_only; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subCategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <!-- <?php $__currentLoopData = $get_sub_category_sian_jugpuerti_nrobiul_aual_product_only; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subCategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
  <div class="category-product-section pb-4">
         <div class="container">
             <div class="section-card">
@@ -249,11 +249,11 @@
             </div>
         </div>
     </div>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> -->
     <!-- End সিয়ান যুগপূর্তি অফার and রবিউল আউয়াল সীরাত গ্রন্থমালা -->
 
 
-<div class="author-section pb-4">
+<!-- <div class="author-section pb-4">
         <div class="container">
             <div class="section-card">
                 <div class="section-header mb-3">
@@ -278,12 +278,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     
 
     
     <?php $__currentLoopData = $get_sub_category_atar_sugondhi_product_only; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subCategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
- <div class="category-product-section pb-4" style="display:none;">
+ <!-- <div class="category-product-section pb-4">
         <div class="container">
             <div class="section-card">
                 <div class="section-header mb-3">
@@ -358,12 +358,12 @@
             </div>
         </div>
     </div>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> -->
     
 
 
     
-     <div class="category-section pb-4" style="display:none;">
+     <div class="category-section pb-4">
         <div class="container">
             <div class="section-card">
                 <div class="section-header mb-3">
@@ -395,7 +395,7 @@
     
 
     
-    <div class="brand-section pb-4" style="display:none;">
+    <!-- <div class="brand-section pb-4">
         <div class="container">
             <div class="section-card">
                 <div class="section-header mb-3">
@@ -422,7 +422,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
    
 <?php $__env->stopSection(); ?>
 

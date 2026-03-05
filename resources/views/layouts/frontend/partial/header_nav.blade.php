@@ -28,7 +28,7 @@
 
                 </ul>
 
-               @include('layouts.frontend.partial.mega_menu')
+              
 
             </nav>
         </div>

@@ -38,8 +38,8 @@
                     <form action="#" method="GET" id="product-search-form">
                         <div class="search-wrapper">
                             <input type="search" class="search-input form-control" name="query"
-                                placeholder="বইয়ের নাম ও লেখক দিয়ে অনুসন্ধান করুন" required id="product-search-input">
-                            <button type="submit" class="btn search-btn"><i class="fas fa-search"></i></button>
+                                placeholder="Type your product..." required id="product-search-input">
+                           
                             <div id="search-results" class="bg-white border shadow-sm"
                          style="position:absolute; top:100%; left:0; right:0; display:none; z-index:2000; max-height:350px; overflow-y:auto; border-radius:5px;">
                     </div>

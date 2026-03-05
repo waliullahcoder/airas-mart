@@ -17,7 +17,7 @@ body {
     font-size: 14px;
     font-weight: 400;
     color: #3F4254;
-    background-color: var(--bs-light);
+    background-color: white;
     font-family: 'Inter', sans-serif;
     font-family: "Noto Sans Bengali", sans-serif;
     overflow-x: hidden;
@@ -34,7 +34,6 @@ ul {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-bottom:1px solid #e5e5e5;
 }
 
 a {
@@ -106,7 +105,7 @@ h6 {
 }
 
 .text-primary {
-    color: #549a95 !important;
+    color: #d40700 !important;
 }
 
 .text-secondary {
@@ -114,8 +113,8 @@ h6 {
 }
 
 .btn-primary {
-    background-color: #549a95;
-    border-color: #549a95;
+    background-color: #d40700;
+    border-color: #d40700;
     color: var(--bs-white);
 }
 
@@ -126,19 +125,19 @@ h6 {
 }
 
 .btn-outline-primary {
-    --bs-btn-color: #549a95;
-    --bs-btn-border-color: #549a95;
+    --bs-btn-color: #d40700;
+    --bs-btn-border-color: #d40700;
     --bs-btn-hover-color: var(--bs-white);
-    --bs-btn-hover-bg: #549a95;
-    --bs-btn-hover-border-color: #549a95;
+    --bs-btn-hover-bg: #d40700;
+    --bs-btn-hover-border-color: #d40700;
     --bs-btn-focus-shadow-rgb: 13, 110, 253;
     --bs-btn-active-color: var(--bs-white);
-    --bs-btn-active-bg: #549a95;
-    --bs-btn-active-border-color: #549a95;
+    --bs-btn-active-bg: #d40700;
+    --bs-btn-active-border-color: #d40700;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #549a95;
+    --bs-btn-disabled-color: #d40700;
     --bs-btn-disabled-bg: transparent;
-    --bs-btn-disabled-border-color: #549a95;
+    --bs-btn-disabled-border-color: #d40700;
     --bs-gradient: none;
 }
 
@@ -153,13 +152,13 @@ h6 {
 .btn.btn-secondary:first-child:active,
 :not(.btn-check)+.btn.btn-secondary:active,
 .btn-secondary:hover {
-    background-color: #549a95;
-    border-color: #549a95;
+    background-color: #d40700;
+    border-color: #d40700;
     color: var(--bs-white);
 }
 
 .bg-primary {
-    background-color: #549a95 !important;
+    background-color: #d40700 !important;
 }
 
 .bg-light {
@@ -248,7 +247,7 @@ h6 {
 .slick-arrow:focus,
 .slick-arrow:hover {
     background-color: var(--bs-white) !important;
-    color: #549a95 !important;
+    color: #d40700 !important;
     border-color: #E1E7EA;
 }
 
@@ -298,7 +297,7 @@ h6 {
 }
 
 .breadcrumb-item.active {
-    color: #549a95;
+    color: #d40700;
 }
 
 .pagination li>* {
@@ -312,16 +311,16 @@ h6 {
     text-align: center;
     display: block;
     min-width: 2.5em;
-    border: 1px solid #549a95;
+    border: 1px solid #d40700;
     height: 2.5em;
-    color: #549a95;
+    color: #d40700;
     margin: 0 2px;
     border-radius: 0.5rem;
 }
 
 .pagination li>*:hover,
 .pagination li.active>* {
-    background-color: #549a95;
+    background-color: #d40700;
     color: var(--bs-white);
 }
 
@@ -363,7 +362,7 @@ h6 {
     position: fixed;
     right: 25px;
     bottom: 60px;
-    background-color: #549a95;
+    background-color: #d40700;
     color: var(--bs-white);
     width: 40px;
     height: 40px;
@@ -376,8 +375,8 @@ h6 {
 
 /* =============== Header CSS =============== */
 .header-top {
-    background: #f5f5f5;
-    color: #666;
+    background: #000000;
+    color: red;
     display: block;
     font-size: 13px;
     font-weight: 400;
@@ -396,11 +395,11 @@ h6 {
 }
 
 .top-header-links a {
-    color: #666;
+    color: #ffffff;
 }
 
 .top-header-links a:hover {
-    color: #549a95;
+    color: #d80202;
     text-decoration: underline;
 }
 
@@ -457,7 +456,7 @@ h6 {
     width: 100%;
     display: flex;
     border: 1px solid #ddd;
-    border-bottom: 2px solid #549a95;
+    border-bottom: 2px solid #d40700;
     border-radius: 0 0.3rem 0.3rem 0;
     overflow: hidden;
     margin: 0 auto;
@@ -470,7 +469,7 @@ h6 {
 .search-btn {
     padding: 0;
     width: 50px;
-    background-color: #549a95;
+    background-color: #d40700;
     color: var(--bs-white);
     border-radius: 0;
     margin: -1px;
@@ -481,7 +480,7 @@ h6 {
 .search-btn.show,
 .search-btn:first-child:active,
 :not(.btn-check)+.search-btn:active {
-    background-color: #549a95;
+    background-color: #d40700;
     color: var(--bs-white);
 }
 
@@ -611,7 +610,7 @@ h6 {
 /* =============== Fetured Category CSS =============== */
 .featured-category {
     background-color: #e8e9ed;
-    border: 2px solid #549a95;
+    border: 2px solid #d40700;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -659,28 +658,26 @@ h6 {
 /* =============== Product CSS =============== */
 .section-card {
     background-color: var(--bs-white);
-    padding: 1rem;
     border-radius: 0.3rem;
     box-shadow: 0 3px 5px rgb(0 0 0 / 8%);
-    margin-top:10px;
 }
 
 .section-header {
     display: flex;
     align-items: flex-end;
-    gap: 8px;
+    gap: 2px;
 }
 
 .section-title {
     flex-grow: 1;
     margin: 0;
     font-weight: 400;
-    color: #549a95;
+    color: #d40700;
 }
 
 .section-link {
     flex-shrink: 0;
-    background-color: #549a95;
+    background-color: #d40700;
     color: var(--bs-white);
     display: inline-flex;
     padding: 0.3rem 0.6rem 0.23rem;
@@ -784,7 +781,7 @@ h6 {
 .product-card-price ins {
     text-decoration: none;
     font-weight: 600;
-    color: #549a95;
+    color: #d40700;
 }
 
 del .Price-amount {
@@ -833,7 +830,7 @@ del .Price-amount {
 }
 
 .btn-cart {
-    background-color: #549a95;
+    background-color: #d40700;
     color: var(--bs-white);
     padding: 0.25rem 1rem 0.2rem;
 }
@@ -870,7 +867,7 @@ del .Price-amount {
 }
 
 .author-card:hover {
-    color: #549a95;
+    color: #d40700;
 }
 
 /* =============== Author CSS =============== */
@@ -887,8 +884,8 @@ del .Price-amount {
 }
 
 .category-card2:hover {
-    color: #549a95;
-    border-color: #549a95;
+    color: #d40700;
+    border-color: #d40700;
     background-color: rgb(212 147 43 / 10%);
 }
 
