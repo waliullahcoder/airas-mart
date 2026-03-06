@@ -110,7 +110,7 @@
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>৳ {{ number_format($order->total,2) }}</strong>
+                                    <strong>Tk. {{ number_format($order->total,2) }}</strong>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>Placed At</span>

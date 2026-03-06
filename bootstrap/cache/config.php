@@ -118,7 +118,7 @@
     'name' => 'Airas Mart',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://127.0.0.1:8000',
+    'url' => 'http://airas-mart.test/',
     'frontend_url' => 'http://localhost:3000',
     'asset_url' => NULL,
     'timezone' => 'UTC',
@@ -645,7 +645,7 @@
       array (
         'driver' => 'local',
         'root' => 'D:\\laragon\\www\\airas-mart\\storage\\app/public',
-        'url' => 'http://127.0.0.1:8000/storage',
+        'url' => 'http://airas-mart.test//storage',
         'visibility' => 'public',
         'throw' => false,
         'report' => false,
@@ -920,7 +920,7 @@
         'username' => '5075a6a285e9d4',
         'password' => '10d30c18f90516',
         'timeout' => NULL,
-        'local_domain' => '127.0.0.1',
+        'local_domain' => 'airas-mart.test',
       ),
       'ses' => 
       array (

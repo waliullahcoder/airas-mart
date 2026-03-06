@@ -8,12 +8,12 @@
             <!-- LEFT SIDEBAR -->
             <div class="col-lg-3 d-none d-lg-block">
                 <div class="filter-box">
-                    <h5 class="filter-title">ফিল্টার</h5>
+                    <h5 class="filter-title">Filter</h5>
                     <!-- SUBJECT -->
                     @if($subcategories->count() > 0)  
                     <form id="filter-form"> 
                     <div class="filter-group">
-                        <h6>বিষয়</h6>
+                        <h6>Categories</h6>
                         <ul>
                             @foreach($subcategories as $sub)
                                 <li>
@@ -29,7 +29,7 @@
                     @if($bookcat_count > 0)  
                     <!-- AUTHOR -->
                     <div class="filter-group">
-                        <h6>লেখক</h6>
+                        <h6>Authors</h6>
                         <ul>
                             @foreach($authors ?? [] as $author)
                                 <li>
@@ -42,7 +42,7 @@
                         </ul>
                     </div>
                     <div class="filter-group">
-                        <h6>পাবলিকেশন</h6>
+                        <h6>Publications</h6>
                         <ul>
                             @foreach($publications ?? [] as $pub)
                                 <li>
@@ -59,18 +59,18 @@
                     @endif
 
                      <div class="filter-group">
-                        <h6>দাম</h6>
+                        <h6>Price Sort</h6>
                         <ul class="mb-3">
                             <li>
                                 <label>
                                     <input type="radio" name="price_sort" value="low_high">
-                                    কম থেকে বেশি
+                                    Low to High
                                 </label>
                             </li>
                             <li>
                                 <label>
                                     <input type="radio" name="price_sort" value="high_low">
-                                    বেশি থেকে কম
+                                    High to Low
                                 </label>
                             </li>
                         </ul>
@@ -78,24 +78,24 @@
 
                     <!-- PRICE -->
                     <div class="filter-group">
-                        <h6>দাম</h6>
+                        <h6>Price Range</h6>
                         <ul>
                             <li>
                                 <label>
                                     <input type="checkbox" class="price-range-filter" value="0-200">
-                                    ০ – ২০০ ৳
+                                    0 – 200 Tk.
                                 </label>
                             </li>
                             <li>
                                 <label>
                                     <input type="checkbox" class="price-range-filter" value="201-500">
-                                    ২০১ – ৫০০ ৳
+                                    201 – 500 Tk.
                                 </label>
                             </li>
                             <li>
                                 <label>
                                     <input type="checkbox" class="price-range-filter" value="500+">
-                                    ৫০০+ ৳
+                                    500+ Tk.
                                 </label>
                             </li>
                         </ul>
@@ -119,7 +119,7 @@
                                             </small>
 
                                             <strong class="d-block">
-                                                {{ number_format($product->sale_price ?? $product->regular_price) }} ৳
+                                                {{ number_format($product->sale_price ?? $product->regular_price) }} Tk.
                                             </strong>
                                         </a>
 

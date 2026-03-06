@@ -42,15 +42,15 @@
                                         {{ optional($item->productVariant)->name ?? '-' }}
                                     </td>
                                     <td>{{ $item->qty }}</td>
-                                    <td>৳ {{ number_format($item->price,2) }}</td>
-                                    <td>৳ {{ number_format($item->total,2) }}</td>
+                                    <td>Tk. {{ number_format($item->price,2) }}</td>
+                                    <td>Tk. {{ number_format($item->total,2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
 
                     <div class="text-end mt-3">
-                        <h5>Grand Total: ৳ {{ number_format($order->total,2) }}</h5>
+                        <h5>Grand Total: Tk. {{ number_format($order->total,2) }}</h5>
                     </div>
 
                 </div>

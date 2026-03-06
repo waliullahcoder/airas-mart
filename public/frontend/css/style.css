@@ -660,6 +660,7 @@ h6 {
     background-color: var(--bs-white);
     border-radius: 0.3rem;
     box-shadow: 0 3px 5px rgb(0 0 0 / 8%);
+    margin-top: 10px;
 }
 
 .section-header {
@@ -673,6 +674,7 @@ h6 {
     margin: 0;
     font-weight: 400;
     color: #d40700;
+    margin: 5px;
 }
 
 .section-link {
@@ -808,11 +810,13 @@ del .Price-amount {
 
 .product-discount {
     color: var(--bs-white);
-    padding: 9px 0 0 10px;
+    padding: 8px 11px 5px 0px;
     display: inline-block;
-    font-size: 13px;
+    font-size: 15px;
 }
-
+p{
+    margin-bottom:0px;
+}
 .product-card-action {
     position: absolute;
     left: 1px;

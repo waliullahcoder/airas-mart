@@ -105,6 +105,15 @@ public function getSubCategoryHomePageOnly()
 $categories = Category::whereNotNull('parent_id')->where('position', 'homepage')->orderBy('id', 'desc')->get();
        return $categories;
 }
+public function getSubCategoryAllHeaderProductOnly()
+{
+return Category::whereNotNull('parent_id')
+    ->whereIn('position', ['header'])
+    ->with('products','products.variants')
+    ->orderBy('id', 'asc')
+    ->get();
+}
+
 
 //ট্রেন্ডিং বইসমূহ and নতুন প্রকাশিত বই
 public function getSubCategoryTrendsNewBookProductOnly()

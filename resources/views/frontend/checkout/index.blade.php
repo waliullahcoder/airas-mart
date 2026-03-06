@@ -36,8 +36,8 @@
                                     <tr>
                                         <td>{{ $item['name'] }}</td>
                                         <td class="text-center">{{ $item['qty'] }}</td>
-                                        <td class="text-end">৳ {{ number_format($item['price'],2) }}</td>
-                                        <td class="text-end">৳ {{ number_format($line,2) }}</td>
+                                        <td class="text-end">Tk. {{ number_format($item['price'],2) }}</td>
+                                        <td class="text-end">Tk. {{ number_format($line,2) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -55,21 +55,21 @@
                         <ul class="list-group mt-3">
                             <li class="list-group-item d-flex justify-content-between">
                                 <span>Subtotal</span>
-                                <strong>৳ {{ number_format($subtotal,2) }}</strong>
+                                <strong>Tk. {{ number_format($subtotal,2) }}</strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
                                 <span>Discount {{ $settings->discount_type=='percent' ? '('.$settings->discount.'%)' : '' }}</span>
                                 <strong class="text-danger">
-                                    - ৳ {{ number_format($discount,2) }}
+                                    - Tk. {{ number_format($discount,2) }}
                                 </strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
                                 <span>Tax ({{$settings->tax}}%)</span>
-                                <strong>৳ {{ number_format($tax,2) }}</strong>
+                                <strong>Tk. {{ number_format($tax,2) }}</strong>
                             </li>
                             <li class="list-group-item d-flex justify-content-between fs-5">
                                 <strong>Total</strong>
-                                <strong>৳ {{ number_format($total,2) }}</strong>
+                                <strong>Tk. {{ number_format($total,2) }}</strong>
                             </li>
                         </ul>
 

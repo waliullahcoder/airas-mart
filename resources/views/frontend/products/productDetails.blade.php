@@ -34,7 +34,7 @@
 
                     <div class="row g-4">
                      <!-- LEFT : PRODUCT IMAGE -->
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="bg-white border rounded p-3">
 
                             <!-- MAIN IMAGE -->
@@ -130,7 +130,7 @@
 
 
                         <!-- RIGHT : PRODUCT DETAILS -->
-                        <div class="col-lg-8">
+                        <div class="col-lg-6">
                             <div class="bg-white border rounded p-3">
 
                                 <h2 class="mb-2">{{ $product->name }}</h2>
@@ -181,14 +181,14 @@
                                 <div class="mb-4">
                                     @if($product->sale_price > 0)
                                         <h3 class="text-danger">
-                                            {{ number_format($product->sale_price, 2) }} ৳
+                                            {{ number_format($product->sale_price, 2) }} Tk.
                                             <del class="fs-6 text-muted ms-2">
-                                                {{ number_format($product->regular_price, 2) }} ৳
+                                                {{ number_format($product->regular_price, 2) }} Tk.
                                             </del>
                                         </h3>
                                     @else
                                         <h3 class="text-danger">
-                                            {{ number_format($product->regular_price, 2) }} ৳
+                                            {{ number_format($product->regular_price, 2) }} Tk.
                                         </h3>
                                     @endif
                                 </div>
@@ -251,14 +251,7 @@
                                         <th>Stock</th>
                                         <td>{{ $product->variants->sum('stock') }}</td>
                                     </tr>
-                                    <tr>
-                                        <th>Author</th>
-                                        <td>{{$product->authors->pluck('name')->implode(', ')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Publication</th>
-                                        <td>{{$product->publication->name ?? 'N/A'}}</td>
-                                    </tr>
+                                   
                                 </table>
 
                             </div>
@@ -286,7 +279,7 @@
                                 </a>
                                 <p>{{ $item->code }}</p><br>
                                 <span class="text-danger small">
-                                    {{ number_format($item->sale_price ?? $item->regular_price, 2) }} ৳
+                                    {{ number_format($item->sale_price ?? $item->regular_price, 2) }} Tk.
                                 </span>
                             </div>
                         </div>
@@ -335,14 +328,14 @@
                                     <th>Category</th>
                                     <td>{{ $product->category->name??'N/A' }}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <th>Authors</th>
                                     <td>{{ $product->authors->pluck('name')->implode(', ') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Publication</th>
                                     <td>{{ $product->publication->name ?? 'N/A' }}</td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <th>Barcode</th>
                                     <td>{{ $product->barcode }}</td>

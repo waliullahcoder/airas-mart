@@ -49,7 +49,7 @@
                                         <td>
                                             <strong>{{ $order->order_number }}</strong>
                                         </td>
-                                        <td>৳ {{ number_format($order->total,2) }}</td>
+                                        <td>Tk. {{ number_format($order->total,2) }}</td>
                                         <td class="text-capitalize">
                                             {{ $order->payment_method }}
                                         </td>

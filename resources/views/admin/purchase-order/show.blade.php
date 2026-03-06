@@ -36,9 +36,9 @@
                         <tr>
                             <td>{{ $counter++ }}</td>
                             <td>{{ $item->product->name ?? 'N/A' }}</td>
-                            <td>৳{{ number_format($item->unit_price, 2) }}</td>
+                            <td>Tk.{{ number_format($item->unit_price, 2) }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>৳{{ number_format($item->unit_price * $item->quantity, 2) }}</td>
+                            <td>Tk.{{ number_format($item->unit_price * $item->quantity, 2) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -50,27 +50,27 @@
                 <ul class="list-group rounded-0">
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Sub Total:</span>
-                        <span>৳{{ number_format($purchaseOrder->total_amount, 2) }}</span>
+                        <span>Tk.{{ number_format($purchaseOrder->total_amount, 2) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Tax:</span>
-                        <span>৳{{ number_format($purchaseOrder->tax_amount, 2) }}</span>
+                        <span>Tk.{{ number_format($purchaseOrder->tax_amount, 2) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Discount:</span>
-                        <span>৳{{ number_format($purchaseOrder->discount_amount, 2) }}</span>
+                        <span>Tk.{{ number_format($purchaseOrder->discount_amount, 2) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <strong>Grand Total:</strong>
-                        <strong>৳{{ number_format($purchaseOrder->grand_total, 2) }}</strong>
+                        <strong>Tk.{{ number_format($purchaseOrder->grand_total, 2) }}</strong>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Paid Amount:</span>
-                        <span>৳{{ number_format($purchaseOrder->paid_amount, 2) }}</span>
+                        <span>Tk.{{ number_format($purchaseOrder->paid_amount, 2) }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Due Amount:</span>
-                        <span>৳{{ number_format($purchaseOrder->due_amount, 2) }}</span>
+                        <span>Tk.{{ number_format($purchaseOrder->due_amount, 2) }}</span>
                     </li>
                 </ul>
             </div>

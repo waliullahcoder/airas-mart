@@ -43,7 +43,7 @@
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h5>Wallet</h5>
-                                    <h3>৳0</h3>
+                                    <h3>Tk.0</h3>
                                 </div>
                             </div>
                         </div>

@@ -63,7 +63,7 @@
                                                 <del>
                                                     <span class="Price-amount">
                                                         {{ number_format($product->sale_price, 2) }}
-                                                        <span class="Price-currencySymbol">৳</span>
+                                                        <span class="Price-currencySymbol">Tk.</span>
                                                     </span>
                                                 </del>
                                             @endif
@@ -72,7 +72,7 @@
                                             <ins>
                                                 <span class="Price-amount">
                                                     {{ number_format($product->regular_price, 2) }}
-                                                    <span class="Price-currencySymbol">৳</span>
+                                                    <span class="Price-currencySymbol">Tk.</span>
                                                 </span>
                                             </ins>
 

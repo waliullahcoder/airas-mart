@@ -26,7 +26,8 @@ class ViewController extends Controller
         //Homepage Category all
         $get_sub_categories_all = $this->frontEndService->getSubCategoryHomePageOnly();
         // $get_sub_category_product_all = $this->frontEndService->getSubCategoryHomePageProductOnly();
-
+        //All Header Product
+        $get_sub_category_all_header_product_only = $this->frontEndService->getSubCategoryAllHeaderProductOnly();
         // //ট্রেন্ডিং বইসমূহ and নতুন প্রকাশিত বই
         $get_sub_category_trends_new_book_product_only = $this->frontEndService->getSubCategoryTrendsNewBookProductOnly();
         //Banner add category
@@ -50,6 +51,7 @@ class ViewController extends Controller
             'menus',
             'get_sub_categories_all',
             'get_sub_category_trends_new_book_product_only',
+            'get_sub_category_all_header_product_only',
             'get_sub_category_banner_only',
             'get_sub_category_sian_jugpuerti_nrobiul_aual_product_only',
             'get_sub_category_writer_only',
@@ -118,7 +120,7 @@ class ViewController extends Controller
         $priceSort      = $request->price_sort ?? null; // low_high / high_low
         $priceRanges    = $request->price_ranges ?? [];
 
-        $subcategories = Category::where('type', 'book')
+        $subcategories = Category::where('type', 'other')
             ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
 
                 // Publication filter
@@ -209,7 +211,7 @@ class ViewController extends Controller
         $priceSort      = $request->price_sort ?? null; // low_high / high_low
         $priceRanges    = $request->price_ranges ?? [];
 
-        $single_sub_category = Category::where('type', 'book')
+        $single_sub_category = Category::where('type', 'other')
             ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
 
                 // Publication filter

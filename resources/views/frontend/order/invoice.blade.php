@@ -149,8 +149,8 @@
                 <td>{{ $item->product->name }}</td>
                 <td>{{ optional($item->productVariant)->name ?? '-' }}</td>
                 <td style="text-align:center;">{{ $item->qty }}</td>
-                <td style="text-align:right;">৳ {{ number_format($item->price,2) }}</td>
-                <td style="text-align:right;">৳ {{ number_format($item->total,2) }}</td>
+                <td style="text-align:right;">Tk. {{ number_format($item->price,2) }}</td>
+                <td style="text-align:right;">Tk. {{ number_format($item->total,2) }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -166,19 +166,19 @@
                 <table>
                     <tr>
                         <td>Subtotal</td>
-                        <td style="text-align:right;">৳ {{ number_format($subtotal,2) }}</td>
+                        <td style="text-align:right;">Tk. {{ number_format($subtotal,2) }}</td>
                     </tr>
                     <tr>
                         <td>Discount (10%)</td>
-                        <td style="text-align:right;">- ৳ {{ number_format($discount,2) }}</td>
+                        <td style="text-align:right;">- Tk. {{ number_format($discount,2) }}</td>
                     </tr>
                     <tr>
                         <td>Tax (5%)</td>
-                        <td style="text-align:right;">৳ {{ number_format($tax,2) }}</td>
+                        <td style="text-align:right;">Tk. {{ number_format($tax,2) }}</td>
                     </tr>
                     <tr>
                         <th>Grand Total</th>
-                        <th style="text-align:right;">৳ {{ number_format($grandTotal,2) }}</th>
+                        <th style="text-align:right;">Tk. {{ number_format($grandTotal,2) }}</th>
                     </tr>
                 </table>
             </td>

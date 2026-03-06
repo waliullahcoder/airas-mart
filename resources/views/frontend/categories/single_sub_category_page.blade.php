@@ -8,34 +8,34 @@
             <!-- LEFT SIDEBAR -->
                <div class="col-lg-3 d-none d-lg-block">
                 <div class="filter-box">
-                    <h5 class="filter-title">ফিল্টার</h5>
+                    <h5 class="filter-title">Filter</h5>
                     <!-- SUBJECT -->
                     
                     @if($bookcat_count > 0)  
                     <!-- AUTHOR -->
                     <div class="filter-group">
-                        <h6>লেখক</h6>
+                        <h6>Vendors</h6>
                         <ul>
-                            @foreach($authors ?? [] as $author)
+                            @foreach($vendors ?? [] as $vendor)
                                 <li>
                                     <label>
-                                       <input type="checkbox" class="author-filter-sub" value="{{ $author->id }}">
-                                        {{ $author->name }}
+                                       <input type="checkbox" class="author-filter-sub" value="{{ $vendor->id }}">
+                                        {{ $vendor->name }}
                                     </label>
                                 </li>
                             @endforeach
                         </ul>
                     </div>
                     <div class="filter-group">
-                        <h6>পাবলিকেশন</h6>
+                        <h6>Brand</h6>
                         <ul>
-                            @foreach($publications ?? [] as $pub)
+                            @foreach($brands ?? [] as $brand)
                                 <li>
                                     <label>
                                         <input type="checkbox" 
                                             class="publication-filter-sub"
-                                            value="{{ $pub->id }}">
-                                        {{ $pub->name }}
+                                            value="{{ $brand->id }}">
+                                        {{ $brand->name }}
                                     </label>
                                 </li>
                             @endforeach
@@ -43,42 +43,42 @@
                     </div>
                     @endif
                     <div class="filter-group">
-                        <h6>দাম</h6>
+                        <h6>Price Sort</h6>
                         <ul class="mb-3">
                             <li>
                                 <label>
                                     <input type="radio" name="price_sort_sub" value="low_high">
-                                    কম থেকে বেশি
+                                    Low to High
                                 </label>
                             </li>
                             <li>
                                 <label>
                                     <input type="radio" name="price_sort_sub" value="high_low">
-                                    বেশি থেকে কম
+                                    High to Low
                                 </label>
                             </li>
                         </ul>
                     </div>
                     <!-- PRICE -->
                     <div class="filter-group">
-                        <h6>দাম</h6>
+                        <h6>Price Range</h6>
                         <ul>
                             <li>
                                 <label>
                                     <input type="checkbox" class="price-range-filter-sub" value="0-200">
-                                    ০ – ২০০ ৳
+                                    0 – 200 Tk.
                                 </label>
                             </li>
                             <li>
                                 <label>
                                     <input type="checkbox" class="price-range-filter-sub" value="201-500">
-                                    ২০১ – ৫০০ ৳
+                                    201 – 500 Tk.
                                 </label>
                             </li>
                             <li>
                                 <label>
                                     <input type="checkbox" class="price-range-filter-sub" value="500+">
-                                    ৫০০+ ৳
+                                    500+ Tk.
                                 </label>
                             </li>
                         </ul>
@@ -102,7 +102,7 @@
                                             </small>
 
                                             <strong class="d-block">
-                                                {{ number_format($product->sale_price ?? $product->regular_price) }} ৳
+                                                {{ number_format($product->sale_price ?? $product->regular_price) }} Tk.
                                             </strong>
                                         </a>
 

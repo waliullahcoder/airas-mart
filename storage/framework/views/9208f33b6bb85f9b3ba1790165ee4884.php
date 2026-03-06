@@ -78,13 +78,13 @@
 
    
  
-<?php $__currentLoopData = $get_sub_category_trends_new_book_product_only; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subCategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<?php $__currentLoopData = $get_sub_category_all_header_product_only; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subCategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
  <div class="category-product-section pb-4">
         <div class="container">
             <div class="section-card">
                 <div class="section-header mb-3">
                     <h3 class="section-title"> <?php echo e($subCategory->name); ?></h3>
-                    <a href="<?php echo e(route('category.singleCategoryPage', $subCategory->id)); ?>" class="section-link">সবগুলো দেখুন</a>
+                    <a href="<?php echo e(route('category.singleCategoryPage', $subCategory->id)); ?>" class="section-link">See All</a>
                 </div>
                 <div class="position-relative">
                     <div class="swiper carousel" data-items="2" data-xl-items="6" data-lg-items="5" data-md-items="4"
@@ -96,7 +96,11 @@
                                 <div class="p-sm-2 p-1">
                                     <div class="product-card-wrapper">
                                         <div class="product-card">
-                                            
+                                             <?php if($product->discount>0): ?>
+                                                <div class="discount-badge">
+                                                    <span class="product-discount"><?php echo e(number_format($product->discount)); ?></span>
+                                                </div>
+                                                <?php endif; ?>
                                            <a href="<?php echo e(route('product.details', $product->id)); ?>">
                                             <figure class="product-card-image ratio" style="--bs-aspect-ratio: 100%">
                                                 <img class="object-fit-contain product-img" src="<?php echo e(asset($product->thumbnail)); ?>"
@@ -117,15 +121,18 @@
 
                                                 </p>
                                                 <span class="product-card-price">
-                                                    <del>
-                                                         <span class="Price-amount">
-                                                                 <?php echo e(number_format($product->regular_price)); ?> <span class="Price-currencySymbol">৳</span>
+                                                    <?php if($product->discount>0): ?>
+                                                        <del>
+                                                            <span class="Price-amount">
+                                                                 <?php echo e(number_format($product->regular_price)); ?> <span class="Price-currencySymbol">Tk.</span>
                                                             </span>
-                                                    </del>
-                                                    <ins>
-                                                        <span class="Price-amount"> <?php echo e(number_format($product->sale_price ?? $product->regular_price)); ?><span class="Price-currencySymbol">৳</span>
-                                                        </span>
-                                                    </ins>
+                                                        </del>
+                                                        <?php endif; ?>
+                                <ins>
+                                                            <span class="Price-amount">
+                                                                 <?php echo e($product->discount==0 ? number_format($product->regular_price): number_format($product->sale_price)); ?> <span class="Price-currencySymbol">Tk.</span>
+                                                            </span>
+                                                        </ins>
                                                 </span>
                                             </div>
                                             </a>
@@ -176,7 +183,7 @@
             <div class="section-card">
                 <div class="section-header mb-3">
                     <h3 class="section-title"> <?php echo e($subCategory->name); ?></h3>
-                    <a href="<?php echo e(route('category.singleCategoryPage', $subCategory->id)); ?>" class="section-link">সবগুলো দেখুন</a>
+                    <a href="<?php echo e(route('category.singleCategoryPage', $subCategory->id)); ?>" class="section-link">See All</a>
                 </div>
                 <div class="position-relative">
                     <div class="swiper carousel" data-items="2" data-xl-items="6" data-lg-items="5" data-md-items="4"
@@ -214,11 +221,11 @@
                                                 <span class="product-card-price">
                                                     <del>
                                                          <span class="Price-amount">
-                                                                 <?php echo e(number_format($product->regular_price)); ?> <span class="Price-currencySymbol">৳</span>
+                                                                 <?php echo e(number_format($product->regular_price)); ?> <span class="Price-currencySymbol">Tk.</span>
                                                             </span>
                                                     </del>
                                                     <ins>
-                                                        <span class="Price-amount"> <?php echo e(number_format($product->sale_price ?? $product->regular_price)); ?><span class="Price-currencySymbol">৳</span>
+                                                        <span class="Price-amount"> <?php echo e(number_format($product->sale_price ?? $product->regular_price)); ?><span class="Price-currencySymbol">Tk.</span>
                                                         </span>
                                                     </ins>
                                                 </span>
@@ -279,13 +286,13 @@
     
 
     
-    <?php $__currentLoopData = $get_sub_category_atar_sugondhi_product_only; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subCategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
- <!-- <div class="category-product-section pb-4">
+  <!--   <?php $__currentLoopData = $get_sub_category_atar_sugondhi_product_only; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subCategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+ <div class="category-product-section pb-4">
         <div class="container">
             <div class="section-card">
                 <div class="section-header mb-3">
                     <h3 class="section-title"> <?php echo e($subCategory->name); ?></h3>
-                    <a href="<?php echo e(route('category.singleCategoryPage', $subCategory->id)); ?>" class="section-link">সবগুলো দেখুন</a>
+                    <a href="<?php echo e(route('category.singleCategoryPage', $subCategory->id)); ?>" class="section-link">See All</a>
                 </div>
                 <div class="position-relative">
                     <div class="swiper carousel" data-items="2" data-xl-items="6" data-lg-items="5" data-md-items="4"
@@ -323,11 +330,11 @@
                                                 <span class="product-card-price">
                                                     <del>
                                                          <span class="Price-amount">
-                                                                 <?php echo e(number_format($product->regular_price)); ?> <span class="Price-currencySymbol">৳</span>
+                                                                 <?php echo e(number_format($product->regular_price)); ?> <span class="Price-currencySymbol">Tk.</span>
                                                             </span>
                                                     </del>
                                                     <ins>
-                                                        <span class="Price-amount"> <?php echo e(number_format($product->sale_price ?? $product->regular_price)); ?><span class="Price-currencySymbol">৳</span>
+                                                        <span class="Price-amount"> <?php echo e(number_format($product->sale_price ?? $product->regular_price)); ?><span class="Price-currencySymbol">Tk.</span>
                                                         </span>
                                                     </ins>
                                                 </span>
@@ -360,11 +367,11 @@
 
 
     
-     <div class="category-section pb-4">
+     <!-- <div class="category-section pb-4">
         <div class="container">
             <div class="section-card">
                 <div class="section-header mb-3">
-                    <h3 class="section-title">অন্যান্য পণ্য</h3>
+                    <h3 class="section-title">Others</h3>
                 </div>
                 <div class="position-relative">
                     <div class="swiper carousel" data-items="2" data-xl-items="7" data-lg-items="6" data-md-items="5"
@@ -388,7 +395,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     
 
     

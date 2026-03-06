@@ -7,7 +7,7 @@
                     <li class="menu-item">
                         <a class="menu-link {{ request()->routeIs('home') ? 'active' : '' }}"
                         href="{{ route('home') }}">
-                            <span>হোম</span>
+                            <span>Home</span>
                         </a>
                     </li>
 

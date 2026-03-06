@@ -11,7 +11,7 @@
                 <p><?php echo e($settings->description); ?></p>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
-                <h5 class="footer-title">প্রয়োজনীয় লিংক</h5>
+                <h5 class="footer-title">Other Links</h5>
                 <ul class="footer-list">
                     <?php $__currentLoopData = $menus['footer_col1_menus']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <li class="footer-item"><a class="footer-link" href="<?php echo e($menu->menu_url); ?>"><?php echo e($menu->name); ?></a></li>
@@ -19,7 +19,7 @@
                 </ul>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
-                <h5 class="footer-title">জনপ্রিয়</h5>
+                <h5 class="footer-title">Popular</h5>
                 <ul class="footer-list">
                     <?php $__currentLoopData = $menus['footer_col2_menus']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <li class="footer-item"><a class="footer-link" href="<?php echo e($menu->menu_url); ?>"><?php echo e($menu->name); ?></a></li>
@@ -27,10 +27,10 @@
                 </ul>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
-                <h5 class="footer-title">যোগাযোগ</h5>
+                <h5 class="footer-title">Connect With Us</h5>
                 <ul class="footer-contact">
                     <li class="footer-contact-item">
-                        <i class="fa fa-map-marker-alt"></i>&nbsp;Head Office: <br>
+                        <i class="fa fa-map-marker-alt"></i> Address: <br>
                         <?php echo $settings->address; ?>
 
                     </li>

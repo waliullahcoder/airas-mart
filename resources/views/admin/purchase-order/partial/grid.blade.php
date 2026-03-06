@@ -54,7 +54,7 @@
                             @php
                                 $variant = $item->variants->where('status', true)->first();
                             @endphp
-                            <div class="product-card-price">৳{{ number_format($variant->sale_price, 2) }}</div>
+                            <div class="product-card-price">Tk.{{ number_format($variant->sale_price, 2) }}</div>
                             @if ($item->variants->where('status', true)->count() > 1)
                                 <div class="variant-icon">
                                     <i class="far fa-plus"></i>
@@ -95,7 +95,7 @@
                             @php
                                 $variant = $item->variants->where('status', true)->first();
                             @endphp
-                            <div class="product-card-price">৳{{ number_format($variant->sale_price, 2) }}</div>
+                            <div class="product-card-price">Tk.{{ number_format($variant->sale_price, 2) }}</div>
                             @if ($item->variants->where('status', true)->count() > 1)
                                 <div class="variant-icon">
                                     <i class="far fa-plus"></i>
@@ -136,7 +136,7 @@
                             @php
                                 $variant = $item->variants->where('status', true)->first();
                             @endphp
-                            <div class="product-card-price">৳{{ number_format($variant->sale_price, 2) }}</div>
+                            <div class="product-card-price">Tk.{{ number_format($variant->sale_price, 2) }}</div>
                             @if ($item->variants->where('status', true)->count() > 1)
                                 <div class="variant-icon">
                                     <i class="far fa-plus"></i>
@@ -168,7 +168,7 @@
                                 $variant = $item->variants->where('status', true)->first();
                             @endphp
                             {{ info($variant) }}
-                            <div class="product-card-price">৳{{ number_format($variant->sale_price, 2) }}</div>
+                            <div class="product-card-price">Tk.{{ number_format($variant->sale_price, 2) }}</div>
                             @if ($item->variants->where('status', true)->count() > 1)
                                 <div class="variant-icon">
                                     <i class="far fa-plus"></i>

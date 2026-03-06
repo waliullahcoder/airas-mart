@@ -8,7 +8,7 @@
                     <!-- Section Header -->
                     <div class="section-header mb-3">
                         <h3 class="section-title">{{$sub->name}}</h3>
-                        <a href="{{route('category.singleCategoryPage', $sub->id)}}" class="section-link">সবগুলো দেখুন</a>
+                        <a href="{{route('category.singleCategoryPage', $sub->id)}}" class="section-link">See All</a>
                     </div>
 
                     <div class="position-relative">
@@ -33,8 +33,13 @@
                                     <div class="p-sm-2 p-1">
                                         <div class="product-card-wrapper">
                                             <div class="product-card">
+                                                @if($product->discount>0)
+                                                <div class="discount-badge">
+                                                    <span class="product-discount">{{number_format($product->discount)}}</span>
+                                                </div>
+                                                @endif
                                         <a class="z-2" href="{{route('product.details', $product->id)}}">
-                                                <figure class="product-card-image ratio" style="--bs-aspect-ratio: 130%">
+                                                <figure class="product-card-image ratio" style="--bs-aspect-ratio: 100%">
                                                   
                                                     <img class="object-fit-contain product-img"
                                                         src="{{ asset($product->thumbnail) }}"
@@ -51,15 +56,17 @@
                                                         {{ $product->code }}
                                                 </p>
                                                     <span class="product-card-price">
+                                                        @if($product->discount>0)
                                                         <del>
                                                             <span class="Price-amount">
-                                                                 {{ number_format($product->sale_price, 2) }} <span class="Price-currencySymbol">৳</span>
+                                                                 {{ number_format($product->regular_price) }} <span class="Price-currencySymbol">Tk.</span>
                                                             </span>
                                                         </del>
+                                                        @endif
                                                           
                                                         <ins>
                                                             <span class="Price-amount">
-                                                                 {{ number_format($product->regular_price, 2) }} <span class="Price-currencySymbol">৳</span>
+                                                                 {{ $product->discount==0 ? number_format($product->regular_price): number_format($product->sale_price) }} <span class="Price-currencySymbol">Tk.</span>
                                                             </span>
                                                         </ins>
                                                     </span>

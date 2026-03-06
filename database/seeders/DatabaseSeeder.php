@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
             'name' => "Admin",
             'user_name' => "admin",
             'role_status' => 1,
-            'phone' => "01711111111",
-            'email' => "wali@gmail.com",
-            'password' => Hash::make("12345678"),
+            'phone' => "01921588567",
+            'email' => "waliullahbiplob786@gmail.com",
+            'password' => Hash::make("Wali.123!@#"),
         ]);
         $role = Role::create(['name' => 'Software Admin']);
         $user->assignRole($role);

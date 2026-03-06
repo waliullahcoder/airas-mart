@@ -36,10 +36,10 @@
                             <td>{{ $item->product->name }}</td>
                             <td class="text-center">{{ $item->qty }}</td>
                             <td class="text-end">
-                                ৳ {{ number_format($item->price,2) }}
+                                Tk. {{ number_format($item->price,2) }}
                             </td>
                             <td class="text-end">
-                                ৳ {{ number_format($item->total,2) }}
+                                Tk. {{ number_format($item->total,2) }}
                             </td>
                         </tr>
                     @endforeach
@@ -50,7 +50,7 @@
                 <h5>
                     Grand Total:
                     <span class="text-danger">
-                        ৳ {{ number_format($order->total,2) }}
+                        Tk. {{ number_format($order->total,2) }}
                     </span>
                 </h5>
             </div>

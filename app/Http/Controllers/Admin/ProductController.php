@@ -55,7 +55,7 @@ class ProductController extends Controller
         return HelperClass::resourceDataView(
             $this->model::with(['category', 'uom','edition'])
                 ->select('id','code','name','category_id','uom_id','thumbnail','status')
-                ->where('product_type', 'book')
+                ->whereIn('product_type', ['book', 'other'])
                 ->orderBy('id', 'desc'),
             'thumbnail',
             null,
