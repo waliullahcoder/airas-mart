@@ -58,6 +58,7 @@
                                     style="cursor:pointer;"
                                     onclick="changeImage(this)">
                                 {{-- Extra Images --}}
+                                @if(isset($product->images) && !empty($product->images))
                                 @foreach($product->images->take(4) as $image)
                                     <img src="{{ asset($image->image) }}"
                                         class="img-thumbnail small-thumb"
@@ -65,6 +66,7 @@
                                         style="cursor:pointer;"
                                         onclick="changeImage(this)">
                                 @endforeach
+                                @endif
 
                             </div>
 

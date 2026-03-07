@@ -215,9 +215,11 @@ public function getPublication()
 }
 public function productAll()
 {
-    $product = Product::with('variants')
-        ->orderBy('id', 'desc')
+    $product = Product::get();
+    if($product->count()>4){
+    $product = Product::orderBy('id', 'desc')
         ->get()->random(4);
+    }
         return $product;
 }  
 

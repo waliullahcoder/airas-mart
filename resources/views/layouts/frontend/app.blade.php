@@ -2,14 +2,25 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>{{ $settings->title }}</title>
-    <link rel="shortcut icon"
-        href="{{ asset(file_exists($settings->favicon) ? $settings->favicon : 'frontend/images/logo/favicon.png') }}"
-        type="image/x-icon">
+ <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+
+<title>{{ $settings->meta_name ?? 'Airas Mart - Smart Ecommerce & All type of products Platform' }}</title>
+
+<meta name="keywords" content="{{ $settings->meta_keywords ?? 'Airas Mart, ecommerce platform Bangladesh, POS system, inventory management, online shop software, business management system, Airas Mart marketplace' }}">
+
+<meta name="description" content="{{ $settings->meta_description ?? 'Airas Mart is a powerful ecommerce and business management platform designed to manage products, inventory, sales, invoices, and customers easily. Grow your business smarter with Airas Mart.' }}">
+
+<meta property="og:title" content="{{ $settings->meta_name ?? 'Airas Mart - Smart Ecommerce Platform' }}">
+<meta property="og:description" content="{{ $settings->meta_description ?? 'Manage your business, products, inventory, and sales easily with Airas Mart ecommerce platform.' }}">
+<meta property="og:image" content="{{ asset($settings->meta_image ?? 'frontend/images/logo/logo.png') }}">
+<meta property="og:type" content="website">
+
+<link rel="shortcut icon"
+    href="{{ asset(file_exists($settings->favicon) ? $settings->favicon : 'frontend/images/logo/favicon.png') }}"
+    type="image/x-icon">
     @include('layouts.frontend.partial.styles')
     
    

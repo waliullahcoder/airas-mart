@@ -61,9 +61,9 @@
                                 </div>
                 <div class="col-sm-6">
                     <label for="author_id" class="form-label"><b>Author <span class="text-danger">*</span></b></label>
-                    <select class="form-select select" name="author_id" id="author_id"
+                    <select class="form-select" name="author_id" id="author_id"
                         data-placeholder="Select Author" required>
-                        <option value=""></option>
+                       
                         @foreach ($authors as $item)
                             <option value="{{ $item->id }}" {{ old('author_id') == $item->id ? 'selected' : '' }}>
                                 {{ $item->name }}</option>
@@ -72,9 +72,8 @@
                 </div>
                  <div class="col-sm-6">
                     <label for="publication_id" class="form-label"><b>Publication <span class="text-danger">*</span></b></label>
-                    <select class="form-select select" name="publication_id" id="publication_id"
+                    <select class="form-select" name="publication_id" id="publication_id"
                         data-placeholder="Select Publication" required>
-                        <option value=""></option>
                         @foreach ($publications as $item)
                             <option value="{{ $item->id }}" {{ old('publication_id') == $item->id ? 'selected' : '' }}>
                                 {{ $item->name }}</option>
@@ -93,9 +92,8 @@
                 </div>
                 <div class="col-sm-6">
                     <label for="uom_id" class="form-label"><b>Unit <span class="text-danger">*</span></b></label>
-                    <select class="form-select select" name="uom_id" id="uom_id" data-placeholder="Select Unit"
+                    <select class="form-select" name="uom_id" id="uom_id" data-placeholder="Select Unit"
                         required>
-                        <option value=""></option>
                         @foreach ($uoms as $item)
                             <option value="{{ $item->id }}" {{ old('uom_id') == $item->id ? 'selected' : '' }}>
                                 {{ $item->name }}</option>

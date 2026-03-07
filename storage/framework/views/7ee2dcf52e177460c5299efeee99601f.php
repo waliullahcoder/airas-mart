@@ -8,7 +8,7 @@
                             height="50" alt="<?php echo e($settings->app_name); ?>">
                     </a>
                 </div>
-                <p><?php echo e($settings->description); ?></p>
+                <p style="color: white;"><?php echo e($settings->description); ?></p>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <h5 class="footer-title">Other Links</h5>
@@ -36,10 +36,10 @@
                     </li>
                     <li class="footer-contact-item">
                         <i class="fa fa-mobile-alt"></i>&nbsp;Phone:<br><a
-                            href="tel:+88<?php echo e($settings->primary_phone); ?>"><?php echo e($settings->primary_phone); ?></a>
+                            href="tel:+88<?php echo e($settings->primary_phone); ?>"><?php echo e($settings->secondary_phone); ?></a>
                     </li>
                     <li class="footer-contact-item">
-                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;<span><?php echo e($settings->primary_email); ?></span>
+                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;<span><?php echo e($settings->secondary_email); ?></span>
                     </li>
                     <li class="footer-contact-item pt-2">
                         <?php if($settings->facebook_page): ?>

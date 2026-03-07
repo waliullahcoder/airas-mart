@@ -8,7 +8,7 @@
                             height="50" alt="{{ $settings->app_name }}">
                     </a>
                 </div>
-                <p>{{ $settings->description }}</p>
+                <p style="color: white;">{{ $settings->description }}</p>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <h5 class="footer-title">Other Links</h5>
@@ -35,10 +35,10 @@
                     </li>
                     <li class="footer-contact-item">
                         <i class="fa fa-mobile-alt"></i>&nbsp;Phone:<br><a
-                            href="tel:+88{{ $settings->primary_phone }}">{{ $settings->primary_phone }}</a>
+                            href="tel:+88{{ $settings->primary_phone }}">{{ $settings->secondary_phone }}</a>
                     </li>
                     <li class="footer-contact-item">
-                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;<span>{{ $settings->primary_email }}</span>
+                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;<span>{{ $settings->secondary_email }}</span>
                     </li>
                     <li class="footer-contact-item pt-2">
                         @if ($settings->facebook_page)
