@@ -264,6 +264,13 @@
                 </div>
             </div>
 
+            <style>
+                .mb-3{
+                    margin: 5px !important;
+                    border:1px solid #f3f1f1;
+                    padding:2px;
+                }
+            </style>
             <!-- RELATED PRODUCTS -->
             <div class="col-lg-3">
                 <div class="bg-white border rounded p-3">
@@ -331,14 +338,17 @@
                                     <th>Category</th>
                                     <td>{{ $product->category->name??'N/A' }}</td>
                                 </tr>
+                                
                                 <tr>
-                                    <th>Authors</th>
-                                    <td>{{ $product->authors->pluck('name')->implode(', ') }}</td>
+                                    <th>Vendor</th>
+                                    <td>{{ $product->vendors->pluck('name')->implode(', ') }}</td>
                                 </tr>
+                                @if($product->brand_id)
                                 <tr>
-                                    <th>Publication</th>
-                                    <td>{{ $product->publication->name ?? 'N/A' }}</td>
+                                    <th>Brand</th>
+                                    <td>{{ App\Models\Brand::find($product->brand_id)->name ?? 'N/A' }}</td>
                                 </tr>
+                                @endif
                                 <tr>
                                     <th>Barcode</th>
                                     <td>{{ $product->barcode }}</td>
