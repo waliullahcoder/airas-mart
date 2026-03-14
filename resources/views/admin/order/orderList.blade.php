@@ -47,7 +47,7 @@
                                             <strong>{{ $order->order_number }}</strong>
                                         </td>
                                         <td>{{ $order->user->name ?? 'N/A' }}</td>
-                                        <td>Tk. {{ number_format($order->total,2) }}</td>
+                                        <td>৳ {{ number_format($order->total,2) }}</td>
                                         <td class="text-capitalize">
                                             {{ $order->payment_method }}
                                         </td>
@@ -181,12 +181,21 @@
                                                 required>
 
                                             <option value="">-- Choose Status --</option>
-
+                                            @if($order->status == 'pending')
                                             <option value="pending"
                                                 {{ $order->status=='pending'?'selected':'' }}>
                                                 Pending
                                             </option>
-
+                                            <option value="processing"
+                                                {{ $order->status=='processing'?'selected':'' }}>
+                                                Processing
+                                            </option>
+                                            <option value="cancelled"
+                                                {{ $order->status=='cancelled'?'selected':'' }}>
+                                                Cancel
+                                            </option>
+                                            @endif
+                                            @if($order->status == 'processing')
                                             <option value="processing"
                                                 {{ $order->status=='processing'?'selected':'' }}>
                                                 Processing
@@ -195,21 +204,35 @@
                                                 {{ $order->status=='confirmed'?'selected':'' }}>
                                                 Confirmed
                                             </option>
-
+                                            @endif
+                                            @if($order->status == 'confirmed')
+                                            <option value="confirmed"
+                                                {{ $order->status=='confirmed'?'selected':'' }}>
+                                                Confirmed
+                                            </option>
                                             <option value="shipped"
                                                 {{ $order->status=='shipped'?'selected':'' }}>
                                                 Shipped
                                             </option>
-
+                                            @endif
+                                            @if($order->status == 'shipped')
+                                            <option value="shipped"
+                                                {{ $order->status=='shipped'?'selected':'' }}>
+                                                Shipped
+                                            </option>
                                             <option value="delivered"
                                                 {{ $order->status=='delivered'?'selected':'' }}>
                                                 Delivered
                                             </option>
-
-                                            <option value="cancelled"
-                                                {{ $order->status=='cancelled'?'selected':'' }}>
-                                                Cancelled
+                                            @endif
+                                            @if($order->status == 'delivered')
+                                            <option value="delivered"
+                                                {{ $order->status=='delivered'?'selected':'' }}>
+                                                Delivered
                                             </option>
+                                            @endif
+
+                                            
 
                                         </select>
                                     </div>

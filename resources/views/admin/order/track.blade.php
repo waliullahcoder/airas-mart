@@ -48,7 +48,7 @@
                                         {{ $index + 1 }}
                                     @endif
                                 </div>
-                                <div class="label">
+                                <div>
                                     {{ ucfirst($step) }}
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>Total</span>
-                                    <strong>Tk. {{ number_format($order->total,2) }}</strong>
+                                    <strong>৳ {{ number_format($order->total,2) }}</strong>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>Placed At</span>
@@ -86,7 +86,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary">
                             ← Back to Orders
                         </a>
                     </div>

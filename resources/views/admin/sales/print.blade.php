@@ -1,80 +1,202 @@
-@extends('layouts.admin.print_app')
+
+@extends('layouts.admin.print_preview')
 @section('content')
-    <table class="table mb-3 info-table" style="border-bottom: 1px solid #ddd;">
-        <tr>
-            <th width="60">Invoice No</th>
-            <td><b> : </b> {{ $data->invoice }}</td>
-            <th class="text-right" width="70">Date : </th>
-            <td class="text-left text-nowrap" width="60">{{ date('d-m-Y', strtotime($data->date)) }}</td>
-        </tr>
-        <tr>
-            <th width="60">Sales Type</th>
-            <td><b> : </b> {{ $data->sale_type }}</td>
-            <th class="text-right" width="70">Store : </th>
-            <td class="text-left text-nowrap" width="60">{{ $data->store->name ?? '' }}</td>
-        </tr>
-        <tr>
-            <th width="60">Client Name</th>
-            <td><b> : </b> {{ $data->client->name ?? '' }}</td>
-            <th class="text-right" width="70">Remarks : </th>
-            <td class="text-left text-nowrap" width="60">{{ $data->remarks }}</td>
-        </tr>
-    </table>
-    <table class="table table-bordered table-condensed table-striped align-middle mb-3">
-        <thead>
-            <tr>
-                <th class="text-center" width="20">SL#</th>
-                <th>Book</th>
-                <th>Edition</th>
-                <th class="text-right">Price</th>
-                <th class="text-right">Commission %</th>
-                <th class="text-right">Net Price</th>
-                <th class="text-right">Quantity</th>
-                <th class="text-right">Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data->list as $row)
-                <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
-                    <td class="text-nowrap">{{ $row->product->name ?? '' }}</td>
-                    <td class="text-nowrap">{{ $row->edition->name ?? '' }}</td>
-                    <td class="text-right">{{ $row->price }}</td>
-                    <td class="text-right">{{ $row->commission }}</td>
-                    <td class="text-right">{{ $row->rate }}</td>
-                    <td class="text-right">{{ $row->qty }}</td>
-                    <td class="text-right">{{ $row->amount }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="text-right" colspan="7"><b>Total</b></td>
-                <td class="text-right" colspan="1"><b>{{ number_format($data->amount, 2) }}</b></td>
-            </tr>
-            <tr>
-                <td class="text-right" colspan="7"><b>Discount</b></td>
-                <td class="text-right" colspan="1"><b>{{ number_format($data->discount, 2) }}</b></td>
-            </tr>
-            <tr>
-                <td class="text-right" colspan="7"><b>Net Amount</b></td>
-                <td class="text-right" colspan="1"><b>{{ number_format($data->net_amount, 2) }}</b></td>
-            </tr>
-        </tfoot>
-    </table>
-    <div class="mb-3 font">
-        <b>In words : </b> {{ \App\HelperClass::convertNumber($data->net_amount) }} taka.
-    </div>
-    <div>
-        <div class="signature-area">
-            <div class="signature-item">
-                <span>Receive By</span>
-            </div>
-            <div class="signature-item">
-                <i class="staff">{{ @$data->user->name }}</i>
-                <span>Prepare By</span>
-            </div>
-        </div>
-    </div>
-    <div style="padding-top: 50px;">Print Date & Time : {{ date('d-m-Y h:i:s A') }}</div>
+<!-- INVOICE TITLE -->
+
+<div class="invoice-title">
+<h2> INVOICE #{{$data->invoice}}</h2>
+</div>
+
+
+<!-- CLIENT + INVOICE INFO -->
+
+<div class="row invoice-info">
+
+<div class="col-xs-6">
+
+<h4>Bill To</h4>
+@php
+    $user= App\Models\User::where('id',$data->client->user_id)->first();
+@endphp
+<p>
+<strong>{{ $data->client->name ?? '' }}</strong><br>
+{{$data->client->address?? $user->address}} <br>
+Phone: {{$data->client->phone??'N/A'}} <br>
+Email: {{$data->client->email??'N/A'}}
+</p>
+
+</div>
+
+
+<div class="col-xs-6">
+
+<table class="table table-bordered">
+
+<tr>
+<th width="40%">Invoice No</th>
+<td>{{ $data->invoice }}</td>
+</tr>
+
+<tr>
+<th>Date</th>
+<td>{{ date('d-m-Y', strtotime($data->date)) }}</td>
+</tr>
+
+<tr>
+<th>Sales Type</th>
+<td>{{ $data->sale_type }}</td>
+</tr>
+
+<tr>
+<th>Remarks</th>
+<td>{{ $data->remarks }}</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- BOOKS TABLE -->
+
+<table class="table table-bordered invoice-table">
+
+<thead>
+
+<tr>
+
+<th width="40">SL</th>
+<th>Book Name</th>
+<th>Edition</th>
+<th class="text-right">Price</th>
+<th class="text-right">Commission %</th>
+<th class="text-right">Net Price</th>
+<th class="text-right">Qty</th>
+<th class="text-right">Amount</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+@foreach ($data->list as $row)
+
+<tr>
+
+<td class="text-center">{{ $loop->iteration }}</td>
+
+<td>{{ $row->product->name ?? '' }}</td>
+
+<td>{{ $row->edition->name ?? '' }}</td>
+
+<td class="text-right">{{ number_format($row->price,2) }}</td>
+
+<td class="text-right">{{ $row->commission }}%</td>
+
+<td class="text-right">{{ number_format($row->rate,2) }}</td>
+
+<td class="text-right">{{ $row->qty }}</td>
+
+<td class="text-right">{{ number_format($row->amount,2) }}</td>
+
+</tr>
+
+@endforeach
+
+</tbody>
+
+</table>
+
+
+
+<!-- TOTAL SECTION -->
+
+<div class="row total-area">
+
+<div class="col-xs-6">
+
+<p>
+<strong>In Words :</strong>  
+{{ \App\HelperClass::convertNumber($data->net_amount) }} Taka Only
+</p>
+
+</div>
+
+
+<div class="col-xs-6">
+
+<table class="table table-bordered">
+
+<tr>
+<th>Total</th>
+<td class="text-right">
+৳{{ number_format($data->amount,2) }}
+</td>
+</tr>
+
+
+<tr>
+<th>Discount</th>
+<td class="text-right">
+৳{{ number_format($data->discount,2) }}
+</td>
+</tr>
+<tr>
+<th>Tax</th>
+<td class="text-right">
+৳{{ number_format($data->tax_amount,2) }}
+</td>
+</tr>
+
+
+<tr class="grand-total">
+<th>Net Amount</th>
+<td class="text-right">
+৳{{ number_format($data->net_amount,2) }}
+</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<!-- SIGNATURE -->
+
+<div class="row signature">
+
+<div class="col-xs-6 text-center">
+
+<div class="sign-line"></div>
+<p>Received By</p>
+
+</div>
+
+
+<div class="col-xs-6 text-center">
+
+<div class="sign-line"></div>
+<p>Prepared By</p>
+<p>{{ @$data->user->name }}</p>
+
+</div>
+
+</div>
+
+
+
+<!-- FOOTER -->
+
+<div style="margin-top:40px;font-size:12px">
+
+Print Date & Time :
+{{ date('d-m-Y h:i:s A') }}
+
+</div>
 @endsection

@@ -12,6 +12,8 @@ use App\Models\Client;
 use App\Models\SalesList;
 use App\Models\Collection;
 use App\Models\SalesReturn;
+use App\Models\ProductVariant;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SalesReturnList;
@@ -194,7 +196,37 @@ class SalesReturnController extends Controller
                         $sales->update([
                             'return_amount' => $sales->return_amount + $request->amount[$sales_list_id]
                         ]);
+
+                    // 🔥 Stock Update
+                    $productId = $request->product_id[$sales_list_id];
+                    $qty = $request->qty[$sales_list_id];
+                    $variant = ProductVariant::where([
+                        'product_id' => $productId
+                    ])->first();
+
+                    if ($variant) {
+                        $variant->increment('stock', $qty);
+                    } else {
+                    $product = Product::find($productId);
+                        ProductVariant::create([
+                            'product_id' => $productId,
+                            'stock' => $qty,
+                            'purchase_price' => $product->purchase_price,
+                            'regular_price' => $product->regular_price,
+                            'sale_price' => $product->sale_price,
+                            'discount_type' => $product->discount_type,
+                            'discount' => $product->discount,
+                            'status' => true,
+                            'created_by' => Auth::id(),
+                            'updated_by' => Auth::id(),
+                        ]);
                     }
+                    // Stock update end
+
+
+
+                    }
+
                 }
 
                 $client = Client::find($request->client_id);
@@ -237,7 +269,7 @@ class SalesReturnController extends Controller
                 }
 
                 $previous_payment = 0;
-                $sales = Sales::whereIn('id', array_unique($sales_id))->get();
+               $sales = Sales::whereIn('id', collect($sales_id)->flatten()->unique()->toArray())->get();
                 foreach ($sales as $item) {
                     $balance = $item->paid + $item->return_amount - $item->net_amount - $item->return_paid;
                     if ($balance > 0) {
@@ -269,6 +301,7 @@ class SalesReturnController extends Controller
                 }
             });
         } catch (\Exception $e) {
+            dd($e);
             return back()->withErrors($e->getMessage());
         }
 

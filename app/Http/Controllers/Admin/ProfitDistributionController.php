@@ -96,18 +96,19 @@ class ProfitDistributionController extends Controller
 
                 $invests = Invest::with(['investor', 'product'])->where('product_id', $request->product_id)->where('date', '<=', $endDate)->where('sattled', false)->get();
                 $product = Product::findOrFail($request->product_id);
-                $profitAmount = round($sales->sum('sumQty') * 0.9) * $product->profit;
+                // $profit_percent=$product->profit_percent/100;
+                // $profitAmount = ($sales->sum('sumQty') * $profit_percent) * $product->profit;
+                $profitAmount = $invests->sum('qty')*$product->profit;
 
                 $productionQty = ProductionList::whereHas('production', function ($query) use ($endDate) {
                         $query->where('date', '<=', $endDate);
                     })->where('product_id', $request->product_id)->sum('qty');
-
                 $detailData = [
                     'invests' => $invests,
                     'product' => $product,
                     'production_qty' => $productionQty,
-                    'sales_qty' => round($sales->sum('sumQty') * 0.9),
-                    'sales_amount' => round($sales->sum('sumAmount') * 0.9),
+                    'sales_qty' => $sales->sum('sumQty'),
+                    'sales_amount' => $sales->sum('sumAmount'),
                     'invest_qty' => $invests->sum('qty'),
                     'invest_amount' => $invests->sum('amount'),
                     'profit_amount' => $profitAmount,
@@ -163,7 +164,7 @@ class ProfitDistributionController extends Controller
                 $totalInvestQty = Invest::with(['investor', 'product'])->where('date', '<=', $endDate)->where('product_id', $request->product_id)->where('sattled', false)->sum('qty');
                 foreach ($request->invest_id as $invest_id) {
                     $invest = Invest::find($invest_id);
-                    $perShareProfit = round($request->profit_amount / $totalInvestQty);
+                    $perShareProfit = $request->profit_amount / $totalInvestQty;
 
                     ProfitDistributionList::create([
                         'profit_distribution_id' => $data->id,

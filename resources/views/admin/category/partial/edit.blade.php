@@ -29,9 +29,6 @@
                                     <option value="other" {{ $data->type == 'other' ? 'selected' : '' }}>
                                         Other
                                     </option>
-                                      <option value="book" {{ $data->type == 'book' ? 'selected' : '' }}>
-                                        Book
-                                    </option>
                                 </select>
                         </div>
 
@@ -82,12 +79,12 @@
                             <label for="url" class="form-label">URL: <span class="text-danger">*</span></label>
                             <input type="text" name="url" id="url" class="form-control" value="{{  $data->getRawOriginal('url') }}" required>
                         </div>
-                    <div class="mb-2">
+                    {{-- <div class="mb-2">
                         <label class="form-label">Description</label>
                         <textarea name="description"
                                   class="form-control"
                                   rows="3">{{ $data->description }}</textarea>
-                    </div>
+                    </div> --}}
                      <div class="mb-2">
                         <label for="image" class="form-label">Image</label>
                         <input type="file"

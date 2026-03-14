@@ -105,29 +105,28 @@
                     <div class="card-body p-0">
                         <ul class="list-group rounded-0" style="margin: -1px;">
                             <li class="list-group-item border-dashed">
-                                <span class="key">Discount (%): </span>
                                 <span class="value float-end">
                                     <input type="number" name="discount_percent" id="discount_percent" class="form-control form-control-sm" value="0" min="0" max="100">
                                 </span>
                             </li>
                             <li class="sub-total list-group-item border-dashed">
                                 <span class="key">Sub Total:</span>
-                                <span class="value float-end" id="subtotal">Tk.0.00</span>
+                                <span class="value float-end" id="subtotal">৳0.00</span>
                             </li>
                             <li class="list-group-item border-dashed">
                                 <span class="key">Tax ({{$settings->tax}}%):</span>
-                                <span class="value float-end" id="tax_total">Tk.0.00</span>
+                                <span class="value float-end" id="tax_total">৳0.00</span>
                             </li>
                              <li class="discount list-group-item border-dashed">
-                                <span class="key">Discount:</span>
+                                <span class="key">Discount(%)</span>
                                 <span class="value float-end">
-                                    <span id="discount_total">Tk.0.00</span>
+                                    <span id="discount_total">৳0.00</span>
                                 </span>
                             </li>
                              
                             <li class="list-group-item border-dashed">
                                 <span class="key">Grand Total:</span>
-                                <span class="value float-end" id="grand_total_display">Tk.0.00</span>
+                                <span class="value float-end" id="grand_total_display">৳0.00</span>
                             </li>
                         </ul>
 
@@ -234,6 +233,18 @@ $(document).ready(function(){
 
     // DISCOUNT CHANGE
     $(document).on('input', '#discount_percent', function(){
+         var val = +$(this).val();
+            if(val > 100) {
+                $(this).val(100);
+                Swal.fire({
+                    toast: true,
+                    position: 'top-right',
+                    icon: 'error',
+                    title: 'Maximum discount is 100%',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         calculateTotals();
     });
 
@@ -253,10 +264,10 @@ $(document).ready(function(){
         let grandTotal = subtotal - discountAmount + tax;
 
         // UPDATE DISPLAY
-        $('#subtotal').text('Tk.'+subtotal.toFixed(2));
-        $('#tax_total').text('Tk.'+tax.toFixed(2));
-        $('#grand_total_display').text('Tk.'+grandTotal.toFixed(2));
-         $("#discount_total").text("Tk." + discountAmount.toFixed(2));
+        $('#subtotal').text('৳'+subtotal.toFixed(2));
+        $('#tax_total').text('৳'+tax.toFixed(2));
+        $('#grand_total_display').text('৳'+grandTotal.toFixed(2));
+         $("#discount_total").text("৳" + discountAmount.toFixed(2));
         // UPDATE HIDDEN INPUTS FOR FORM
         $('#total_amount').val(subtotal.toFixed(2));
         $('#discount_amount').val(discountAmount.toFixed(2));

@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class AdminSetting extends Model
 {
-    protected $fillable = ['logo', 'small_logo', 'favicon', 'title', 'footer_text', 'primary_color', 'secondary_color', 'facebook', 'twitter', 'linkedin', 'whatsapp', 'google'];
+    protected $fillable = ['logo','invest_value', 'small_logo', 'favicon', 'title', 'footer_text', 'primary_color', 'secondary_color', 'facebook', 'twitter', 'linkedin', 'whatsapp', 'google'];
 }

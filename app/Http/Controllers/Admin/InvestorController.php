@@ -70,7 +70,7 @@ class InvestorController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 $user = User::create([
-                    'role' => 2,
+                    'role_status' => 2,
                     'name' => $request->name,
                     'email' => $request->email,
                     'phone' => $request->phone,

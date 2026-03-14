@@ -84,6 +84,11 @@
                                     class="form-control" value="{{ @$data->whatsapp }}">
                             </div>
                             <div class="col-12">
+                                <label for="invest_value" class="form-label"><b>Invest Value</b></label>
+                                <input type="text" id="invest_value" name="invest_value" placeholder="Invest Value"
+                                    class="form-control" value="{{ @$data->invest_value }}" required>
+                            </div>
+                            <div class="col-12">
                                 <label for="footer_text" class="form-label"><b>Footer Text</b></label>
                                 <input type="text" id="footer_text" name="footer_text" placeholder="Footer Text"
                                     class="form-control" value="{{ @$data->footer_text }}" required>

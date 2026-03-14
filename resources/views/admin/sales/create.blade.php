@@ -58,7 +58,7 @@
             <select id="product_id" class="select form-select" data-placeholder="Select Product">
                 <option value=""></option>
                 @foreach ($products as $item)
-                    <option value="{{ $item->id }}" data-price="{{ $item->client_price }}"
+                    <option value="{{ $item->id }}" data-price="{{ $item->sale_price }}"
                         data-commission="{{ $item->client_commission }}" data-rate="{{ $item->net_price }}">
                         {{ $item->name }}
                     </option>
@@ -144,6 +144,32 @@
                                     <b style="width: 100px;">Discount</b>
                                     <input type="number" id="discount" name="discount"
                                         class="form-control input-sm text-end" placeholder="Discount" value="0">
+                                    <span class="text-center" style="width: 40px;">TK.</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.25rem 0.25rem;" colspan="6"></td>
+                            <td style="padding: 2px 0.25rem;" colspan="3">
+                                <div class="input-group align-items-center">
+                                    <b style="width: 100px;">Tax</b>
+                                    <input type="number" id="tax" name="tax"
+                                        class="form-control input-sm text-end"
+                                        value="{{ $settings->tax }}"
+                                        readonly>
+                                    <span class="text-center" style="width: 40px;">%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.25rem 0.25rem;" colspan="6"></td>
+                            <td style="padding: 2px 0.25rem;" colspan="3">
+                                <div class="input-group align-items-center">
+                                    <b style="width: 100px;">Tax Amount</b>
+                                    <input type="number" id="tax-amount" name="tax_amount"
+                                        class="form-control input-sm text-end"
+                                        value=""
+                                        readonly>
                                     <span class="text-center" style="width: 40px;">TK.</span>
                                 </div>
                             </td>
@@ -276,103 +302,165 @@
                 }
             }
 
-            $(document).on('click', '#add_item', function() {
-                var product_id = $('#product_id option:selected').val();
-                var product_edition_id = $('#product_edition_id').val();
-                var edition = $('#product_edition_id option:selected').text();
-                var product = $('#product_id option:selected').text();
+           $(document).on('click', '#add_item', function() {
 
-                var price = +$('#product_id option:selected').data('price');
-                var commission = +$('#product_id option:selected').data('commission');
-                var rate = +$('#product_id option:selected').data('rate');
+            var product_id = $('#product_id option:selected').val();
+            var product_edition_id = $('#product_edition_id').val();
+            var edition = $('#product_edition_id option:selected').text();
+            var product = $('#product_id option:selected').text();
 
-                var qty = +$('#quantity').val();
-                var stock = +$('#stock').val();
-                var sl = $('#tbody tr').length + 1;
-                if (product_edition_id == '') {
+            var price = +$('#product_id option:selected').data('price');
+            var commission = +$('#product_id option:selected').data('commission');
+
+            var rate = Math.round(price - (price * (commission / 100)));
+
+            var qty = +$('#quantity').val();
+            var stock = +$('#stock').val();
+
+            var sl = $('#tbody tr').length + 1;
+
+            if (product_edition_id == '') {
+                Swal.fire({
+                    width: "22rem",
+                    toast: true,
+                    position: 'top-right',
+                    text: "Please select a product!",
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return false;
+            }
+
+            if (stock <= 0 || qty > stock) {
+                Swal.fire({
+                    width: "22rem",
+                    toast: true,
+                    position: 'top-right',
+                    text: "Stock not available!",
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return false;
+            }
+
+            // duplicate product check
+            if ($('#edition_' + product_edition_id).length) {
+
+                var old_qty = +$('#qty_' + product_edition_id).val();
+                var new_qty = old_qty + qty;
+
+                if (new_qty > stock) {
                     Swal.fire({
                         width: "22rem",
                         toast: true,
                         position: 'top-right',
-                        text: "Please select a product!",
+                        text: "Stock limit exceeded!",
                         icon: "error",
                         showConfirmButton: false,
-                        timer: 1500,
-                        showClass: {
-                            popup: `animate__animated animate__bounceInRight animate__faster`
-                        },
-                        hideClass: {
-                            popup: `animate__animated animate__bounceOutRight animate__faster`
-                        }
+                        timer: 1500
                     });
                     return false;
                 }
-                if ($('#edition_' + product_edition_id).length) {
-                    Swal.fire({
-                        width: "22rem",
-                        toast: true,
-                        position: 'top-right',
-                        text: "Product already added!",
-                        icon: "error",
-                        showConfirmButton: false,
-                        timer: 1500,
-                        showClass: {
-                            popup: `animate__animated animate__bounceInRight animate__faster`
-                        },
-                        hideClass: {
-                            popup: `animate__animated animate__bounceOutRight animate__faster`
-                        }
-                    });
-                    return false;
-                }
-                if (stock <= 0 || qty > stock) {
-                    Swal.fire({
-                        width: "22rem",
-                        toast: true,
-                        position: 'top-right',
-                        text: "Stock not available!",
-                        icon: "error",
-                        showConfirmButton: false,
-                        timer: 1500,
-                        showClass: {
-                            popup: `animate__animated animate__bounceInRight animate__faster`
-                        },
-                        hideClass: {
-                            popup: `animate__animated animate__bounceOutRight animate__faster`
-                        }
-                    });
-                    return false;
-                }
-                var tr =
-                    `<tr id="edition_${product_edition_id}">
-                        <td class="text-center" style="padding: 0.25rem 0.25rem;">${sl}</td>
-                        <td class="text-nowrap" style="padding: 2px 0.25rem;">${product}</td>
-                        <td class="text-nowrap" style="padding: 2px 0.25rem;">${edition}</td>
-                        <td style="padding: 2px 0.25rem;">
-                            <input type="number" class="form-control input-sm text-end price" step="any" id="price_${product_edition_id}" data-id="${product_edition_id}" name="price[${product_edition_id}]" value="${price}" placeholder="0.00" required>
-                        </td>
-                        <td style="padding: 2px 0.25rem;">
-                            <input type="number" class="form-control input-sm text-end commission" step="any" id="commission_${product_edition_id}" data-id="${product_edition_id}" name="commission[${product_edition_id}]" value="${commission}" placeholder="0.00" required>
-                        </td>
-                        <td style="padding: 2px 0.25rem;">
-                            <input type="number" class="form-control input-sm text-end rate" step="any" id="rate_${product_edition_id}" name="rate[${product_edition_id}]" value="${rate}" placeholder="0.00" readonly required>
-                        </td>
-                        <td style="padding: 2px 0.25rem;">
-                            <input type="number" class="form-control input-sm text-end qty" min="1" step="1" id="qty_${product_edition_id}" name="qty[${product_edition_id}]" max="${stock}" value="${qty}" placeholder="0.00" required>
-                        </td>
-                        <td style="padding: 2px 0.25rem;">
-                            <input type="number" class="form-control input-sm text-end" step="any" id="amount_${product_edition_id}" name="amount[${product_edition_id}]" value="${rate*qty}" readonly placeholder="0.00" required>
-                        </td>
-                        <td style="padding: 2px 0.25rem;" class="text-center">
-                            <input type="hidden" class="product_edition_id" name="product_edition_id[]" value="${product_edition_id}">
-                            <input type="hidden" name="product_id[${product_edition_id}]" value="${product_id}">
-                            <button type="button" class="btn btn-sm btn-danger remove"><i class="far fa-times"></i></button>
-                        </td>
-                    </tr>`;
-                $('#tbody').append(tr);
+
+                $('#qty_' + product_edition_id).val(new_qty).trigger('change');
+
                 calculate();
                 dueLimit();
-            });
+                return;
+            }
+
+            var tr = `
+            <tr id="edition_${product_edition_id}">
+                <td class="text-center">${sl}</td>
+
+                <td class="text-nowrap">${product}</td>
+
+                <td class="text-nowrap">${edition}</td>
+
+                <td>
+                    <input type="number"
+                    class="form-control input-sm text-end price"
+                    step="any"
+                    id="price_${product_edition_id}"
+                    data-id="${product_edition_id}"
+                    name="price[${product_edition_id}]"
+                    value="${price}"
+                    readonly>
+                </td>
+
+                <td>
+                    <input type="number"
+                    class="form-control input-sm text-end commission"
+                    step="any"
+                    id="commission_${product_edition_id}"
+                    data-id="${product_edition_id}"
+                    name="commission[${product_edition_id}]"
+                    value="${commission}">
+                </td>
+
+                <td>
+                    <input type="number"
+                    class="form-control input-sm text-end rate"
+                    step="any"
+                    id="rate_${product_edition_id}"
+                    name="rate[${product_edition_id}]"
+                    value="${rate}"
+                    readonly>
+                </td>
+
+                <td>
+                    <input type="number"
+                    class="form-control input-sm text-end qty"
+                    min="1"
+                    step="1"
+                    id="qty_${product_edition_id}"
+                    name="qty[${product_edition_id}]"
+                    max="${stock}"
+                    value="${qty}">
+                </td>
+
+                <td style="padding:2px 0.25rem;">
+                    <input type="number"
+                    class="form-control input-sm text-end"
+                    step="any"
+                    id="amount_${product_edition_id}"
+                    name="amount[${product_edition_id}]"
+                    value="${rate * qty}"
+                    readonly>
+                </td>
+
+                <td class="text-center">
+
+                    <input type="hidden"
+                    class="product_edition_id"
+                    name="product_edition_id[]"
+                    value="${product_edition_id}">
+
+                    <input type="hidden"
+                    name="product_id[${product_edition_id}]"
+                    value="${product_id}">
+
+                    <button type="button"
+                    class="btn btn-sm btn-danger remove">
+                    <i class="far fa-times"></i>
+                    </button>
+
+                </td>
+            </tr>`;
+
+            $('#tbody').append(tr);
+
+            calculate();
+            dueLimit();
+
+            // reset input
+            $('#quantity').val(1);
+            $('#stock').val(0);
+            $('#product_id').val('').trigger('change');
+            $('#product_edition_id').html('<option value=""></option>');
+        });
 
             $(document).on('wheel keyup change', '.qty,#discount', function() {
                 calculate();
@@ -410,7 +498,10 @@
                 });
                 $('#total_amount').val(total_amount);
                 var discount = +$('#discount').val();
-                $('#net_amount').val(total_amount - discount);
+                 var tax = +$('#tax').val();
+                 var tax_amount = Math.round(total_amount * tax / 100);
+                 $('#tax-amount').val(tax_amount);
+                $('#net_amount').val(total_amount+tax_amount - discount);
             }
         });
     </script>

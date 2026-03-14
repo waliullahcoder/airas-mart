@@ -6,6 +6,7 @@ use App\Models\Setting;
 use App\Models\AdminMenu;
 use App\Models\AdminSetting;
 use App\Models\Category;
+use App\Models\Order;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Cache;
@@ -74,6 +75,10 @@ class AppServiceProvider extends ServiceProvider
                     ->where('status', 1)
                     ->get()
             );
+
+            $newOrders = Order::where('status', 'pending')->latest()->get();
+            $newOrdersCount = $newOrders->count();
+            $view->with(['newOrders' => $newOrders, 'newOrdersCount' => $newOrdersCount]);
             $settings = Cache::remember('setting', 3600, function () {
                 return Setting::first();
             });

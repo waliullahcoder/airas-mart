@@ -7,7 +7,7 @@
     <div class="col-md-3 col-sm-6">
         <label for="profit_amount" class="form-label"><b>Total Profit</b></label>
         <input type="text" class="form-control" id="profit_amount" name="profit_amount"
-            value="{{ $detailData['profit_amount'] ?? 0 }}" readonly>
+            value="{{ round($detailData['profit_amount']) ?? 0 }}" readonly>
 
         <input type="text" class="form-control d-none" id="production_qty" name="production_qty"
             value="{{ $detailData['production_qty'] ?? 0 }}" readonly>
@@ -52,9 +52,11 @@
                                     })
                                     ->where('distributed', false)
                                     ->sum(DB::raw('qty - return_qty'));
-                                $salesQty = round($salesQty * 0.9);
-                                $totalProfit = $salesQty * $item->product->profit;
-                                $perShareProfit = round($totalProfit / $product->required_share);
+                                //$profit_percent=$item->product->profit_percent/100;  
+                               // $totalProfit = $salesQty * $item->product->profit;
+                                // $perShareProfit = $totalProfit / $item->product->required_share;
+                                 $totalProfit = $totalInvestQty * $item->product->profit;
+                                $perShareProfit = $totalProfit / $totalInvestQty;
                             @endphp
                             <tr>
                                 <input type="hidden" name="invest_id[]" value="{{ $item->id }}">
@@ -64,11 +66,11 @@
                                 <td><input type="number" class="form-control input-sm text-end" step="any"
                                         value="{{ $item->amount }}" readonly></td>
                                 <td><input type="number" class="form-control input-sm text-end" step="any"
-                                        value="{{ round($salesQty) }}" readonly></td>
+                                        value="{{ $salesQty }}" readonly></td>
                                 <td><input type="number" class="form-control input-sm text-end" step="any"
-                                        value="{{ $totalProfit }}" readonly></td>
+                                        value="{{ round($totalProfit,2) }}" readonly></td>
                                 <td><input type="number" class="form-control input-sm text-end" step="any"
-                                        value="{{ $perShareProfit * $item->qty }}" readonly></td>
+                                        value="{{ round($perShareProfit,2) }}" readonly></td>
                             </tr>
                         @endforeach
                     @endif

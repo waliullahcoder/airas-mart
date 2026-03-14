@@ -42,7 +42,8 @@ use App\Http\Controllers\Admin\{
     ProfitDistributionController,
     InvestorPaymentController,
     InvestSattlementController,
-    ExpenseController
+    ExpenseController,
+    CoaController,
 };
 
 Route::middleware('guest')->group(function () {
@@ -119,7 +120,8 @@ Route::group(['middleware' => ['admin']], function () {
     // Invest Sattlement
     Route::resource('/invest-sattlement', InvestSattlementController::class);
     Route::get('/investor-statement', [ReportController::class, 'investorStatement'])->name('investor-statement.index');
-
+    // Chart of Account
+    Route::resource('/coa', CoaController::class);
      // Accounting
     Route::get('/coa-list', [ReportController::class, 'coaList'])->name('coa-list.index');
     Route::get('/voucher-list', [ReportController::class, 'voucherList'])->name('voucher-list.index');
@@ -174,6 +176,9 @@ Route::group(['middleware' => ['admin']], function () {
 
     // Category
     Route::resource('/category', CategoryController::class);
+     Route::get('/des/change/{ck}', [CategoryController::class, 'desCK'])->name('category.ck');
+     Route::put('/des/change/{ck}', [CategoryController::class, 'ckUpdate'])->name('category.ck.update');
+    
 
     // Uom
     Route::resource('/uom', UomController::class);

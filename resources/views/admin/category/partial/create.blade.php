@@ -36,11 +36,10 @@
                         </div>
                         <div class="col-12">
                                     <label for="type" class="form-label"><b>Type</b></label>
-                                    
-                                    <select name="type" id="type" class="form-select" required>
-                                        <option value="other" {{ old('other') == 'other' ? 'selected' : '' }}>
+                                    <option value="other" {{ old('other') == 'other' ? 'selected' : '' }}>
                                         Other
                                     </option>
+                                    <select name="type" id="type" class="form-select" required>
                                       <option value="book" {{ old('book') == 'book' ? 'selected' : '' }}>
                                         Book
                                     </option>
@@ -106,7 +105,7 @@
 
                         <div class="col-12">
                             <label for="description" class="form-label">Description:</label>
-                            <textarea name="description" cols="17" rows="3" id="description" class="form-control"></textarea>
+                            <textarea class="form-control description" id="description" name="description" placeholder="Description"></textarea>
                         </div>
                     </div>
                 </div>

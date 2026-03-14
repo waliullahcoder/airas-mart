@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Sales extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['client_id', 'store_id', 'sales_officer_id', 'coa_id', 'sale_type', 'invoice', 'date', 'amount', 'discount', 'net_amount', 'paid', 'return_amount', 'return_paid', 'remarks', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['client_id', 'store_id', 'sales_officer_id', 'coa_id', 'sale_type', 'invoice', 'date', 'amount', 'discount', 'tax', 'tax_amount', 'net_amount', 'paid', 'return_amount', 'return_paid', 'remarks', 'created_by', 'updated_by', 'deleted_by'];
     protected $appends = ['formattedDate'];
 
     public function client()

@@ -31,6 +31,7 @@ class AdminSettingController extends Controller
         $data = AdminSetting::firstOrNew();
         $data->fill([
             'title' => $request->title,
+            'invest_value' => $request->invest_value,
             'footer_text' => $request->footer_text,
             'primary_color' => $request->primary_color,
             'secondary_color' => $request->secondary_color,

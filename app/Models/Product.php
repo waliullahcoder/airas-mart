@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['name', 'code', 'slug', 'category_id', 'uom_id', 'brand_id', 'publication_id', 'product_type', 'barcode', 'file', 'thumbnail', 'short_description', 'description', 'purchase_price', 'regular_price', 'sale_price', 'discount', 'discount_type', 'discount_start_date', 'discount_end_date', 'sku', 'meta_title', 'meta_description', 'meta_image', 'custom_barcode', 'favorite', 'trending', 'new_arrival', 'best_seller', 'status', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['name', 'code', 'slug', 'profit','profit_percent','required_share', 'show_dashboard', 'serial','category_id', 'uom_id', 'brand_id', 'publication_id', 'product_type', 'barcode', 'file', 'thumbnail', 'short_description', 'description', 'purchase_price', 'regular_price', 'sale_price', 'discount', 'discount_type', 'discount_start_date', 'discount_end_date', 'sku', 'meta_title', 'meta_description', 'meta_image', 'custom_barcode', 'favorite', 'trending', 'new_arrival', 'best_seller', 'status', 'created_by', 'updated_by', 'deleted_by'];
     protected $appends = ['author_names'];
 
     public function category()
@@ -140,9 +140,8 @@ class Product extends Model
     {
         return $this->reviews()->avg('rating');
     }
-    
-    public function brand()
+    public function invests()
     {
-        return $this->belongsTo(Brand::class, 'brand_id');
+        return $this->hasMany(Invest::class, 'product_id');
     }
 }

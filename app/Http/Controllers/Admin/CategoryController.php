@@ -83,6 +83,25 @@ class CategoryController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function desCK(Request $request, string $id)
+    {
+            $data = $this->model::findOrFail($id);
+        return view('admin.category.descriptionCK', compact('data'));
+    }
+    public function ckUpdate(Request $request, string $id)
+    {
+        $data = $this->model::findOrFail($id);
+        $data->update([
+            'description' => $request->description,
+            'updated_by' => Auth::id(),
+        ]);
+
+        return redirect()->route("admin.{$this->path}.index")->withSuccessMessage('Updated Successfully!');
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)

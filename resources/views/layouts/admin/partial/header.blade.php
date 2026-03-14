@@ -3,6 +3,7 @@
         <div class="d-flex align-items-center gap-3">
             <button class="brand-toggle btn btn-sm px-0 d-flex @if (Session::has('sidebar-collapse')) active @endif">
                 <span class="svg-icon svg-icon svg-icon-xl">
+                    <!-- Existing toggle SVG -->
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24"
                         height="24" viewBox="0 0 24 24" version="1.1">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -23,8 +24,41 @@
             </button>
         </div>
 
-        <div class="d-flex align-items-center">
-            <div class="dropdown ms-sm-3 header-item topbar-user">
+        <div class="d-flex align-items-center gap-3">
+            @if(Auth::user()->hasRole('Software Admin'))
+            {{-- Order Notification --}}
+            <div class="dropdown">
+                <button class="btn btn-light position-relative" type="button" id="orderDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="material-symbols-outlined fs-24">notifications</span>
+                    @if($newOrdersCount > 0)
+                        <span id="order-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $newOrdersCount }}
+                        </span>
+                    @endif
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="orderDropdown" style="min-width:300px;">
+                    <li class="dropdown-header fs-6 fw-bold">নতুন অর্ডার</li>
+                    @forelse($newOrders as $order)
+                        <a href="{{ route('admin.orders.show', $order->id) }}"><li class="dropdown-item d-flex justify-content-between align-items-center">
+                            <span>{{ $order->order_number??'N/A' }}</span>
+                            <span class="badge bg-primary rounded-pill">{{ $order->status }}</span>
+                        </li></a>
+                    @empty
+                        <li class="dropdown-item text-center text-muted">কোনো নতুন অর্ডার নেই</li>
+                    @endforelse
+                    @if($newOrdersCount > 0)
+                        <li><hr class="dropdown-divider"></li>
+                         <a href="{{ route('admin.orders.index') }}"><li class="text-center">
+                            <button id="mark-read" class="btn btn-sm btn-outline-secondary">Go to Orders</button>
+                        </li></a>
+                    @endif
+                </ul>
+            </div>
+            @endif
+
+            {{-- User Profile --}}
+            <div class="dropdown ms-3 header-item topbar-user">
                 <button type="button" class="btn btn-light rounded-0 border-0" data-bs-toggle="dropdown">
                     <span class="d-flex align-items-center">
                         <img class="rounded-circle img-fit lazyload"
@@ -37,12 +71,9 @@
                     </span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end w-100 rounded-0" style="min-width: 200px;">
-                    <!-- item-->
                     <h6 class="fw-500 text-muted fs-12 px-3 mb-0 py-10px">Welcome {{ Auth::user()->name }}!</h6>
-                    <a class="d-block fs-13 px-3 py-2 hov-bg-light" href="{{ Route('admin.profile.index') }}"><i
-                            class="fad fa-user me-1 fs-15"></i> <span>Profile</span></a>
-                    <a class="d-block fs-13 px-3 py-2 hov-bg-light" href="{{ Route('admin.logout') }}"> <i
-                            class="fad fa-sign-out me-1 fs-15"></i><span>Logout</span></a>
+                    <a class="d-block fs-13 px-3 py-2 hov-bg-light" href="{{ Route('admin.profile.index') }}"><i class="fad fa-user me-1 fs-15"></i> <span>Profile</span></a>
+                    <a class="d-block fs-13 px-3 py-2 hov-bg-light" href="{{ Route('admin.logout') }}"> <i class="fad fa-sign-out me-1 fs-15"></i><span>Logout</span></a>
                 </div>
             </div>
         </div>

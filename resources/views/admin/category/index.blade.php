@@ -35,6 +35,8 @@
                         {{ $menu->name }} 
                     </a>
 
+                    <a style="padding-left:90%" href="{{ route('admin.category.ck.update', $menu->id) }}">Description</a>
+
                     {{-- CHILD CATEGORIES --}}
                     @if(isset($sub_categories[$menu->id]))
                         <ul>
@@ -44,7 +46,8 @@
                                        class="edit_category"
                                        data-url="{{ route('admin.category.edit', $submenu->id) }}">
                                         {{ $submenu->name }}
-                                    </a>
+                                    </a> 
+                                    <a style="padding-left:90%" href="{{ route('admin.category.ck.update', $submenu->id) }}">Description</a>
                                 </li>
                             @endforeach
                         </ul>
