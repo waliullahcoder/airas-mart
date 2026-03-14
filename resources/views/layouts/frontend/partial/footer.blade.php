@@ -23,7 +23,7 @@
                 <h5 class="footer-title">Social Network Links</h5>
                 <ul class="footer-list">
                     @foreach ($menus['footer_col2_menus'] as $menu)
-                    <li class="footer-item"><a class="footer-link" href="{{ route('info.page', $menu->id) }}">{{ $menu->name }}</a></li>
+                    <li class="footer-item"><a class="footer-link" target="_blank" href="{{$menu->menu_url}}">{{ $menu->name }}</a></li>
                     @endforeach
                 </ul>
             </div>
