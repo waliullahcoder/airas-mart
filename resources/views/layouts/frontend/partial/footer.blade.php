@@ -13,17 +13,14 @@
             <div class="col-lg-3 col-md-4 col-6">
                 <h5 class="footer-title">Other Links</h5>
                 <ul class="footer-list">
-                   @foreach ($menus['top_menus'] as $menu)
-                   <li class="footer-item"><a class="footer-link" href="{{ route('info.page', $menu->id) }}">{{ $menu->name }}</a></li>
-                    @endforeach
-                    
+                
                     @foreach ($menus['footer_col1_menus'] as $menu)
                     <li class="footer-item"><a class="footer-link" href="{{ route('info.page', $menu->id) }}">{{ $menu->name }}</a></li>
                     @endforeach
                 </ul>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
-                <h5 class="footer-title">Popular</h5>
+                <h5 class="footer-title">Social Network Links</h5>
                 <ul class="footer-list">
                     @foreach ($menus['footer_col2_menus'] as $menu)
                     <li class="footer-item"><a class="footer-link" href="{{ route('info.page', $menu->id) }}">{{ $menu->name }}</a></li>

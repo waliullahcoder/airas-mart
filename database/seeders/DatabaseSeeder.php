@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Software Admin User
         $user = User::create([
             'name' => "Admin",
             'user_name' => "admin",
@@ -22,7 +23,24 @@ class DatabaseSeeder extends Seeder
             'email' => "waliullahbiplob786@gmail.com",
             'password' => Hash::make("Wali.123!@#"),
         ]);
+
         $role = Role::create(['name' => 'Software Admin']);
         $user->assignRole($role);
+
+
+        // System Admin Role
+        $systemRole = Role::create(['name' => 'System Admin']);
+
+        // System Admin User
+        $systemUser = User::create([
+            'name' => "System Admin",
+            'user_name' => "systemadmin",
+            'role_status' => 1,
+            'phone' => "01700000000",
+            'email' => "systemadmin@example.com",
+            'password' => Hash::make("System@123"),
+        ]);
+
+        $systemUser->assignRole($systemRole);
     }
 }

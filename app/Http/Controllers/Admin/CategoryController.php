@@ -117,7 +117,7 @@ class CategoryController extends Controller
             'url' => $request->url,
            // 'slug' => HelperClass::generateUniqueSlug($this->model, 'slug', $request->name, $id),
             'image' => $request->hasFile('image') ? HelperClass::saveImage($request->image, 600, $this->path, $data->image) : $data->image,
-            'description' => $request->description,
+            // 'description' => $request->description,
             'updated_by' => Auth::id(),
         ]);
 

@@ -60,7 +60,6 @@ $(document).ready(function(){
         });
 
 
-        // যদি যেকোনো একটাও checked থাকে
         if(publications.length > 0 || authors.length > 0 || priceSort != null || priceRanges.length > 0){
 
             $.ajax({
@@ -80,7 +79,6 @@ $(document).ready(function(){
 
         }else{
 
-            // সব unchecked হলে default show
             $('#filtered-products').hide().html('');
             $('#default-products').show();
         }
@@ -115,7 +113,6 @@ $(document).ready(function(){
         });
 
 
-        // যদি যেকোনো একটাও checked থাকে
         if(publications.length > 0 || authors.length > 0 || priceSort != null || priceRanges.length > 0){
 
             $.ajax({
@@ -135,7 +132,7 @@ $(document).ready(function(){
 
         }else{
 
-            // সব unchecked হলে default show
+          
             $('#filtered-products-sub').hide().html('');
             $('#default-products-sub').show();
         }

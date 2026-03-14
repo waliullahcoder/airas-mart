@@ -32,7 +32,7 @@
                     <a href="javascript:void(0)"
                        class="edit_category fw-bold"
                        data-url="{{ route('admin.category.edit', $menu->id) }}">
-                        {{ $menu->name }} 
+                        {{ $menu->name }} ({{$menu->position}})
                     </a>
 
                     <a style="padding-left:90%" href="{{ route('admin.category.ck.update', $menu->id) }}">Description</a>
@@ -45,7 +45,7 @@
                                     <a href="javascript:void(0)"
                                        class="edit_category"
                                        data-url="{{ route('admin.category.edit', $submenu->id) }}">
-                                        {{ $submenu->name }}
+                                        {{ $submenu->name }} ({{$submenu->position}})
                                     </a> 
                                     <a style="padding-left:90%" href="{{ route('admin.category.ck.update', $submenu->id) }}">Description</a>
                                 </li>
