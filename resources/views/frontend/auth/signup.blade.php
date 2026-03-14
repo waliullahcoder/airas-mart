@@ -19,38 +19,48 @@
 
                             <!-- NAME -->
                             <div class="mb-3">
-                                <label class="form-label">Full Name</label>
+                                <label class="form-label">Full Name <span class="text-danger">*</span></label>
                                 <input type="text"
                                        name="name"
-                                       value="{{ old('name') }}"
+                                       placeholder="Ex. Mr. John Doe"
+                                       class="form-control"
+                                       required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mobile No. <span class="text-danger">*</span></label>
+                                <input type="phone"
+                                       name="phone"
+                                       placeholder="Ex. 01712****5678"
                                        class="form-control"
                                        required>
                             </div>
 
-                            <!-- EMAIL -->
+                            <!-- address -->
                             <div class="mb-3">
-                                <label class="form-label">Email address</label>
-                                <input type="email"
-                                       name="email"
-                                       value="{{ old('email') }}"
+                                <label class="form-label">Address <span class="text-danger">*</span></label>
+                                <input type="address"
+                                       name="address"
+                                       placeholder="Ex. H#2, R#5, East Rampura, Dhaka-1219"
                                        class="form-control"
                                        required>
                             </div>
 
                             <!-- PASSWORD -->
                             <div class="mb-3">
-                                <label class="form-label">Password</label>
+                                <label class="form-label">Password <span class="text-danger">*</span></label>
                                 <input type="password"
                                        name="password"
+                                       placeholder="Ex. Mr.#@!123"
                                        class="form-control"
                                        required>
                             </div>
 
                             <!-- CONFIRM PASSWORD -->
                             <div class="mb-3">
-                                <label class="form-label">Confirm Password</label>
+                                <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
                                 <input type="password"
                                        name="password_confirmation"
+                                       placeholder="Ex. Mr.#@!123"
                                        class="form-control"
                                        required>
                             </div>

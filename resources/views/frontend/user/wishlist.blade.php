@@ -63,7 +63,7 @@
                                                 <del>
                                                     <span class="Price-amount">
                                                         {{ number_format($product->sale_price, 2) }}
-                                                        <span class="Price-currencySymbol">Tk.</span>
+                                                        <span class="Price-currencySymbol">৳</span>
                                                     </span>
                                                 </del>
                                             @endif
@@ -72,7 +72,7 @@
                                             <ins>
                                                 <span class="Price-amount">
                                                     {{ number_format($product->regular_price, 2) }}
-                                                    <span class="Price-currencySymbol">Tk.</span>
+                                                    <span class="Price-currencySymbol">৳</span>
                                                 </span>
                                             </ins>
 
@@ -83,10 +83,10 @@
                                 {{-- ACTIONS --}}
                                 <div class="product-card-action d-flex gap-1">
 
-                                    {{-- <span>+</span> --}}
+                                    {{-- ADD TO CART --}}
                                     <button class="btn btn-sm btn-danger add-to-cart"
                                             data-id="{{ $product->id }}">
-                                        <span>+</span>
+                                        Add to Cart
                                     </button>
 
                                     {{-- REMOVE FROM WISHLIST --}}

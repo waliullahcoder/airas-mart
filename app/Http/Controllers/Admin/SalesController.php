@@ -104,10 +104,10 @@ class SalesController extends Controller
     {
         $data = $this->model::withTrashed()->select(['invoice'])->whereDate('created_at', '>=', date('Y-m-01'))->whereDate('created_at', '<=', date('Y-m-t'))->orderBy('id', 'desc')->first();
         if ($data) {
-            $trim = (int)str_replace("CS", '', $data->invoice) + 1;
-            return "CS" . $trim;
+            $trim = (int)str_replace("INVO", '', $data->invoice) + 1;
+            return "INVO" . $trim;
         } else {
-            return "CS" . date('ym') . '001';
+            return "INVO" . date('ym') . '001';
         }
     }
 

@@ -23,8 +23,10 @@ Route::get('/signup', [ViewController::class, 'signupPage'])->name('auth.signupP
 
 Route::post('/signin', [UserController::class, 'signinPost'])->name('user.signinPost');
 Route::post('/signup', [UserController::class, 'signupPost'])->name('user.signupPost');
+Route::get('/forgot-password', [ViewController::class, 'forgotPasswordPage'])->name('auth.forgotPasswordPage');
+Route::post('/forgot-password', [UserController::class, 'forgotPasswordPost'])->name('user.forgotPasswordPost');
 
-
+Route::get('/info/{id}', [ViewController::class, 'infoPage'])->name('info.page');
 /*
 |--------------------------------------------------------------------------
 | Cart Routes
@@ -85,6 +87,10 @@ Route::middleware(['auth'])->group(function () {
     ->name('user.profile.edit');
     Route::post('/user/profile/update', [UserController::class, 'updateProfile'])
     ->name('user.profile.update');
+    Route::get('/user/invoice/history', [UserController::class, 'invoiceHistory'])
+        ->name('frontend.user.invoiceHistory');
+    Route::get('/user/invoice/{invoice}', [UserController::class, 'salesInvoice'])
+        ->name('frontend.user.salesInvoice');
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 });
 

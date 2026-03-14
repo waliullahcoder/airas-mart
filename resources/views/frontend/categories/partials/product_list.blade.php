@@ -7,7 +7,7 @@
     <div class="section-card" style="margin-top:2px;">
                     <!-- Section Header -->
                     <div class="section-header mb-3">
-                        <h3 class="section-title">{{$sub->name}}</h3>
+                        <h5 class="section-title">{{$sub->name}}</h5>
                         <a href="{{route('category.singleCategoryPage', $sub->id)}}" class="section-link">See All</a>
                     </div>
 
@@ -59,14 +59,13 @@
                                                         @if($product->discount>0)
                                                         <del>
                                                             <span class="Price-amount">
-                                                                 {{ number_format($product->regular_price) }} <span class="Price-currencySymbol">Tk.</span>
+                                                                 {{ number_format($product->regular_price, 2) }} <span class="Price-currencySymbol">৳</span>
                                                             </span>
                                                         </del>
                                                         @endif
-                                                          
                                                         <ins>
                                                             <span class="Price-amount">
-                                                                 {{ $product->discount==0 ? number_format($product->regular_price): number_format($product->sale_price) }} <span class="Price-currencySymbol">Tk.</span>
+                                                                 {{ number_format($product->sale_price, 2) }} <span class="Price-currencySymbol">৳</span>
                                                             </span>
                                                         </ins>
                                                     </span>
@@ -86,7 +85,7 @@
                                 </div>
                                @endforeach
                                 @else
-                                    <p>No subjects</p>
+                                    @include('frontend.categories.partials.notfound')
                                 @endif
                                 <!-- Product Slide -->
                            

@@ -108,7 +108,7 @@
                             </h6>
                             <p class="code">{{ $item['code'] }}</p>
                             <small class="text-muted">
-                                Tk.{{ number_format($item['price']) }}
+                                ৳{{ number_format($item['price']) }}
                             </small>
                         </div>
 
@@ -136,7 +136,7 @@
                         <!-- SUBTOTAL -->
                         <div class="col-2 text-end">
                             <strong class="item-subtotal text-danger">
-                                Tk.{{ number_format($item['price'] * $item['qty']) }}
+                                ৳{{ number_format($item['price'] * $item['qty']) }}
                             </strong>
                         </div>
 
@@ -166,24 +166,24 @@
 
                     <div class="d-flex justify-content-between mb-2">
                         <span>Subtotal</span>
-                        <strong id="subtotal">Tk. 0.00</strong>
+                        <strong id="subtotal">৳ 0.00</strong>
                     </div>
 
                     <div class="d-flex justify-content-between mb-2">
                         <span>Discount {{ $settings->discount_type=='percent' ? '('.$settings->discount.'%)' : '' }}</span>
-                        <strong id="discount">- Tk. 0.00</strong>
+                        <strong id="discount">- ৳ 0.00</strong>
                     </div>
 
                     <div class="d-flex justify-content-between mb-2">
                         <span>Tax ({{$settings->tax}}%)</span>
-                        <strong id="tax">Tk. 0.00</strong>
+                        <strong id="tax">৳ 0.00</strong>
                     </div>
 
                     <hr>
 
                     <div class="d-flex justify-content-between">
                         <strong>Total</strong>
-                        <strong id="total">Tk. 0.00</strong>
+                        <strong id="total">৳ 0.00</strong>
                     </div>
 
                     <hr>

@@ -58,7 +58,6 @@
                                     style="cursor:pointer;"
                                     onclick="changeImage(this)">
                                 {{-- Extra Images --}}
-                                @if(isset($product->images) && !empty($product->images))
                                 @foreach($product->images->take(4) as $image)
                                     <img src="{{ asset($image->image) }}"
                                         class="img-thumbnail small-thumb"
@@ -66,7 +65,6 @@
                                         style="cursor:pointer;"
                                         onclick="changeImage(this)">
                                 @endforeach
-                                @endif
 
                             </div>
 
@@ -181,25 +179,21 @@
 
                                 <!-- PRICE -->
                                 <div class="mb-4">
-                                    @if($product->sale_price > 0)
                                         <h3 class="text-danger">
-                                            {{ number_format($product->sale_price, 2) }} Tk.
+                                            {{ number_format($product->sale_price, 2) }} ৳
+                                            @if($product->discount>0)
                                             <del class="fs-6 text-muted ms-2">
-                                                {{ number_format($product->regular_price, 2) }} Tk.
+                                                {{ number_format($product->regular_price, 2) }} ৳
                                             </del>
+                                            @endif
                                         </h3>
-                                    @else
-                                        <h3 class="text-danger">
-                                            {{ number_format($product->regular_price, 2) }} Tk.
-                                        </h3>
-                                    @endif
                                 </div>
 
                                 <!-- ACTION BUTTONS -->
                                 <div class="d-flex gap-2 mb-4" style="gap:0.5rem !important">
                                     <button class="btn btn-danger add-to-cart"
                                             data-id="{{ $product->id }}" {{$product->variants->sum('stock')>0 ? '' : 'disabled'}}>
-                                        <span>+</span>
+                                        Add to Cart
                                     </button>
                                     {{-- <button class="btn btn-outline-secondary">
                                         Wishlist
@@ -253,7 +247,14 @@
                                         <th>Stock</th>
                                         <td>{{ $product->variants->sum('stock') }}</td>
                                     </tr>
-                                   
+                                    <tr>
+                                        <th>Author</th>
+                                        <td>{{$product->authors->pluck('name')->implode(', ')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Publication</th>
+                                        <td>{{$product->publication->name ?? 'N/A'}}</td>
+                                    </tr>
                                 </table>
 
                             </div>
@@ -281,7 +282,7 @@
                                 </a>
                                 <p>{{ $item->code }}</p><br>
                                 <span class="text-danger small">
-                                    {{ number_format($item->sale_price ?? $item->regular_price, 2) }} Tk.
+                                    {{ number_format($item->sale_price ?? $item->regular_price, 2) }} ৳
                                 </span>
                             </div>
                         </div>
@@ -330,14 +331,14 @@
                                     <th>Category</th>
                                     <td>{{ $product->category->name??'N/A' }}</td>
                                 </tr>
-                                <!-- <tr>
+                                <tr>
                                     <th>Authors</th>
                                     <td>{{ $product->authors->pluck('name')->implode(', ') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Publication</th>
                                     <td>{{ $product->publication->name ?? 'N/A' }}</td>
-                                </tr> -->
+                                </tr>
                                 <tr>
                                     <th>Barcode</th>
                                     <td>{{ $product->barcode }}</td>

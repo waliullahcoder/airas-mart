@@ -6,6 +6,9 @@ use App\Models\Slider;
 use App\Models\HomeSection;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Sales;
+use App\Models\Collection;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Coa;
 use Illuminate\Support\Facades\DB;
 use App\Models\Client;
@@ -31,13 +34,14 @@ class UserController extends Controller
     public function signinPost(Request $request)
     {
         $request->validate([
-            'email'    => 'required|email',
+            'phone'    => ['required','regex:/^01[3-9]\d{8}$/'],
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('phone', 'password');
+        $remember = $request->has('remember'); // ✅ remember me
 
-        if (Auth::attempt($credentials)) {
+         if (Auth::attempt($credentials, $remember)) {
 
             if (auth()->user()->role_status != 0) {
                 Auth::logout();
@@ -48,8 +52,8 @@ class UserController extends Controller
         }
 
         return back()
-            ->withErrors(['email' => 'Invalid email or password'])
-            ->withInput();
+        ->withErrors(['phone' => 'Invalid mobile number or password'])
+        ->withInput();
     }
 
 
@@ -57,21 +61,18 @@ class UserController extends Controller
         {
             $request->validate([
                 'name'     => 'required|string|max:255',
-                'email'    => 'required|email|unique:users,email',
-                'password' => 'required|min:6|confirmed', // 👈 confirm handled here
+                'phone'    => ['required','regex:/^01[3-9]\d{8}$/','unique:users,phone'],
+                'password' => 'required|min:6|confirmed',
             ]);
 
             try {
             DB::transaction(function () use ($request) {
              // Create User section
                 $user = null;
-            if ($request->phone || $request->email || $request->name) {
+            if ($request->phone || $request->name) {
                 $user = User::query()
                     ->when($request->phone, function ($q) use ($request) {
                         $q->where('phone', $request->phone);
-                    })
-                    ->when($request->email, function ($q) use ($request) {
-                        $q->orWhere('email', $request->email);
                     })
                     ->when($request->name, function ($q) use ($request) {
                         $q->orWhere('name', $request->name);
@@ -81,8 +82,10 @@ class UserController extends Controller
                 if (!$user) {
                 $user = User::create([
                 'name'        => $request->name,
+                'phone'        => $request->phone,
+                'address'        => $request->address,
                 'user_name'   => strtolower(str_replace(' ', '', $request->name)),
-                'email'       => $request->email,
+                'email'       => $request->phone.'@email.com',
                 'password'    => Hash::make($request->password),
                 'role_status' => 0,
                 ]);
@@ -124,7 +127,7 @@ class UserController extends Controller
                     'name' => $request->name,
                     'contact_person' => $request->contact_person,
                     'phone' => $request->phone,
-                    'email' => $request->email,
+                    'email' => $request->phone.'@email.com',
                     'address' => $request->address,
                     'bin_no' => $request->bin_no,
                     'credit_limit' => $request->credit_limit,
@@ -142,6 +145,37 @@ class UserController extends Controller
                 ->with('success', 'Welcome 🎉 Account created successfully');
         }
 
+   
+    public function forgotPasswordPost(Request $request)
+    {
+        // Step 1: Validate phone first
+        $request->validate([
+            'phone' => ['required','regex:/^01[3-9]\d{8}$/','exists:users,phone'],
+        ]);
+
+        // Find user once
+        $user = User::where('phone', $request->phone)->firstOrFail();
+
+        // Step 2: If password submitted, validate and update
+        if ($request->filled('password')) {
+            $request->validate([
+                'password' => 'required|min:6',
+            ]);
+
+            $user->update([
+                'password' => Hash::make($request->password),
+            ]);
+
+             return redirect()
+                ->route('auth.signinPage')->with('success', 'Password changed successfully!');
+        }
+
+        // Step 3: If no password yet, show the forgot password form with user info
+        $menus = $this->frontEndService->getMenu();
+
+        return view('frontend.auth.forgot_password', compact('user','menus'));
+    }
+
 
     public function dashboard()
     {
@@ -149,7 +183,35 @@ class UserController extends Controller
             abort(403);
         }
         $menus = $this->frontEndService->getMenu();
-        return view('frontend.user.dashboard', compact('menus'));
+        
+        $client = Client::where('user_id', Auth::user()->id)->first();
+        $clientid = 0;
+        if($client){
+            $clientid=$client->id;
+        }
+        $sales = Sales::where('client_id', $clientid)->sum('net_amount');
+        $collection = Collection::where('client_id', $clientid)->sum('amount');
+        return view('frontend.user.dashboard', compact('menus','sales','collection'));
+    }
+
+    public function invoiceHistory(){
+        $menus = $this->frontEndService->getMenu();
+        $client = Client::where('user_id', Auth::user()->id)->first();
+        $clientid = 0;
+        if($client){
+            $clientid=$client->id;
+        }
+         $sales = Sales::where('client_id', $clientid)->get();
+        return view('frontend.user.invoiceList', compact('menus','sales'));
+    }
+
+    public function salesInvoice($id){
+        $data = Sales::withTrashed()->findOrFail($id);
+        $report_title = 'Sales Invoice';
+        return view('frontend.user.salesInvoice', compact('report_title', 'data'));
+        // $pdf = Pdf::loadView("frontend.user.salesInvoice", compact('report_title', 'data'));
+        // $pdf->setOptions(['defaultFont' => 'solaimanlipi']);
+        // return $pdf->stream('sales_voucher_' . date('d_m_Y_H_i_s') . '.pdf');
     }
 
     public function updateEditProfile()

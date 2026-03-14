@@ -8,13 +8,17 @@
                             height="50" alt="{{ $settings->app_name }}">
                     </a>
                 </div>
-                <p style="color: white;">{{ $settings->description }}</p>
+                <p style="text-align: justify;color:white;">{{ $settings->description }}</p>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <h5 class="footer-title">Other Links</h5>
                 <ul class="footer-list">
+                   @foreach ($menus['top_menus'] as $menu)
+                   <li class="footer-item"><a class="footer-link" href="{{ route('info.page', $menu->id) }}">{{ $menu->name }}</a></li>
+                    @endforeach
+                    
                     @foreach ($menus['footer_col1_menus'] as $menu)
-                    <li class="footer-item"><a class="footer-link" href="{{ $menu->menu_url }}">{{ $menu->name }}</a></li>
+                    <li class="footer-item"><a class="footer-link" href="{{ route('info.page', $menu->id) }}">{{ $menu->name }}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -22,7 +26,7 @@
                 <h5 class="footer-title">Popular</h5>
                 <ul class="footer-list">
                     @foreach ($menus['footer_col2_menus'] as $menu)
-                    <li class="footer-item"><a class="footer-link" href="{{ $menu->menu_url }}">{{ $menu->name }}</a></li>
+                    <li class="footer-item"><a class="footer-link" href="{{ route('info.page', $menu->id) }}">{{ $menu->name }}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -30,44 +34,63 @@
                 <h5 class="footer-title">Connect With Us</h5>
                 <ul class="footer-contact">
                     <li class="footer-contact-item">
-                        <i class="fa fa-map-marker-alt"></i> Address: <br>
+                        <i class="fa fa-map-marker-alt"></i>&nbsp;
                         {!! $settings->address !!}
                     </li>
                     <li class="footer-contact-item">
-                        <i class="fa fa-mobile-alt"></i>&nbsp;Phone:<br><a
-                            href="tel:+88{{ $settings->primary_phone }}">{{ $settings->secondary_phone }}</a>
+                        <i class="fa fa-mobile-alt"></i>&nbsp;&nbsp;
+                        <a href="tel:+88{{ $settings->primary_phone }}">{{ $settings->primary_phone }}</a>
                     </li>
                     <li class="footer-contact-item">
-                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;<span>{{ $settings->secondary_email }}</span>
+                        <i class="fa fa-envelope"></i>&nbsp;&nbsp;<span>{{ $settings->primary_email }}</span>
                     </li>
-                    <li class="footer-contact-item pt-2">
+                    <li class="footer-contact-item">
                         @if ($settings->facebook_page)
                             <a class="social-link" target="_blank" href="{{ $settings->facebook_page }}" rel="noopener">
-                                <i class="fab fa-facebook"></i>
+                                <i class="fab fa-facebook"></i> ফেইজবুক লিঙ্ক 
                             </a>
                         @endif
-                        @if ($settings->youtube)
-                            &nbsp;&nbsp;
+                    </li>
+                    <li class="footer-contact-item">
+                       @if ($settings->youtube)
                             <a class="social-link" target="_blank" href="{{ $settings->youtube }}" rel="noopener">
-                                <i class="fab fa-youtube"></i>
+                                <i class="fab fa-youtube"></i> ইউটিউব লিঙ্ক
                             </a>
                         @endif
+                    </li>
+                    
+                    <li class="footer-contact-item">
                         @if ($settings->instagram)
-                            &nbsp;&nbsp;
                             <a class="social-link" target="_blank" href="{{ $settings->instagram }}" rel="noopener">
-                                <i class="fab fa-instagram"></i>
+                                <i class="fab fa-instagram"></i> ইনস্টাগ্রাম লিঙ্ক
                             </a>
                         @endif
+                        </li>
+                    <li class="footer-contact-item">
                         @if ($settings->twitter)
-                            &nbsp;&nbsp;
                             <a class="social-link" target="_blank" href="{{ $settings->twitter }}" rel="noopener">
-                                <i class="fab fa-twitter"></i>
+                                <i class="fab fa-twitter"></i> টুইটার লিঙ্ক
                             </a>
                         @endif
+                        </li>
+                    <li class="footer-contact-item">
                         @if ($settings->linkedin)
-                            &nbsp;&nbsp;
                             <a class="social-link" target="_blank" href="{{ $settings->linkedin }}" rel="noopener">
-                                <i class="fab fa-linkedin"></i>
+                                <i class="fab fa-linkedin"></i> লিঙ্কড ইন লিঙ্ক
+                            </a>
+                        @endif
+                        </li>
+                    <li class="footer-contact-item">
+                        @if ($settings->whatsapp)
+                            <a class="social-link" target="_blank" href="{{ $settings->whatsapp }}" rel="noopener">
+                                <i class="fab fa-whatsapp"></i> ওয়াটসাপ্র লিঙ্ক
+                            </a>
+                        @endif
+                        </li>
+                    <li class="footer-contact-item">
+                        @if ($settings->pinterest)
+                            <a class="social-link" target="_blank" href="{{ $settings->pinterest }}" rel="noopener">
+                                <i class="fab fa-pinterest"></i> পিনটারেস্ট লিঙ্ক
                             </a>
                         @endif
                     </li>

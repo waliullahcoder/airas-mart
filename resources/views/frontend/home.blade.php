@@ -38,7 +38,7 @@
         <div class="container">
             <div class="section-card">
                 <div class="section-header mb-3">
-                    <h3 class="section-title"> {{ $subCategory->name }}</h3>
+                    <h5 class="section-title"> {{ $subCategory->name }}</h5>
                     <a href="{{route('category.singleCategoryPage', $subCategory->id)}}" class="section-link">See All</a>
                 </div>
                 <div class="position-relative">
@@ -52,10 +52,10 @@
                                     <div class="product-card-wrapper">
                                         <div class="product-card">
                                              @if($product->discount>0)
-                                                <div class="discount-badge">
-                                                    <span class="product-discount">{{number_format($product->discount)}}</span>
-                                                </div>
-                                                @endif
+                                            <div class="discount-badge">
+                                                <span class="product-discount">{{number_format($product->discount)}}</span>
+                                            </div>
+                                            @endif
                                            <a href="{{route('product.details', $product->id)}}">
                                             <figure class="product-card-image ratio" style="--bs-aspect-ratio: 100%">
                                                 <img class="object-fit-contain product-img" src="{{ asset($product->thumbnail) }}"
@@ -74,17 +74,16 @@
                                                 </p>
                                                 <span class="product-card-price">
                                                     @if($product->discount>0)
-                                                        <del>
-                                                            <span class="Price-amount">
-                                                                 {{ number_format($product->regular_price) }} <span class="Price-currencySymbol">Tk.</span>
+                                                    <del>
+                                                         <span class="Price-amount">
+                                                                 {{ number_format($product->regular_price) }} <span class="Price-currencySymbol">৳</span>
                                                             </span>
-                                                        </del>
-                                                        @endif
-                                <ins>
-                                                            <span class="Price-amount">
-                                                                 {{ $product->discount==0 ? number_format($product->regular_price): number_format($product->sale_price) }} <span class="Price-currencySymbol">Tk.</span>
-                                                            </span>
-                                                        </ins>
+                                                    </del>
+                                                    @endif
+                                                    <ins>
+                                                        <span class="Price-amount"> {{ number_format($product->sale_price) }}<span class="Price-currencySymbol">৳</span>
+                                                        </span>
+                                                    </ins>
                                                 </span>
                                             </div>
                                             </a>
@@ -100,7 +99,7 @@
                             </div>
                             @endforeach
                              @else
-                            <p class="text-muted">No products found</p>
+                             @include('frontend.categories.partials.notfound')
                              @endif
                         </div>
                         

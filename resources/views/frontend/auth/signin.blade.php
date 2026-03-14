@@ -17,32 +17,39 @@
                         <form method="POST" action="">
                             @csrf
 
-                            <!-- EMAIL -->
+                            <!-- MOBILE NUMBER -->
                             <div class="mb-3">
-                                <label class="form-label">Email address</label>
-                                <input type="email"
-                                       name="email"
-                                       value="{{ old('email') }}"
-                                       class="form-control"
+                                <label class="form-label">Mobile No. <span class="text-danger">*</span></label>
+                                <input type="text"
+                                       name="phone"
+                                       value="{{ old('phone') }}"
+                                       class="form-control @error('phone') is-invalid @enderror"
+                                       placeholder="01XXXXXXXXX"
                                        required>
+                                @error('phone')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- PASSWORD -->
                             <div class="mb-3">
-                                <label class="form-label">Password</label>
+                                <label class="form-label">Password <span class="text-danger">*</span></label>
                                 <input type="password"
                                        name="password"
-                                       class="form-control"
+                                       class="form-control @error('password') is-invalid @enderror"
                                        required>
+                                @error('password')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                @enderror
                             </div>
 
-                            <!-- REMEMBER -->
+                            <!-- REMEMBER + FORGOT PASSWORD -->
                             <div class="d-flex justify-content-between mb-3">
                                 <div>
                                     <input type="checkbox" name="remember" id="remember">
                                     <label for="remember">Remember me</label>
                                 </div>
-                                <a href="" class="small">
+                                <a href="{{ route('auth.forgotPasswordPage') }}" class="small">
                                     Forgot password?
                                 </a>
                             </div>

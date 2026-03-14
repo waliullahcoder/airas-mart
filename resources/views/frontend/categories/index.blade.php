@@ -1,6 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('content')
+ @if($subcategories->count()>0)
 <div class="category-page py-4">
     <div class="container">
         <div class="row">
@@ -155,4 +156,7 @@
         </div>
     </div>
 </div>
+@else
+    @include('frontend.categories.partials.notfound')
+@endif
 @endsection
