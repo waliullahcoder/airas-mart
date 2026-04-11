@@ -16,9 +16,7 @@
 
 
 -- Dumping database structure for airas_mart
-DROP DATABASE IF EXISTS `airas_mart`;
-CREATE DATABASE IF NOT EXISTS `airas_mart` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `airas_mart`;
+USE `wwcoders_mart`;
 
 -- Dumping structure for table airas_mart.account_transactions
 DROP TABLE IF EXISTS `account_transactions`;
