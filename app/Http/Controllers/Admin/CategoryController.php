@@ -114,12 +114,17 @@ class CategoryController extends Controller
             'name' => $request->name,
             'type' => $request->type,
             'position' => $request->position,
+            'serial' => $request->serial,
             'url' => $request->url,
            // 'slug' => HelperClass::generateUniqueSlug($this->model, 'slug', $request->name, $id),
             'image' => $request->hasFile('image') ? HelperClass::saveImage($request->image, 600, $this->path, $data->image) : $data->image,
-            // 'description' => $request->description,
+            'description' => $request->description,
             'updated_by' => Auth::id(),
         ]);
+          // Update parents (many-to-many)
+        if($request->has('parent_ids')){
+            $data->parents()->sync($request->parent_ids);
+        }
 
         return redirect()->route("admin.{$this->path}.index")->withSuccessMessage('Updated Successfully!');
     }

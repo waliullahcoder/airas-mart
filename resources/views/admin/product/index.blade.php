@@ -65,7 +65,8 @@ $(document).ready(function() {
             { data: 'thumbnail', name: 'thumbnail', orderable: false, searchable: false, width: '70px' },
             { data: 'code', name: 'code' },
             { data: 'name', name: 'name' },
-            { data: 'category.name', name: 'category.name', defaultContent: '', width: '150px' },
+            // { data: 'categories.name', name: 'categories.name', defaultContent: '', width: '150px' },
+           { data: 'category_names', name: 'category_names', orderable: false, searchable: true, width: '150px' },
             { data: 'edition.name', name: 'edition.name', defaultContent: '', width: '100px' },
             { data: 'status', name: 'status', orderable: false, searchable: false, className: 'text-center', width: '90px' },
             { data: 'actions', name: 'actions', orderable: false, searchable: false, className: 'text-end', width: '120px' }

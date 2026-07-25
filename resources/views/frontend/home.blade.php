@@ -70,8 +70,8 @@
                                                         style="--lines: 2;">
                                                         {{ $product->code }}
                                                 </p>
-                                                <p class="product-card-author truncate-text" style="--lines: 2;"> {!! $product->short_description !!}
-                                                </p>
+                                                <!--<p class="product-card-author truncate-text" style="--lines: 2;"> {!! $product->short_description !!}-->
+                                                <!--</p>-->
                                                 <span class="product-card-price">
                                                     @if($product->discount>0)
                                                     <del>

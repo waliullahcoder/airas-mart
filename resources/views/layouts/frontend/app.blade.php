@@ -26,7 +26,7 @@
    
 </head>
 
-<body>
+<body style="background:black">
     @include('layouts.frontend.partial.header')
     @yield('content')
     <script type="text/javascript" src="{{ asset('frontend/js/sweetalert2@11.js') }}"></script>
@@ -142,11 +142,13 @@ $(document).ready(function(){
 });
 </script>
 
+   
     {{-- // AJAX Live Search --}}
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <script>
 $(document).ready(function(){
 
+    //Desktop Search
     $('#product-search-input').on('keyup', function(){
         let query = $(this).val();
         if(query.length >= 2) {
@@ -168,8 +170,8 @@ $(document).ready(function(){
                                             </div>
                                         </a>
                                         <div class="text-end ms-3">
-                                            <div><del>Tk.${item.regular_price}</del> <strong>Tk.${item.sale_price}</strong></div>
-                                            <button class="btn btn-sm btn-primary mt-1 add-to-cart-btn add-to-cart" data-id="${item.id}"><span>+</span></button>
+                                            <div><del>৳${item.regular_price}</del> <strong>৳${item.sale_price}</strong></div>
+                                            <button class="btn btn-sm btn-primary mt-1 add-to-cart-btn add-to-cart" data-id="${item.id}">Add to Cart</button>
                                         </div>
                                     </li>`;
                         });
@@ -192,7 +194,54 @@ $(document).ready(function(){
         }
     });
 
-    // <span>+</span> button click
+
+    //Mobile Search
+    $('#mobile-product-search-input').on('keyup', function(){
+        let query = $(this).val();
+        if(query.length >= 2) {
+            $.ajax({
+                url: "{{ route('products.search') }}",
+                method: "GET",
+                data: { query: query },
+                success: function(data) {
+                    let html = '';
+                    if(data.length > 0){
+                        html += '<ul class="list-group list-group-flush">';
+                        data.forEach(function(item){
+                            html += `<li class="list-group-item p-2 d-flex justify-content-between align-items-center product-card">
+                                        <a href="/product/details/${item.id}" class="d-flex align-items-center gap-2 text-decoration-none text-dark flex-grow-1">
+                                            <img class="product-img" src="${item.thumbnail}" style="position:relative; z-index:999;width:50px; height:50px; border-radius:10px;" alt="${item.name}">
+                                            <div>
+                                                <strong>${item.name}</strong><br>
+                                                <small>${item.authors}</small>
+                                            </div>
+                                        </a>
+                                        <div class="text-end ms-3">
+                                            <div><del>৳${item.regular_price}</del> <strong>৳${item.sale_price}</strong></div>
+                                            <button class="btn btn-sm btn-primary mt-1 add-to-cart-btn add-to-cart" data-id="${item.id}">+</button>
+                                        </div>
+                                    </li>`;
+                        });
+                        html += '</ul>';
+                        $('#mobile-search-results').html(html).fadeIn();
+                    } else {
+                        $('#mobile-search-results').html('<div class="p-2">কোন প্রোডাক্ট পাওয়া যায়নি</div>').fadeIn();
+                    }
+                }
+            });
+        } else {
+            $('#mobile-search-results').fadeOut();
+        }
+    });
+
+    // Click outside to hide results
+    $(document).on('click', function(e){
+        if(!$(e.target).closest('.mobile-search-area').length){
+            $('#mobile-search-results').fadeOut();
+        }
+    });
+
+    // Add to cart button click
     $(document).on('click', '.add-to-cart-btn', function(){
         let productId = $(this).data('id');
         // AJAX call to add product to cart
@@ -217,7 +266,6 @@ $(document).ready(function(){
 <script>
 $(document).on('click', '.add-to-cart', function(e) {
     e.preventDefault();
-
     let button = $(this);
 
     let productId = button.data('id');

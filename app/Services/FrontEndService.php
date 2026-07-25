@@ -34,6 +34,7 @@ $menus = Category::whereNull('parent_id')
         'slug as category_slug',
         'position'
     )
+    ->orderBy('serial', 'asc')
     ->get()
     ->groupBy('position');
 
@@ -85,16 +86,37 @@ return $data;
      public function getSubCategoryData($category_id){
              return DB::table('categories')
             ->where('parent_id', $category_id)
+            ->orderBy('serial', 'asc')
             ->get();
      }
 
  public function getProductData($cat_id)
 {
-   
-$categories = Category::where('parent_id', $cat_id)
-        ->with('products','products.variants')
+    // 1️⃣ Direct child categories
+   // $directCategories = Category::where('parent_id', $cat_id);
+
+    // 2️⃣ Pivot table থেকে category id নেওয়া
+    $pivotCategoryIds = \DB::table('category_subcategory')
+        ->where('parent_id', $cat_id)
+        ->pluck('subcategory_id');
+
+    // 3️⃣ Pivot categories query
+    $pivotCategories = Category::whereIn('id', $pivotCategoryIds);
+
+    // 4️⃣ দুইটা merge করা
+    //  $categories = $directCategories
+    //     ->union($pivotCategories)
+    $categories = $pivotCategories->with([
+            'products' => function($query) {
+                $query->where('status', 1)->inRandomOrder();
+            },
+            'products.variants',
+            'subcategories'
+        ])
+        ->orderBy('serial', 'asc')
         ->get();
-       return $categories;
+
+    return $categories;
 }
 
 //--------------Home Page----------------//
@@ -109,8 +131,10 @@ public function getSubCategoryAllHeaderProductOnly()
 {
 return Category::whereNotNull('parent_id')
     ->whereIn('position', ['header'])
-    ->with('products','products.variants')
-    ->orderBy('id', 'asc')
+    ->with(['products' => function($query) {
+            $query->where('status', 1)->inRandomOrder();
+        }, 'products.variants'])
+    ->orderBy('serial', 'asc')
     ->get();
 }
 
@@ -120,8 +144,10 @@ public function getSubCategoryTrendsNewBookProductOnly()
 {
 return Category::whereNotNull('parent_id')
     ->whereIn('slug', ['trending-bismuuh', 'ntun-prkasit-bi'])
-    ->with('products','products.variants')
-    ->orderBy('id', 'asc')
+    ->with(['products' => function($query) {
+            $query->where('status', 1)->inRandomOrder();
+        }, 'products.variants'])
+    ->orderBy('serial', 'asc')
     ->get();
 }
 
@@ -137,7 +163,7 @@ public function getSubCategorySianJugpuertiNrobiulAualProductOnly()
 return Category::whereNotNull('parent_id')
     ->whereIn('slug', ['sizan-zugpuurti-ofar', 'rbiul-auzal-seerat-grnthmala'])
     ->with('products','products.variants')
-    ->orderBy('id', 'asc')
+    ->orderBy('serial', 'asc')
     ->get();
 }
 //জনপ্রিয় লেখক
@@ -152,7 +178,7 @@ public function getSubCategoryAtarSugondhiProductOnly()
     return Category::whereNotNull('parent_id')
     ->whereIn('slug', ['atr-oo-sugndhi-pnz'])
     ->with('products','products.variants')
-    ->orderBy('id', 'asc')
+    ->orderBy('serial', 'asc')
     ->get();
 }
 

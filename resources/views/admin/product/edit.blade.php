@@ -9,6 +9,9 @@
                 role="tab" aria-controls="nav-media" aria-selected="false">Files & Media</button>
             <button class="nav-link" id="nav-price-tab" data-bs-toggle="tab" data-bs-target="#nav-price" type="button"
                 role="tab" aria-controls="nav-price" aria-selected="false">Price & Variation</button>
+            <button class="nav-link" id="nav-publish-tab" data-bs-toggle="tab" data-bs-target="#nav-publish" type="button"
+                role="tab" aria-controls="nav-publish" aria-selected="false">Publish</button>
+
             <button class="nav-link" id="nav-seo-tab" data-bs-toggle="tab" data-bs-target="#nav-seo" type="button"
                 role="tab" aria-controls="nav-seo" aria-selected="false">SEO</button>
         </div>
@@ -24,18 +27,7 @@
                         value="{{ old('name', $data->name) }}" placeholder="Name" required>
                 </div>
                 <input type="hidden"  name="code" value="{{ old('code', $data->code) }}">
-                <div class="col-sm-6">
-                    <label for="category_id" class="form-label"><b>Category <span class="text-danger">*</span></b></label>
-                    <select class="form-select select" name="category_id" id="category_id"
-                        data-placeholder="Select Category" required>
-                        <option value=""></option>
-                        @foreach ($additionalData['categories'] as $item)
-                            <option value="{{ $item->id }}"
-                                {{ old('category_id', $data->category_id) == $item->id ? 'selected' : '' }}>
-                                {{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+               
                 <div class="col-sm-6">
                     <label for="brand_id" class="form-label"><b>Brand</b></label>
                     <select class="form-select select" name="brand_id" id="brand_id" data-placeholder="Select Brand">
@@ -311,6 +303,35 @@
                 </div>
 
                 <div class="sku_combination" id="sku_combination">
+                </div>
+            </div>
+        </div>
+         <div class="tab-pane fade" id="nav-publish" role="tabpanel" aria-labelledby="nav-publish-tab" tabindex="0">
+            <h5 class="mb-3 pb-3 fs-17 fw-700" style="border-bottom: 1px dashed #e4e5eb;">
+                Product Publish
+            </h5>
+
+            <div class="row g-3">
+                <div class="col-sm-12">
+                    <label class="form-label">
+                        <b>Categories <span class="text-danger">*</span></b>
+                    </label>
+
+                    <select class="form-select select2" 
+                            name="category_ids[]" 
+                            multiple 
+                            data-placeholder="Select Categories" 
+                            required
+                            style="width:100%;height:400px;">
+
+                        @foreach ($additionalData['categories'] as $item)
+                            <option value="{{ $item->id }}"
+                                {{ isset($data) && $data->categories->pluck('id')->contains($item->id) ? 'selected' : '' }}>
+                               [ID:{{ $item->id }}] {{ $item->name }}
+                            </option>
+                        @endforeach
+
+                    </select>
                 </div>
             </div>
         </div>

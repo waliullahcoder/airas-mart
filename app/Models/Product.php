@@ -144,4 +144,8 @@ class Product extends Model
     {
         return $this->hasMany(Invest::class, 'product_id');
     }
+        public function getCategoryNamesAttribute()
+    {
+        return $this->categories->pluck('name')->implode(', ');
+    }
 }

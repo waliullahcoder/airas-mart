@@ -39,6 +39,14 @@ class HelperClass
         if ($image_column) {
             $datatables->addColumn($image_column, fn($row) => self::generateImageColumn($row, $image_column));
         }
+         // ✅ Add categories column
+        $datatables->addColumn('category_names', function($row) {
+            // Safely check if relation exists
+            if ($row->relationLoaded('categories') && $row->categories) {
+                return $row->categories->pluck('name')->implode(', ');
+            }
+            return '';
+        });
 
         return $datatables->rawColumns(['checkbox', $image_column, 'status', 'approve', 'featured', 'verified', 'actions'])->make(true);
     }

@@ -18,6 +18,8 @@
                 role="tab" aria-controls="nav-media" aria-selected="false">Files & Media</button>
             <button class="nav-link" id="nav-price-tab" data-bs-toggle="tab" data-bs-target="#nav-price" type="button"
                 role="tab" aria-controls="nav-price" aria-selected="false">Price & Variation</button>
+            <button class="nav-link" id="nav-publish-tab" data-bs-toggle="tab" data-bs-target="#nav-publish" type="button"
+                role="tab" aria-controls="nav-publish" aria-selected="false">Publish</button>    
             <button class="nav-link" id="nav-seo-tab" data-bs-toggle="tab" data-bs-target="#nav-seo" type="button"
                 role="tab" aria-controls="nav-seo" aria-selected="false">SEO</button>
         </div>
@@ -39,26 +41,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-sm-6">
-                    <label for="category_id" class="form-label"><b>Category <span class="text-danger">*</span></b></label>
-                   
-                    <select id="category_id" class="form-control" required>
-                                    <option value="">-- Select Category --</option>
-                                    @foreach($categories_prod as $category)
-                                        <option value="{{ $category->id }}">
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                    
-                </div>
-                <div class="col-sm-6">
-                                    <label class="form-label"><b>Select Sub Category</b></label>
-
-                                    <select id="sub_category_id" name="category_id" class="form-control">
-                                        <option value="">-- Select Sub Category --</option>
-                                    </select>
-                                </div>
+               
                 <div class="col-sm-6">
                     <label for="author_id" class="form-label"><b>Author <span class="text-danger">*</span></b></label>
                     <select class="form-select" name="author_id" id="author_id"
@@ -297,6 +280,34 @@
                 </div>
             </div>
         </div>
+          <div class="tab-pane fade" id="nav-publish" role="tabpanel" aria-labelledby="nav-publish-tab" tabindex="0">
+            <h5 class="mb-3 pb-3 fs-17 fw-700" style="border-bottom: 1px dashed #e4e5eb;">
+                Product Publish
+            </h5>
+
+            <div class="row g-3">
+                <div class="col-sm-12">
+                    <label class="form-label">
+                        <b>Categories <span class="text-danger">*</span></b>
+                    </label>
+
+                    <select class="form-select select2" 
+                            name="category_ids[]" 
+                            multiple 
+                            data-placeholder="Select Categories" 
+                            required
+                            style="width:100%;height:400px;">
+
+                        @foreach ($subcategories as $item)
+                            <option value="{{ $item->id }}">
+                            [ID:{{ $item->id }}] {{ $item->name }}
+                            </option>
+                        @endforeach
+
+                    </select>
+                </div>
+            </div>
+        </div>
         <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab" tabindex="0">
             <h5 class="mb-3 pb-3 fs-17 fw-700" style="border-bottom: 1px dashed #e4e5eb;">SEO Meta Tags</h5>
             <div class="row g-3">
@@ -320,7 +331,7 @@
 @endsection
 
 @push('js')
-<script>
+{{-- <script>
  const subCategories = @json($sub_categories);
     document.getElementById('category_id').addEventListener('change', function () {
         const categoryId = this.value;
@@ -338,7 +349,7 @@
             });
         }
     });
-</script>
+</script> --}}
     <script type="text/javascript">
         $(document).ready(function() {
             var input = document.querySelector('#tags');
