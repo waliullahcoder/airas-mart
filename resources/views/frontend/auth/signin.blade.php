@@ -1,7 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('content')
-<div class="auth-page py-5">
+<div class="auth-page py-5 animate__animated animate__fadeInTopLeft">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5">
@@ -62,7 +62,7 @@
 
                         <p class="text-center mt-3 mb-0">
                             Don't have an account?
-                            <a href="{{ route('auth.signupPage') }}">Sign up</a>
+                            <a href="{{ route('auth.signupPage') }}" style="color:#1a8961">Sign up</a>
                         </p>
 
                     </div>

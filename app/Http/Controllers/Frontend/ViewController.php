@@ -36,8 +36,11 @@ class ViewController extends Controller
         $get_sub_category_sian_jugpuerti_nrobiul_aual_product_only = $this->frontEndService->getSubCategorySianJugpuertiNrobiulAualProductOnly();
         //জনপ্রিয় লেখক
         $get_sub_category_writer_only = $this->frontEndService->getSubCategoryWriterOnly();
-        //আতর ও সুগন্ধি পণ্য
-        $get_sub_category_atar_sugondhi_product_only = $this->frontEndService->getSubCategoryAtarSugondhiProductOnly();
+        //নিয়োগ সহায়িকা
+        $get_sub_category_niog_sohaika_product_only = $this->frontEndService->getSubCategoryNiogSohaikaOnly();
+        //বেস্ট সেলার বই
+        $get_sub_category_best_seller_boi_product_only = $this->frontEndService->getSubCategoryBestSellerBoiOnly();
+
         //অন্যান্য পণ্য
         $get_sub_category_others_only = $this->frontEndService->getSubCategoryOthersOnly();
         //ব্র্যান্ডসমূহ
@@ -51,14 +54,40 @@ class ViewController extends Controller
             'menus',
             'get_sub_categories_all',
             'get_sub_category_trends_new_book_product_only',
-            'get_sub_category_all_header_product_only',
             'get_sub_category_banner_only',
             'get_sub_category_sian_jugpuerti_nrobiul_aual_product_only',
             'get_sub_category_writer_only',
-            'get_sub_category_atar_sugondhi_product_only',
+            'get_sub_category_all_header_product_only',
+            'get_sub_category_niog_sohaika_product_only',
             'get_sub_category_others_only',
-            'get_sub_category_brand_only'
+            'get_sub_category_brand_only',
+            'get_sub_category_best_seller_boi_product_only'
         ));
+    }
+
+    public function loadHomeSection($type)
+    {
+        if ($type == 'niog') {
+            $data = $this->frontEndService->getSubCategoryNiogSohaikaOnly();
+            return view('frontend.home_sections.products', compact('data'));
+        }
+
+        if ($type == 'trending') {
+            $data = $this->frontEndService->getSubCategoryTrendsNewBookProductOnly();
+            return view('frontend.home_sections.products', compact('data'));
+        }
+
+        if ($type == 'sian') {
+            $data = $this->frontEndService->getSubCategorySianJugpuertiNrobiulAualProductOnly();
+            return view('frontend.home_sections.products', compact('data'));
+        }
+
+        if ($type == 'writers') {
+            $data = $this->frontEndService->getSubCategoryWriterOnly();
+            return view('frontend.home_sections.writers', compact('data'));
+        }
+
+        return '';
     }
 
     //Global search home
@@ -66,8 +95,29 @@ class ViewController extends Controller
     {
         $query = $request->get('query');
         
-        $products = Product::where('name', 'LIKE', "%{$query}%")
-                            ->orWhere('slug', 'LIKE', "%{$query}%")
+        $products = Product::with(['authors', 'category'])
+                            ->where('status', 1)
+                            ->where(function ($q) use ($query) {
+
+                                // Product Name
+                                $q->where('name', 'LIKE', "%{$query}%")
+
+                                // Product Slug
+                                ->orWhere('slug', 'LIKE', "%{$query}%")
+                                
+                                // Product Code
+                                ->orWhere('code', 'LIKE', "%{$query}%")
+
+                                // Category Name
+                                ->orWhereHas('category', function ($cat) use ($query) {
+                                    $cat->where('name', 'LIKE', "%{$query}%");
+                                })
+
+                                // Author Name
+                                ->orWhereHas('authors', function ($author) use ($query) {
+                                    $author->where('name', 'LIKE', "%{$query}%");
+                                });
+                            })
                             ->limit(10)
                             ->get()
                             ->map(function($product){
@@ -120,7 +170,7 @@ class ViewController extends Controller
         $priceSort      = $request->price_sort ?? null; // low_high / high_low
         $priceRanges    = $request->price_ranges ?? [];
 
-        $subcategories = Category::where('type', 'other')
+        $subcategories = Category::where('type', 'book')
             ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
 
                 // Publication filter
@@ -211,7 +261,7 @@ class ViewController extends Controller
         $priceSort      = $request->price_sort ?? null; // low_high / high_low
         $priceRanges    = $request->price_ranges ?? [];
 
-        $single_sub_category = Category::where('type', 'other')
+        $single_sub_category = Category::where('type', 'book')
             ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
 
                 // Publication filter

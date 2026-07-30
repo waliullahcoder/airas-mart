@@ -9,7 +9,7 @@
                     </span>
                 </div>
 
-                <h4 class="fw-bold mb-3" style="color:#333;">No Data Found</h4>
+                <h4 class="fw-bold mb-3" style="color:#ff5959;">No Data Found</h4>
 
                 <p class="text-muted fs-5">
                     No information has been uploaded here yet. Please try again later.

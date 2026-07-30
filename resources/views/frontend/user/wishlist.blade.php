@@ -83,10 +83,10 @@
                                 {{-- ACTIONS --}}
                                 <div class="product-card-action d-flex gap-1">
 
-                                    {{-- ADD TO CART --}}
+                                    {{-- Add + --}}
                                     <button class="btn btn-sm btn-danger add-to-cart"
                                             data-id="{{ $product->id }}">
-                                        Add to Cart
+                                        Add +
                                     </button>
 
                                     {{-- REMOVE FROM WISHLIST --}}

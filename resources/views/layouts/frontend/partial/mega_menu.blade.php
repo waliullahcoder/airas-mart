@@ -13,32 +13,37 @@
     </div>
     <!-- GLOBAL MEGA MENU -->
     <div class="mega-wrapper">
+        @foreach ($menus['mega_menus'] as $menu)
+            @if(isset($menus['sub_menus'][$menu->id]))
+                @php
+                    $items = $menus['sub_menus'][$menu->id]->take(45);
+                @endphp
+                <div class="mega-menu" id="menu-{{ $menu->id }}">
+                    <div class="mega-grid">
 
-       @foreach ($menus['mega_menus']  as $menu)
-    @if(isset($menus['sub_menus'][$menu->id]))
-        <div class="mega-menu" id="menu-{{ $menu->id }}">
-            <div class="mega-grid">
+                        @foreach ($items->chunk(9) as $chunk)
+                            <div class="mega-column">
 
-                @foreach ($menus['sub_menus'][$menu->id]->chunk(3) as $chunk)
-                    <div class="mega-column">
-                        {{-- Optional heading --}}
-                        {{-- <h4>{{ $menu->name }}</h4> --}}
-
-                        @foreach ($chunk as $item)
-                            <a href="{{ route('category.index', [$item->id, $item->category_slug,$item->name]) }}">
-                                {{ $item->name }}
-                            </a>
+                                @foreach ($chunk as $item)
+                                    <a href="{{ route('category.singleCategoryPage', $item->id) }}">
+                                        {{ $item->name }}
+                                    </a>
+                                @endforeach
+                            </div>
                         @endforeach
                     </div>
-                @endforeach
+                    @if($menus['sub_menus'][$menu->id]->count() > 45)
+                                <a href="{{ route('category.index', [$menu->category_id, $menu->category_slug,$menu->name]) }}" data-menu="menu-{{ $menu->id }}" style="padding-left:30px; color:#549a95;">
+                                    Read More →
+                                </a>
+                        @endif
+                </div>
+                        
+            @endif
 
-            </div>
-        </div>
-    @endif
-@endforeach
+        @endforeach
 
-
-    </div>
+     </div>
 </div>
 
 

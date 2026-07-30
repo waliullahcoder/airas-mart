@@ -18,8 +18,8 @@ class Category extends Model
         'description',
         'status',
         'position',
-        'url',
         'serial',
+        'url',
         'created_by',
         'updated_by',
         'deleted_by',
@@ -61,7 +61,6 @@ class Category extends Model
         return $this->belongsToMany(Category::class, 'category_subcategory', 'subcategory_id', 'parent_id');
     }
 
-
     /**
      * Child categories
      */
@@ -73,7 +72,11 @@ class Category extends Model
     }
 
      // Products under sub-category
-     public function products()
+    // public function products()
+    // {
+    //     return $this->hasMany(Product::class, 'category_id');
+    // }
+    public function products()
     {
         return $this->belongsToMany(Product::class, 'product_categories', 'category_id', 'product_id')
                     ->with('variants')
@@ -130,8 +133,9 @@ class Category extends Model
 
         return route('category.index', [$this->id, $this->slug]);
     }
- public function subcategories()
+    public function subcategories()
     {
         return $this->belongsToMany(Category::class, 'category_subcategory', 'parent_id', 'subcategory_id');
     }
+
 }

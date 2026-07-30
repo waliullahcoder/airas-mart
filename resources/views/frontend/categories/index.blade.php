@@ -2,7 +2,7 @@
 
 @section('content')
  @if($subcategories->count()>0)
-<div class="category-page py-4">
+<div class="category-page py-4 animate__animated animate__fadeInLeft">
     <div class="container">
         <div class="row">
 

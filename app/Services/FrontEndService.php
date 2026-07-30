@@ -119,6 +119,71 @@ return $data;
     return $categories;
 }
 
+//বেস্ট সেলার বই
+public function getSubCategoryBestSellerBoiOnly()
+{
+    return Product::where('status', 1)
+        ->orderByDesc(
+            DB::raw('(SELECT COALESCE(SUM(qty),0) 
+                      FROM order_items 
+                      WHERE order_items.product_id = products.id)')
+        )
+        ->with('variants')
+        ->limit(10)
+        ->get();
+}
+
+//নিয়োগ সহায়িকা
+public function getSubCategoryNiogSohaikaOnly()
+{
+    return Category::whereNotNull('parent_id')
+    ->whereIn('parent_id', [49])
+    ->with(['products' => function($query) {
+            $query->where('status', 1)->inRandomOrder();
+        }, 'products.variants'])
+    ->orderBy('id', 'asc')
+    ->get();
+}
+//ট্রেন্ডিং বইসমূহ and নতুন প্রকাশিত বই
+public function getSubCategoryTrendsNewBookProductOnly()
+{
+return Category::whereNotNull('parent_id')
+     ->whereIn('parent_id', [48])
+    ->with(['products' => function($query) {
+            $query->where('status', 1)->inRandomOrder();
+        }, 'products.variants'])
+    ->orderBy('serial', 'asc')
+    ->get();
+}
+public function getSubCategoryAllHeaderProductOnly()
+{
+return Category::whereNotNull('parent_id')
+    ->whereIn('parent_id', [5])
+    ->with(['products' => function($query) {
+            $query->where('status', 1)->inRandomOrder();
+        }, 'products.variants'])
+    ->orderBy('serial', 'asc')
+    ->get();
+}
+
+//সিয়ান যুগপূর্তি অফার and রবিউল আউয়াল সীরাত গ্রন্থমালা
+public function getSubCategorySianJugpuertiNrobiulAualProductOnly()
+{
+return Category::whereNotNull('parent_id')
+    ->whereIn('parent_id', [4,1,94])
+    ->with('products','products.variants')
+    ->orderBy('serial', 'asc')
+    ->get();
+}
+//জনপ্রিয় লেখক
+public function getSubCategoryWriterOnly()
+{
+    return Category::whereNotNull('parent_id')
+    ->whereIn('parent_id', [94])
+    ->with('products','products.variants')
+    ->orderBy('serial', 'asc')
+    ->get();
+}
 //--------------Home Page----------------//
 
 //Homepage Category all
@@ -127,29 +192,8 @@ public function getSubCategoryHomePageOnly()
 $categories = Category::whereNotNull('parent_id')->where('position', 'homepage')->orderBy('id', 'desc')->get();
        return $categories;
 }
-public function getSubCategoryAllHeaderProductOnly()
-{
-return Category::whereNotNull('parent_id')
-    ->whereIn('position', ['header'])
-    ->with(['products' => function($query) {
-            $query->where('status', 1)->inRandomOrder();
-        }, 'products.variants'])
-    ->orderBy('serial', 'asc')
-    ->get();
-}
 
 
-//ট্রেন্ডিং বইসমূহ and নতুন প্রকাশিত বই
-public function getSubCategoryTrendsNewBookProductOnly()
-{
-return Category::whereNotNull('parent_id')
-    ->whereIn('slug', ['trending-bismuuh', 'ntun-prkasit-bi'])
-    ->with(['products' => function($query) {
-            $query->where('status', 1)->inRandomOrder();
-        }, 'products.variants'])
-    ->orderBy('serial', 'asc')
-    ->get();
-}
 
 //Banner add category
 public function getSubCategoryBannerOnly()
@@ -157,20 +201,7 @@ public function getSubCategoryBannerOnly()
     return Category::whereNotNull('parent_id')->where('position', 'homepage_banner_category')->get();
 }
 
-//সিয়ান যুগপূর্তি অফার and রবিউল আউয়াল সীরাত গ্রন্থমালা
-public function getSubCategorySianJugpuertiNrobiulAualProductOnly()
-{
-return Category::whereNotNull('parent_id')
-    ->whereIn('slug', ['sizan-zugpuurti-ofar', 'rbiul-auzal-seerat-grnthmala'])
-    ->with('products','products.variants')
-    ->orderBy('serial', 'asc')
-    ->get();
-}
-//জনপ্রিয় লেখক
-public function getSubCategoryWriterOnly()
-{
-    return Category::whereNotNull('parent_id')->where('position', 'homepage_writter_category')->get();
-}
+
 
 //আতর ও সুগন্ধি পণ্য
 public function getSubCategoryAtarSugondhiProductOnly()

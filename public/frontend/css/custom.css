@@ -246,16 +246,20 @@
     font-size: 14px;
 }
 
-
+.text-muted{
+    color:yellow !important;
+}
 
 /* =======Category page CSS========= */ 
 .filter-box {
     border: 1px solid #e5e5e5;
     padding: 15px;
     border-radius: 6px;
-    background: #fff;
+    background:linear-gradient(135deg, #000000, #0f2027, #203a43, #2c5364);
 }
-
+.text-dark{
+    color:rgb(255 8 8) !important;
+}
 .filter-title {
     font-weight: 600;
     margin-bottom: 15px;
@@ -497,11 +501,11 @@
 }
 
 .container,.container-fluid,.container-lg,.container-md,.container-sm,.container-xl,.container-xxl {
-    --bs-gutter-x: 1.5rem;
+    --bs-gutter-x: 0px;
     --bs-gutter-y: 0;
     width: 100%;
-    padding-right: calc(var(--bs-gutter-x) * .5);
-    padding-left: calc(var(--bs-gutter-x) * .5);
+    padding-right: 0px;
+    padding-left: 0px;
     margin-right: auto;
     margin-left: auto
 }

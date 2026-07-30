@@ -76,6 +76,10 @@
                                             <th>Grand Total  </th>
                                             <th style="text-align:right;">- ৳{{ number_format($grandTotal,2) }}</th>
                                         </tr>
+                                         <tr>
+                                            <th>Delivery Charge</th>
+                                            <th style="text-align:right;"> ৳{{ number_format(($order->total-$grandTotal),2) }}</th>
+                                        </tr>
                                     </table>
                         <h5>Net Total: ৳ {{ number_format($order->total,2) }}</h5>
                     </div>

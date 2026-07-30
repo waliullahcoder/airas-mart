@@ -22,11 +22,10 @@
     href="{{ asset(file_exists($settings->favicon) ? $settings->favicon : 'frontend/images/logo/favicon.png') }}"
     type="image/x-icon">
     @include('layouts.frontend.partial.styles')
-    
    
 </head>
 
-<body style="background:black">
+<body style="background: linear-gradient(135deg, #000000, #0f2027, #203a43, #2c5364);">
     @include('layouts.frontend.partial.header')
     @yield('content')
     <script type="text/javascript" src="{{ asset('frontend/js/sweetalert2@11.js') }}"></script>
@@ -60,6 +59,7 @@ $(document).ready(function(){
         });
 
 
+        // যদি যেকোনো একটাও checked থাকে
         if(publications.length > 0 || authors.length > 0 || priceSort != null || priceRanges.length > 0){
 
             $.ajax({
@@ -79,6 +79,7 @@ $(document).ready(function(){
 
         }else{
 
+            // সব unchecked হলে default show
             $('#filtered-products').hide().html('');
             $('#default-products').show();
         }
@@ -113,6 +114,7 @@ $(document).ready(function(){
         });
 
 
+        // যদি যেকোনো একটাও checked থাকে
         if(publications.length > 0 || authors.length > 0 || priceSort != null || priceRanges.length > 0){
 
             $.ajax({
@@ -132,7 +134,7 @@ $(document).ready(function(){
 
         }else{
 
-          
+            // সব unchecked হলে default show
             $('#filtered-products-sub').hide().html('');
             $('#default-products-sub').show();
         }
@@ -142,7 +144,6 @@ $(document).ready(function(){
 });
 </script>
 
-   
     {{-- // AJAX Live Search --}}
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <script>
@@ -171,7 +172,7 @@ $(document).ready(function(){
                                         </a>
                                         <div class="text-end ms-3">
                                             <div><del>৳${item.regular_price}</del> <strong>৳${item.sale_price}</strong></div>
-                                            <button class="btn btn-sm btn-primary mt-1 add-to-cart-btn add-to-cart" data-id="${item.id}">Add to Cart</button>
+                                            <button class="btn btn-sm btn-primary mt-1 add-to-cart-btn add-to-cart" data-id="${item.id}">Add +</button>
                                         </div>
                                     </li>`;
                         });
@@ -241,7 +242,7 @@ $(document).ready(function(){
         }
     });
 
-    // Add to cart button click
+    // Add + button click
     $(document).on('click', '.add-to-cart-btn', function(){
         let productId = $(this).data('id');
         // AJAX call to add product to cart
@@ -262,7 +263,7 @@ $(document).ready(function(){
 });
 </script>
 
-{{-- Add to cart --}}
+{{-- Add + --}}
 <script>
 $(document).on('click', '.add-to-cart', function(e) {
     e.preventDefault();

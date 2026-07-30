@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AccountTransactionAuto extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['voucher_no', 'voucher_type', 'date', 'coa_id', 'coa_head_code', 'narration', 'debit_amount', 'credit_amount', 'document', 'posted', 'approved', 'approved_by', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['voucher_no', 'voucher_type', 'voucher_date','date', 'coa_id', 'coa_head_code', 'narration', 'debit_amount', 'credit_amount', 'document', 'posted', 'approved', 'approved_by', 'created_by', 'updated_by', 'deleted_by'];
     protected $appends = ['formattedDate'];
 
     public function coa()

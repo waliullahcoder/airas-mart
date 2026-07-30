@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Uom extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['name', 'slug', 'description', 'status', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['name', 'type', 'slug', 'description', 'status', 'created_by', 'updated_by', 'deleted_by'];
 }

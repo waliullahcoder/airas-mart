@@ -129,6 +129,7 @@
     $afterDiscount = $subtotal - $discount;
     $tax = $order->tax;
     $grandTotal = $afterDiscount + $tax;
+    $total=$order->total;
 @endphp
 
 {{-- ITEMS --}}
@@ -177,8 +178,12 @@
                         <td style="text-align:right;">৳ {{ number_format($tax,2) }}</td>
                     </tr>
                     <tr>
+                       <th>Delivery Charge</th>
+                        <th style="text-align:right;"> ৳{{ number_format(($total-$grandTotal),2) }}</th>
+                    </tr>
+                    <tr>
                         <th>Grand Total</th>
-                        <th style="text-align:right;">৳ {{ number_format($grandTotal,2) }}</th>
+                        <th style="text-align:right;">৳{{ number_format($total,2) }}</th>
                     </tr>
                 </table>
             </td>

@@ -8,6 +8,7 @@
 <link rel=" stylesheet" href="{{ asset('frontend/css/responsive.css') }}">
 <link rel="stylesheet" href="{{ asset('frontend/css/all.min.css') }}">
 <link rel="stylesheet" href="{{ asset('frontend/css/order.css') }}">
+<link rel="stylesheet" href="{{ asset('frontend/css/animate.min.css') }}">
 
 
 @stack('css')

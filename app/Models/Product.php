@@ -25,6 +25,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Author::class, 'product_authors', 'product_id', 'author_id')->withTimestamps();
     }
+    public function productauthor()
+    {
+        return $this->belongsTo(ProductAuthor::class, 'product_id');
+    }
 
     public function getAuthorNamesAttribute()
     {
@@ -144,8 +148,16 @@ class Product extends Model
     {
         return $this->hasMany(Invest::class, 'product_id');
     }
-        public function getCategoryNamesAttribute()
+    public function getCategoryNamesAttribute()
     {
         return $this->categories->pluck('name')->implode(', ');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'product_id');
     }
 }

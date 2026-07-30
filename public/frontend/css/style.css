@@ -16,8 +16,7 @@ body {
     padding: 0;
     font-size: 14px;
     font-weight: 400;
-    color: #3F4254;
-    background-color: white;
+    color: #cf0101;
     font-family: 'math';
     overflow-x: hidden;
 }
@@ -568,8 +567,8 @@ h6 {
 .swiper-arrow-btn {
     background-color: var(--bs-white);
     border: 1px solid transparent;
-    height: 66px;
-    width: 32px;
+    height: 26px;
+    width: 12px;
     right: 0;
     display: flex;
     align-items: center;
@@ -656,12 +655,14 @@ h6 {
 
 /* =============== Product CSS =============== */
 .section-card {
-    background-color: var(--bs-white);
+    background:linear-gradient(135deg, #000000, #0f2027, #203a43, #2c5364);
     border-radius: 0.3rem;
     box-shadow: 0 3px 5px rgb(0 0 0 / 8%);
     margin-top: 10px;
 }
-
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+    color:red;
+}
 .section-header {
     display: flex;
     align-items: flex-end;
@@ -690,9 +691,8 @@ h6 {
 }
 
 .product-card {
-    background-color: var(--bs-white);
+    background-color: #d8ede1;
     padding: 0px;
-    border: 1px solid #ededed;
     text-align: center;
 }
 

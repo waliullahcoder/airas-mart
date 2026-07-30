@@ -16,6 +16,8 @@ Route::get('/', [ViewController::class, 'index'])->name('home');
 
 //Login Register
 Route::get('/signin', [ViewController::class, 'signinPage'])->name('auth.signinPage');
+Route::get('/home-section-load/{type}', [ViewController::class, 'loadHomeSection'])
+    ->name('home.section.load');
 Route::get('/login', function () {
     return redirect()->route('auth.signinPage');
 })->name('login');

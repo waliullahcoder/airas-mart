@@ -23,13 +23,13 @@
                              <div class="mb-3">
                                 <label class="form-label">Set New Password</label>
                                 <input type="password" name="password" class="form-control" placeholder="Minimum 6 characters, can include letters, numbers or any special characters."required>
-                            </div><br>
+                            </div>
                              <button type="submit" class="btn btn-primary">Change Password Confirm</button>
                             @else
                             <div class="mb-3">
                                 <label class="form-label">Mobile No.</label>
                                 <input type="text" name="phone" class="form-control" placeholder="01XXXXXXXXX" required>
-                            </div><br>
+                            </div>
                              <button type="submit" class="btn btn-primary">Sent Mobile Number</button>
                             @endif
                             

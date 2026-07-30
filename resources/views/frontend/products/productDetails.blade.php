@@ -4,6 +4,9 @@
 
 @section('content')
 <style>
+    .table{
+        background:red !important;
+    }
 .small-thumb {
     transition: 0.3s;
     border: 2px solid transparent;
@@ -22,7 +25,7 @@
     border: 2px solid #dc3545;
 }
 </style>
-<div class="product-details-page py-4">
+<div class="product-details-page py-4 animate__animated animate__fadeInDownBig">
     <div class="container">
 
         <!-- TOP SECTION -->
@@ -30,17 +33,17 @@
 
             <!-- PRODUCT CARD (JS TARGET FOR FLYING IMAGE) -->
             <div class="col-lg-9">
-                <div class="product-card">
+                <div class="product-card" style="background: linear-gradient(135deg, #000000, #0f2027, #203a43, #2c5364);">
 
                     <div class="row g-4">
                      <!-- LEFT : PRODUCT IMAGE -->
                     <div class="col-lg-6">
-                        <div class="bg-white border rounded p-3">
+                        <div class="border p-3">
 
                             <!-- MAIN IMAGE -->
                             <div class="text-center mb-3">
                                 <img id="productThumbnail"
-                                    class="img-fluid rounded product-img"
+                                    class="img-fluid product-img"
                                     src="{{ asset($product->thumbnail) }}"
                                     alt="{{ $product->name }}"
                                     style="cursor:pointer; max-height:500px; width:100%; object-fit:contain;"
@@ -73,7 +76,7 @@
                     <!-- IMAGE ZOOM MODAL -->
                     <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content bg-white rounded shadow-lg border-0">
+                            <div class="modal-content shadow-lg border-0">
                                 <div class="modal-header border-0">
                                     <h5 class="modal-title">{{ $product->name }}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -81,7 +84,7 @@
                                 <div class="modal-body text-center p-3">
                                     <img id="modalImage"
                                         src="{{ asset($product->thumbnail) }}"
-                                        class="img-fluid rounded"
+                                        class="img-fluid"
                                         style="max-height:80vh; width:auto;">
                                 </div>
                                 <div class="modal-footer justify-content-between border-0">
@@ -131,7 +134,7 @@
 
                         <!-- RIGHT : PRODUCT DETAILS -->
                         <div class="col-lg-6">
-                            <div class="bg-white border rounded p-3">
+                            <div class="p-3">
 
                                 <h2 class="mb-2">{{ $product->name }}</h2>
 
@@ -173,9 +176,9 @@
 
 
                                 <!-- SHORT DESCRIPTION -->
-                                <div class="mb-3 text-muted">
+                                <!-- <div class="mb-3 text-muted">
                                     {!! $product->short_description !!}
-                                </div>
+                                </div> -->
 
                                 <!-- PRICE -->
                                 <div class="mb-4">
@@ -191,9 +194,11 @@
 
                                 <!-- ACTION BUTTONS -->
                                 <div class="d-flex gap-2 mb-4" style="gap:0.5rem !important">
+                                    <!-- <button class="btn btn-danger add-to-cart"
+                                            data-id="{{ $product->id }}" {{$product->variants->sum('stock')>0 ? '' : 'disabled'}}> -->
                                     <button class="btn btn-danger add-to-cart"
-                                            data-id="{{ $product->id }}" {{$product->variants->sum('stock')>0 ? '' : 'disabled'}}>
-                                        Add to Cart
+                                            data-id="{{ $product->id }}">
+                                        Add +
                                     </button>
                                     {{-- <button class="btn btn-outline-secondary">
                                         Wishlist
@@ -255,6 +260,21 @@
                                         <th>Publication</th>
                                         <td>{{$product->publication->name ?? 'N/A'}}</td>
                                     </tr>
+                                    <tr>
+                                    <th>@if($product->uom->type==0) Editor @else Translator @endif</th>
+                                    <td>{{ $product->uom->name??'N/A' }}</td>
+                                    </tr>
+                                     <tr>
+                                    <th>PDF</th>
+                                    <td> 
+                                        @if (!empty($product->file) && file_exists(public_path($product->file)))
+                                            <a href="{{ asset($product->file) }}" target="_blank" >
+                                                 <i class="fas fa-file-pdf"></i> View PDF
+                                            </a>
+                                            @else
+                                            Not uploaded yet
+                                        @endif</td>
+                                    </tr>
                                 </table>
 
                             </div>
@@ -264,22 +284,15 @@
                 </div>
             </div>
 
-            <style>
-                .mb-3{
-                    margin: 5px !important;
-                    border:1px solid #f3f1f1;
-                    padding:2px;
-                }
-            </style>
             <!-- RELATED PRODUCTS -->
             <div class="col-lg-3">
-                <div class="bg-white border rounded p-3">
+                <div class="p-3">
                     <h6 class="mb-3">Related Products</h6>
 
                     @foreach($relatedProducts ?? [] as $item)
-                        <div class="d-flex mb-3">
+                        <div class="border d-flex mb-3" style="margin-top:10px;">
                             <img src="{{ asset($item->thumbnail) }}"
-                                 class="me-2 rounded"
+                                 class="me-2"
                                  width="60"
                                  alt="">
                             <div>
@@ -305,7 +318,7 @@
         <div class="row mt-5">
             <div class="col-12">
 
-                <div class="bg-white border rounded">
+                <div class="bg-white border">
 
                     <!-- TABS -->
                     <ul class="nav nav-tabs">
@@ -338,20 +351,21 @@
                                     <th>Category</th>
                                     <td>{{ $product->category->name??'N/A' }}</td>
                                 </tr>
-                                
                                 <tr>
-                                    <th>Vendor</th>
-                                    <td>{{ $product->vendors->pluck('name')->implode(', ') }}</td>
+                                    <th>Authors</th>
+                                    <td>{{ $product->authors->pluck('name')->implode(', ') }}</td>
                                 </tr>
-                                @if($product->brand_id)
                                 <tr>
-                                    <th>Brand</th>
-                                    <td>{{ App\Models\Brand::find($product->brand_id)->name ?? 'N/A' }}</td>
+                                    <th>Publication</th>
+                                    <td>{{ $product->publication->name ?? 'N/A' }}</td>
                                 </tr>
-                                @endif
                                 <tr>
                                     <th>Barcode</th>
                                     <td>{{ $product->barcode }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Editor</th>
+                                    <td>{{ $product->uom->name??'N/A' }}</td>
                                 </tr>
                             </table>
                         </div>

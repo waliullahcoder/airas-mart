@@ -1,7 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('content')
-<div class="category-page py-4">
+<div class="category-page py-4 animate__animated animate__fadeInRight">
     <div class="container">
         <div class="row">
 

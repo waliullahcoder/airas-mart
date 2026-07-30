@@ -34,7 +34,7 @@
                                         <div class="product-card-wrapper">
                                             <div class="product-card">
                                                 @if($product->discount>0)
-                                                <div class="discount-badge">
+                                                <div class="{{ $product->discount_type == 'percent' ? 'discount-badge' : 'discount-badge-flat' }}">
                                                     <span class="product-discount">{{number_format($product->discount)}}</span>
                                                 </div>
                                                 @endif
@@ -47,12 +47,12 @@
                                                 </figure>
 
                                                 <div class="product-card-content">
-                                                    <h6 class="h6 product-card-title truncate-text" style="--lines: 2;">
+                                                    <h6 class="h6 product-card-title truncate-text" style="--lines: 1;">
                                                       
                                                          {{$product->name}}
                                                     </h6>
                                                     <p class="product-card-title truncate-text"
-                                                        style="--lines: 2;">
+                                                        style="--lines: 1;">
                                                         {{ $product->code }}
                                                 </p>
                                                     <span class="product-card-price">
@@ -75,7 +75,7 @@
                                                    <button class="btn btn-sm btn-danger add-to-cart"
                                                         data-variant_id="{{ $product->variants[0]->id ?? null }}"
                                                         data-id="{{ $product->id }}">
-                                                    <span>+</span>
+                                                    Add +
                                                 </button>
                                                 </div>
 
