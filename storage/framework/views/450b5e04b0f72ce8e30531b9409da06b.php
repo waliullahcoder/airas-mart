@@ -15,7 +15,7 @@
         --bs-secondary: <?php echo e(@$admin_setting->secondary_color ?? '#415FFF'); ?>;
     }
 </style>
-<link rel="stylesheet" href="<?php echo e(asset('frontend/css/custom.css')); ?>">
+<!-- <link rel="stylesheet" href="<?php echo e(asset('frontend/css/custom.css')); ?>"> -->
 <link rel="stylesheet" href="<?php echo e(asset('backend/css/style.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset('backend/css/responsive.css')); ?>">
 <?php echo $__env->yieldPushContent('css'); ?>

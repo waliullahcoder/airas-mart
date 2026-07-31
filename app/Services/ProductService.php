@@ -54,6 +54,7 @@ class ProductService
         }
 
         $regular_price = request('regular_price');
+        $product_type = request('product_type');
         $sale_price = request('regular_price');
         if (request('discount_type') == 'percent' && request('discount') > 0) {
             $discount = (request('discount') / 100) * $regular_price;
@@ -82,6 +83,7 @@ class ProductService
             'sale_price',
             'discount_start_date',
             'discount_end_date',
+            'product_type',
             'slug',
             'file',
             'thumbnail',
@@ -147,6 +149,7 @@ class ProductService
         }
 
         $regular_price = request('regular_price');
+        $product_type = request('product_type');
         $sale_price = request('regular_price');
         if (request('discount_type') == 'percent' && request('discount') > 0) {
             $discount = (request('discount') / 100) * $regular_price;
@@ -175,6 +178,7 @@ class ProductService
             'sale_price',
             'discount_start_date',
             'discount_end_date',
+            'product_type',
             'slug',
             'file',
             'thumbnail',

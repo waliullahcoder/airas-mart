@@ -98,7 +98,7 @@
                     <input type="text" class="form-control" id="tags" name="tags[]" value="{{ old('tags.0') }}"
                         placeholder="Tags">
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <label for="edition_name" class="form-label"><b>Edition <span class="text-danger">*</span></b></label>
                     <select name="edition_name" id="edition_name"
                         class="form-control @error('edition_name') is-invalid @enderror" required>
@@ -117,7 +117,22 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                 <div class="col-sm-3">
+                    <label for="product_type" class="form-label"><b>Type <span class="text-danger">*</span></b></label>
+                            <select class="form-control select" name="product_type"
+                                data-placeholder="Select Product Type" required>
+                                <option value="other" {{ old('product_type') == 'other' ? 'selected' : '' }}>Other</option>
+                                <option value="fragrance" {{ old('product_type') == 'fragrance' ? 'selected' : '' }}>Fragrance</option>
+                                <option value="mirror" {{ old('product_type') == 'mirror' ? 'selected' : '' }}>Mirror</option>
+                                <option value="cloths" {{ old('product_type') == 'cloths' ? 'selected' : '' }}>Cloths</option>
+                                <option value="frozen" {{ old('product_type') == 'frozen' ? 'selected' : '' }}>Frozen</option>
+                                <option value="ornaments" {{ old('product_type') == 'ornaments' ? 'selected' : '' }}>Ornaments</option>
+                                <option value="book" {{ old('product_type') == 'book' ? 'selected' : '' }}>Book
+                                </option>
+                            </select>
+                        </div>
                 <div class="col-12">
+                   
                     <div class="row g-2">
                         <label for="favorite" class="col-sm-3 col-md-3 col-lg-2 control-label"><b>Is Favorite:</b></label>
                         <div class="col-sm-9 col-md-9 col-lg-10">

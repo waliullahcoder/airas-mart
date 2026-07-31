@@ -245,9 +245,11 @@
     padding-left: 30px;
     font-size: 14px;
 }
-
+.table>:not(caption)>*>*{
+    background-color: #77b8d3;
+}
 .text-muted{
-    color:yellow !important;
+    color:#f36f0e !important;
 }
 
 /* =======Category page CSS========= */ 

@@ -141,8 +141,7 @@ class ViewController extends Controller
         $publications = $this->frontEndService->getPublication();
         $subcategories = $this->frontEndService->getProductData($cat_id);
         $bookcat_count = Category::where('type', 'book')->where('parent_id', $cat_id)->count();
-        $relatedProducts = Product::where('category_id', $cat_id)
-                    ->latest()
+        $relatedProducts = Product::latest()
                     ->take(8)
                     ->get();
         return view('frontend.categories.index', compact('menus','subcategories','authors','publications','bookcat_count','relatedProducts'));
@@ -170,7 +169,7 @@ class ViewController extends Controller
         $priceSort      = $request->price_sort ?? null; // low_high / high_low
         $priceRanges    = $request->price_ranges ?? [];
 
-        $subcategories = Category::where('type', 'book')
+        $subcategories = Category::whereIn('type', ['other','book'])
             ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
 
                 // Publication filter
@@ -261,7 +260,7 @@ class ViewController extends Controller
         $priceSort      = $request->price_sort ?? null; // low_high / high_low
         $priceRanges    = $request->price_ranges ?? [];
 
-        $single_sub_category = Category::where('type', 'book')
+        $single_sub_category = Category::whereIn('type', ['other','book'])
             ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
 
                 // Publication filter

@@ -55,7 +55,6 @@ class ProductController extends Controller
             return HelperClass::resourceDataView(
                 $this->model::with(['categories', 'uom','edition'])
                     ->select('id','code','name','uom_id','thumbnail','status')
-                    ->whereIn('product_type', ['book', 'other'])
                     ->orderBy('id', 'desc'),
                 'thumbnail',
                 null,
@@ -309,6 +308,7 @@ class ProductController extends Controller
      */
    public function update(Request $request, string $id)
     {
+       
         $request->validate([
             'name'        => 'required',
             'uom_id'      => 'required',

@@ -525,7 +525,7 @@ h6 {
 }
 
 .header-nav {
-    border-bottom: 1px solid #cecfd1;
+    /* border-bottom: 1px solid #cecfd1; */
 }
 
 .menu-list {
@@ -537,9 +537,9 @@ h6 {
 .menu-link {
     display: inline-block;
     padding: 8px 15px;
-    background-color: var(--bs-white);
+    background-color:#052c28;
     margin-bottom: -1px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #052c28;
     border-radius: 0.3rem 0.3rem 0 0;
 }
 

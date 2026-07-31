@@ -37,9 +37,15 @@
                         <div class="col-12">
                                     <label for="type" class="form-label"><b>Type</b></label>
                                     <select name="type" id="type" class="form-select" required>
-                                    <option value="other" {{ old('other') == 'other' ? 'selected' : '' }}>
-                                        Other
-                                    </option>
+                                        ornaments
+                                <option value="other" {{ old('type') == 'other' ? 'selected' : '' }}>Other</option>
+                                <option value="fragrance" {{ old('type') == 'fragrance' ? 'selected' : '' }}>Fragrance</option>
+                                <option value="mirror" {{ old('type') == 'mirror' ? 'selected' : '' }}>Mirror</option>
+                                <option value="cloths" {{ old('type') == 'cloths' ? 'selected' : '' }}>Cloths</option>
+                                <option value="frozen" {{ old('type') == 'frozen' ? 'selected' : '' }}>Frozen</option>
+                                 <option value="ornaments" {{ old('type') == 'ornaments' ? 'selected' : '' }}>Ornaments</option>
+                                <option value="book" {{ old('type') == 'book' ? 'selected' : '' }}>Book
+                                </option>
                                     
                                 </select>
                         </div>

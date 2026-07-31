@@ -74,11 +74,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-6">
-                    <label for="tags" class="form-label"><b>Tags</b></label>
-                    <input type="text" class="form-control" id="tags" name="tags[]"
-                        value="{{ json_encode($data->tags->pluck('name')->toArray()) }}" placeholder="Tags">
-                </div>
+               
                    @php
                         // Existing edition for this product (edit mode)
                         $existingEdition = App\Models\ProductEdition::where('product_id', $data->id)->first();
@@ -103,6 +99,26 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-6">
+                    <label for="tags" class="form-label"><b>Tags</b></label>
+                    <input type="text" class="form-control" id="tags" name="tags[]"
+                        value="{{ json_encode($data->tags->pluck('name')->toArray()) }}" placeholder="Tags">
+                </div>
+                    <div class="col-sm-6">
+                    <label for="product_type" class="form-label"><b>Type <span class="text-danger">*</span></b></label>
+                            <select class="form-control select" name="product_type"
+                                data-placeholder="Select Product Type" required>
+                                <option value="other" {{ $data->product_type == 'other' ? 'selected' : '' }}>Other</option>
+                                <option value="fragrance" {{ $data->product_type == 'fragrance' ? 'selected' : '' }}>Fragrance</option>
+                                <option value="mirror" {{ $data->product_type == 'mirror' ? 'selected' : '' }}>Mirror</option>
+                                <option value="cloths" {{ $data->product_type == 'cloths' ? 'selected' : '' }}>Cloths</option>
+                                <option value="frozen" {{ $data->product_type == 'frozen' ? 'selected' : '' }}>Frozen</option>
+                                <option value="ornaments" {{ $data->product_type == 'ornaments' ? 'selected' : '' }}>Ornaments</option>
+                                <option value="book" {{ $data->product_type == 'book' ? 'selected' : '' }}>Book
+                                </option>
+                            </select>
+                        </div>
+                
                 <div class="col-12">
                     <div class="row g-2">
                         <label for="favorite" class="col-sm-3 col-md-3 col-lg-2 control-label"><b>Is Favorite:</b></label>

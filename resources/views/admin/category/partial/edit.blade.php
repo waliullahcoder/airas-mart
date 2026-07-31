@@ -62,12 +62,14 @@
                      <div class="col-12">
                                     <label for="type" class="form-label"><b>Type</b></label>
                                     <select name="type" id="type" class="form-select" required>
-                                      <option value="book" {{ $data->type == 'book' ? 'selected' : '' }}>
-                                        Book
-                                    </option>
-                                    <option value="other" {{ $data->type == 'other' ? 'selected' : '' }}>
-                                        Other
-                                    </option>
+                                     <option value="other" {{ $data->type == 'other' ? 'selected' : '' }}>Other</option>
+                                <option value="fragrance" {{ $data->type == 'fragrance' ? 'selected' : '' }}>Fragrance</option>
+                                <option value="mirror" {{ $data->type == 'mirror' ? 'selected' : '' }}>Mirror</option>
+                                <option value="cloths" {{ $data->type == 'cloths' ? 'selected' : '' }}>Cloths</option>
+                                <option value="frozen" {{ $data->type == 'frozen' ? 'selected' : '' }}>Frozen</option>
+                                <option value="ornaments" {{ $data->type == 'ornaments' ? 'selected' : '' }}>Ornaments</option>
+                                <option value="book" {{ $data->type == 'book' ? 'selected' : '' }}>Book
+                                </option>
                                 </select>
                         </div>
 
