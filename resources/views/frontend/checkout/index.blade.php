@@ -548,9 +548,8 @@
                     $total = $subtotal - $discount + $tax + $delivery;
                 @endphp
 
-
                 <input type="hidden" name="subtotal" value="{{ $subtotal }}">
-                <input type="hidden" name="discount" value="{{ $discount }}">
+                <input type="hidden" id="discount_input" name="discount" value="{{ $discount }}">
                 <input type="hidden" name="tax" value="{{ $tax }}">
                 <input type="hidden" id="delivery_charge" name="delivery_charge" value="80">
                 <input type="hidden" id="final_total" name="total" value="{{ $total }}">
@@ -564,14 +563,20 @@
                     </div>
 
                     <div class="summary-row">
-                        <span>
-                            Discount
-                            {{ $settings->discount_type=='percent'
-                                ? '('.$settings->discount.'%)'
-                                : '' }}
-                        </span>
-
-                        <strong class="text-danger">
+                        <div class="mb-3">
+                            <label class="form-check-label fw-bold">
+                                <input type="checkbox"
+                                    class="form-check-input me-2"
+                                    id="preorder"
+                                    >
+                                Pre Order Discount Apply  Discount
+                                                    {{ $settings->discount_type=='percent'
+                                                        ? '('.$settings->discount.'%)'
+                                                        : '' }}
+                            </label>
+                        </div>
+                        
+                        <strong class="text-danger" id="discountAmount">
                             -৳{{ number_format($discount,2) }}
                         </strong>
                     </div>
@@ -931,45 +936,93 @@
 
     document.querySelectorAll(
     'input[name="delivery_type"]'
-    )
-
-    .forEach(item=>{
+)
+.forEach(item => {
 
     item.addEventListener(
-    'change',
-    function(){
+        'change',
+        function(){
 
-    let delivery =
-    parseFloat(this.value);
+            calculateTotal();
+
+        });
+
+});
+
+
+document.getElementById('preorder')
+.addEventListener('change', function(){
+
+    calculateTotal();
+
+});
+
+
+function calculateTotal(){
+
+    let delivery = parseFloat(
+        document.querySelector(
+            'input[name="delivery_type"]:checked'
+        ).value
+    );
+
+
+    let subtotal = {{ $subtotal }};
+
+    let discount = document.getElementById('preorder').checked
+        ? {{ $discount }}
+        : 0;
+
+
+    let tax = {{ $tax }};
+
+
+    let total =
+        subtotal - discount + tax + delivery;
+
+
+    // Delivery Update
+    document.getElementById(
+        'delivery_charge'
+    ).value = delivery;
+
 
     document.getElementById(
-    'delivery_charge'
-    ).value=delivery;
+        'delivery_amount'
+    ).innerHTML =
+    '৳' + delivery.toFixed(2);
+
+
+
+    // Discount Update
+    document.getElementById(
+        'discount_input'
+    ).value = discount;
+
 
     document.getElementById(
-    'delivery_amount'
-    ).innerHTML=
-    '৳'+delivery.toFixed(2);
+        'discountAmount'
+    ).innerHTML =
+    '-৳' + discount.toFixed(2);
 
 
-    let subtotal={{ $subtotal }};
-    let discount={{ $discount }};
-    let tax={{ $tax }};
 
-    let total=
-    subtotal-discount+tax+delivery;
+    // Total Update
+    document.getElementById(
+        'grandTotal'
+    ).innerHTML =
+    '৳' + total.toFixed(2);
+
 
     document.getElementById(
-    'grandTotal'
-    ).innerHTML=
-    '৳'+total.toFixed(2);
+        'final_total'
+    ).value = total;
 
-    document.getElementById(
-    'final_total'
-    ).value=total;
+}
 
-    });
-    });
+
+// Initial Load
+calculateTotal();
 
 </script>
 @endsection
