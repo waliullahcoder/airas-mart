@@ -46,7 +46,6 @@
     margin-bottom: 12px;
     background: #fff;
     border: 1.5px solid #e5e7eb;
-    border-radius: 16px;
     cursor: pointer;
     transition: all 0.25s ease;
 }
@@ -242,7 +241,6 @@
 /*-------*/
 .order-summary-card {
     background: #ffffff;
-    border-radius: 22px;
     padding: 22px;
     border: 1px solid #e5e7eb;
     box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
@@ -747,10 +745,10 @@
                                     </span>
                                 </label>
 
-                                <div type="submit" class="pay-btn">
+                                <button type="button" class="pay-btn border-0" data-bs-toggle="modal" data-bs-target="#paymentModal">
                                     এখনই পেমেন্ট করুন
                                     <span>Pay now</span>
-                                </div>
+                                </button>
 
                                 <div class="trust-strip">
                                     <span>🔒</span>
@@ -771,6 +769,164 @@
         </div>
     </form>
 </div>
+
+<!--Payment Modal-->
+<style>
+    .pay-btn{
+    width:100%;
+    background:linear-gradient(135deg,#ff6b00,#ff9500);
+    color:#fff;
+    border-radius:12px;
+    padding:15px;
+    font-size:18px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.pay-btn span{
+    display:block;
+    font-size:13px;
+    opacity:.85;
+}
+
+.pay-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(0,0,0,.2);
+}
+
+.list-group-item{
+    border-radius:10px !important;
+    margin-bottom:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.list-group-item:hover{
+    background:#f8f9fa;
+    border-color:#0d6efd;
+}
+</style>
+<div class="modal fade" id="paymentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0 rounded-4">
+
+            <form action="" method="POST">
+                @csrf
+
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" style="color:white;">
+                        Payment Information
+                    </h5>
+
+                    <button type="button" class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="fw-bold mb-2">
+                            Select Payment Method
+                        </label>
+
+                        <div class="list-group">
+
+                            <label class="list-group-item">
+                                <input class="form-check-input me-2"
+                                       type="radio"
+                                       name="payment_method"
+                                       value="bkash"
+                                       checked>
+
+                                <strong>bKash</strong><br>
+                                <small class="text-danger">
+                                    Personal: 01921588567
+                                </small>
+                            </label>
+
+                            <label class="list-group-item">
+                                <input class="form-check-input me-2"
+                                       type="radio"
+                                       name="payment_method"
+                                       value="nagad">
+
+                                <strong>Nagad</strong><br>
+                                <small class="text-danger">
+                                    Personal: 01921588567
+                                </small>
+                            </label>
+
+                            <label class="list-group-item">
+                                <input class="form-check-input me-2"
+                                       type="radio"
+                                       name="payment_method"
+                                       value="rocket">
+
+                                <strong>Rocket</strong><br>
+                                <small class="text-danger">
+                                    Personal: 019215885673
+                                </small>
+                            </label>
+
+                            <label class="list-group-item">
+                                <input class="form-check-input me-2"
+                                       type="radio"
+                                       name="payment_method"
+                                       value="bank">
+
+                                <strong>Bank Account / Credit Card</strong><br>
+
+                                <small class="text-primary">
+                                    Account Name : Airas Mart
+                                </small><br>
+
+                                <small class="text-primary">
+                                    Bank : Dutch Bangla Bank PLC
+                                </small><br>
+
+                                <small class="text-primary">
+                                    A/C No : 123456789012
+                                </small>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            Transaction ID
+                        </label>
+
+                        <input type="text"
+                               name="transaction_id"
+                               class="form-control"
+                               placeholder="Enter Transaction ID"
+                               required>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                            type="button">
+                        Cancel
+                    </button>
+
+                    <button class="btn btn-success">
+                        Confirm Payment
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<!--Payment Modal end-->
+
 <script>
 
     document.querySelectorAll(
