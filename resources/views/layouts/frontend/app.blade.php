@@ -22,7 +22,6 @@
     href="{{ asset(file_exists($settings->favicon) ? $settings->favicon : 'frontend/images/logo/favicon.png') }}"
     type="image/x-icon">
     @include('layouts.frontend.partial.styles')
-   
 </head>
 
 <body style="background: linear-gradient(135deg, #000000, #0f2027, #203a43, #2c5364);">

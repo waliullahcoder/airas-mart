@@ -247,6 +247,8 @@
 }
 .table>:not(caption)>*>*{
     background-color: #77b8d3;
+    text-align:left;
+    padding: 5px 15px;
 }
 .text-muted{
     color:#f36f0e !important;

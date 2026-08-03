@@ -36,6 +36,31 @@ class CheckoutController extends Controller
         return view('frontend.checkout.index', compact('menus','cart'));
     }
 
+    public function buyNow(Request $request)
+    {
+        $product = Product::findOrFail($request->product_id);
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['qty']++;
+        } else {
+            $cart[$product->id] = [
+                'id'         => $product->id,
+                'code'       => $product->code,
+                'name'       => $product->name,
+                'price'      => $product->sale_price,
+                'qty'        => 1,
+                'variant_id' => $request->variant_id,
+                'image'      => $product->thumbnail,
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return redirect()->route('checkout');
+    }
+
 
     public function placeOrder(Request $request)
     {

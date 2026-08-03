@@ -48,6 +48,7 @@ Route::post('/cart/clear', [CartController::class,'clear'])->name('cart.clear');
 */
 Route::get('/checkout', [CheckoutController::class, 'checkout'])
     ->name('checkout');
+Route::post('/buy-now', [CheckoutController::class, 'buyNow'])->name('cart.buyNow');
 Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])
     ->name('checkout.placeOrder');
 

@@ -157,8 +157,8 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <label for="short_description" class="form-label"><b>Short Description</b></label>
-                    <textarea class="form-control short_description" id="short_description" name="short_description" cols="30"
+                    <label for="description" class="form-label"><b>Short Description</b></label>
+                    <textarea class="form-control description" id="description" name="short_description" cols="30"
                         rows="10" placeholder="Short Description">{!! old('short_description', $data->short_description) !!}</textarea>
                 </div>
                 <div class="col-12">

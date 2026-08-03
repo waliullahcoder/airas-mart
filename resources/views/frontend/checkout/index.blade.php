@@ -760,7 +760,7 @@
                         </div>
 
                         {{-- PLACE ORDER --}}
-                        <br><button type="submit" class="btn btn-danger w-100 btn-lg">
+                        <br><button type="submit" class="btn btn-success w-100 btn-lg">
                             🛒 Place Order
                         </button>
 

@@ -194,15 +194,11 @@
 
                                 <!-- ACTION BUTTONS -->
                                 <div class="d-flex gap-2 mb-4" style="gap:0.5rem !important">
-                                    <!-- <button class="btn btn-danger add-to-cart"
-                                            data-id="{{ $product->id }}" {{$product->variants->sum('stock')>0 ? '' : 'disabled'}}> -->
-                                    <button class="btn btn-danger add-to-cart"
+                                    <button class="btn btn-sm btn-danger add-to-cart"
                                             data-id="{{ $product->id }}">
                                         Add +
                                     </button>
-                                    {{-- <button class="btn btn-outline-secondary">
-                                        Wishlist
-                                    </button> --}}
+                                   
                                     @php
                                         $alreadyWishlisted = auth()->check() &&
                                             auth()->user()->wishlists()->where('product_id', $product->id)->exists();
@@ -216,66 +212,27 @@
                                             method="POST"
                                             class="d-inline">
                                             @csrf
-                                            <button class="btn btn-outline-danger btn-sm"{{$product->variants->sum('stock')>0 ? '' : 'disabled'}}>
+                                            <button class="btn btn-sm btn-danger"{{$product->variants->sum('stock')>0 ? '' : 'disabled'}}>
                                                 🤍 Add to Wishlist
                                             </button>
                                         </form>
                                     @endif
+                                    <form action="{{ route('cart.buyNow') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <input type="hidden" name="variant_id" value="">
+                                        <button type="submit" class="btn btn-sm btn-warning">
+                                            Buy Now
+                                        </button>
+                                    </form>
+                                    <a href="https://wa.me/8801575020231?text=Hello%20I%20want%20to%20contact%20you" target="_blank" class="btn btn-sm btn-success">
+                                           Whatsapp Us
+                                    </a>
 
                                 </div>
 
                                 <!-- META INFO -->
-                                <table class="table table-sm">
-                                    <tr>
-                                        <th width="150">SKU</th>
-                                        <td>{{ $product->sku ?? 'N/A' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>CODE NUMBER</th>
-                                        <td>{{ $product->code }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Product Type</th>
-                                        <td>{{ ucfirst($product->product_type) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Status</th>
-                                        <td>
-                                            @if($product->variants->sum('stock')>0)
-                                                <span class="text-success">In Stock</span>
-                                            @else
-                                                <span class="text-danger">Out of Stock</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Stock</th>
-                                        <td>{{ $product->variants->sum('stock') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Author</th>
-                                        <td>{{$product->authors->pluck('name')->implode(', ')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Publication</th>
-                                        <td>{{$product->publication->name ?? 'N/A'}}</td>
-                                    </tr>
-                                    <tr>
-                                    <th>@if($product->uom->type==0) Editor @else Translator @endif</th>
-                                    <td>{{ $product->uom->name??'N/A' }}</td>
-                                    </tr>
-                                     <tr>
-                                    <th>PDF</th>
-                                    <td> 
-                                        @if (!empty($product->file) && file_exists(public_path($product->file)))
-                                            <a href="{{ asset($product->file) }}" target="_blank" >
-                                                 <i class="fas fa-file-pdf"></i> View PDF
-                                            </a>
-                                            @else
-                                            Not uploaded yet
-                                        @endif</td>
-                                    </tr>
-                                </table>
+                                {!! $product->short_description !!}
 
                             </div>
                         </div>

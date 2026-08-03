@@ -152,7 +152,7 @@ body {
     }
 }
 </style>
-<div class="header-middle" style="background:linear-gradient(135deg, #ffffff, #ffffff, #054838, #035e72);">
+<div class="header-middle" style="background:linear-gradient(135deg, #ffffff, #ffffff, #148b86, #148b86);">
     <div class="container">
 
         <!-- Row 1: Hamburger / Logo / Cart / Login / Desktop search -->
