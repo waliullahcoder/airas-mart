@@ -48,6 +48,7 @@ class CheckoutController extends Controller
             $cart[$product->id] = [
                 'id'         => $product->id,
                 'code'       => $product->code,
+                'product_type'  => $product->product_type,
                 'name'       => $product->name,
                 'price'      => $product->sale_price,
                 'qty'        => 1,

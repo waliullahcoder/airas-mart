@@ -24,6 +24,7 @@
                         <thead>
                             <tr>
                                 <th>Product</th>
+                                <th class="text-center">Size</th>
                                 <th class="text-center">Qty</th>
                                 <th class="text-end">Price</th>
                                 <th class="text-end">Total</th>
@@ -45,6 +46,169 @@
                                             {{ $item['name'] }}
                                         </div>
                                     </td>
+                                     <td>
+                                    @php
+                                        $type = $item['product_type'] ?? '';
+                                    @endphp
+
+                                    @if($type == 'mirror')
+
+                                        {{-- Mirror Size --}}
+                                        <div class="mt-2">
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <select name="height[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                        <option value="">Height</option>
+                                                        @for($i = 18; $i <= 72; $i += 6)
+                                                            <option value="{{ $i }}">{{ $i }}"</option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-6">
+                                                    <select name="width[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                        <option value="">Width</option>
+                                                        @for($i = 18; $i <= 72; $i += 6)
+                                                            <option value="{{ $i }}">{{ $i }}"</option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    @elseif($type == 'cloths')
+
+                                        {{-- Cloth Size --}}
+                                        <div class="mt-2">
+                                           <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Size</option>
+                                                <option value="S">Small (S)</option>
+                                                <option value="M">Medium (M)</option>
+                                                <option value="L">Large (L)</option>
+                                                <option value="XL">Extra Large (XL)</option>
+                                                <option value="XXL">Double Extra Large (XXL)</option>
+                                            </select>
+                                        </div>
+
+                                    @elseif($type == 'earrings')
+
+                                        {{-- Ornament Size --}}
+                                        <div class="mt-2">
+                                            <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Size</option>
+                                                <option value="Free Size">Free Size</option>
+                                                <option value="Small">Small</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Large">Large</option>
+                                            </select>
+                                        </div>
+                                    @elseif($type == 'bangles')
+
+                                        {{-- Ornament Size --}}
+                                        <div class="mt-2">
+                                           <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Size</option>
+                                                <option value="2.2">2.2 (Small)</option>
+                                                <option value="2.4">2.4 (Medium)</option>
+                                                <option value="2.6">2.6 (Large)</option>
+                                                <option value="2.8">2.8 (XL)</option>
+                                                <option value="2.10">2.10 (XXL)</option>
+                                            </select>
+                                        </div>
+                                    @elseif($type == 'anklet')
+
+                                        {{-- Ornament Size --}}
+                                        <div class="mt-2">
+                                          <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Size</option>
+                                                <option value="6 inch">6 Inch (Small)</option>
+                                                <option value="7 inch">7 Inch (Medium)</option>
+                                                <option value="8 inch">8 Inch (Large)</option>
+                                                <option value="9 inch">9 Inch (XL)</option>
+                                                <option value="10 inch">10 Inch (XXL)</option>
+                                            </select>
+                                        </div>
+                                    @elseif($type == 'bracelet')
+
+                                        {{-- Ornament Size --}}
+                                        <div class="mt-2">
+                                         <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Size</option>
+                                                <option value="15 cm">15 cm</option>
+                                                <option value="16 cm">16 cm</option>
+                                                <option value="17 cm">17 cm</option>
+                                                <option value="18 cm">18 cm</option>
+                                                <option value="19 cm">19 cm</option>
+                                                <option value="20 cm">20 cm</option>
+                                                <option value="21 cm">21 cm</option>
+                                            </select>
+                                        </div>
+                                    @elseif($type == 'ring')
+
+                                        {{-- Ornament Size --}}
+                                        <div class="mt-2">
+                                         <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Ring Size</option>
+                                                <option value="US 5">US 5</option>
+                                                <option value="US 6">US 6</option>
+                                                <option value="US 7">US 7</option>
+                                                <option value="US 8">US 8</option>
+                                                <option value="US 9">US 9</option>
+                                                <option value="US 10">US 10</option>
+                                                <option value="US 11">US 11</option>
+                                                <option value="US 12">US 12</option>
+                                            </select>
+                                        </div>
+                                    @elseif($type == 'necklace')
+
+                                        {{-- Ornament Size --}}
+                                        <div class="mt-2">
+                                        <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Necklace Size</option>
+                                                <option value="14 inch">14 Inch (Choker)</option>
+                                                <option value="16 inch">16 Inch</option>
+                                                <option value="18 inch">18 Inch (Most Popular)</option>
+                                                <option value="20 inch">20 Inch</option>
+                                                <option value="22 inch">22 Inch</option>
+                                                <option value="24 inch">24 Inch</option>
+                                                <option value="30 inch">30 Inch (Long Necklace)</option>
+                                            </select>
+                                        </div>
+                                    @elseif($type == 'bra')
+
+                                        {{-- Ornament Size --}}
+                                        <div class="mt-2">
+                                        <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Bra Size</option>
+                                                <option value="32">32</option>
+                                                <option value="34">34</option>
+                                                <option value="36">36</option>
+                                                <option value="38">38</option>
+                                                <option value="40">40</option>
+                                                <option value="42">42</option>
+                                            </select>
+                                        </div>
+
+                                    @elseif($type == 'fragrance')
+
+                                        {{-- Fragrance Volume --}}
+                                        <div class="mt-2">
+                                            <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                <option value="">Select Volume</option>
+                                                @for($ml = 10; $ml <= 100; $ml += 10)
+                                                    <option value="{{ $ml }}ML">{{ $ml }} ML</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                     @elseif($type == 'other')
+
+                                        {{-- Fragrance Volume --}}
+                                        <div class="mt-2">
+                                            <input type="text" name="size">
+                                        </div>
+
+                                    @endif
+                                </td>
                                     <td class="text-center">
                                         <span class="qty-badge">{{ $item['qty'] }}</span>
                                     </td>
@@ -93,19 +257,40 @@
                             <label class="form-check-label fw-bold">
                                 <input type="checkbox"
                                     class="form-check-input me-2"
-                                    id="preorder"
-                                    >
-                                Pre Order Discount Apply  Discount
-                                                    {{ $settings->discount_type=='percent'
-                                                        ? '('.$settings->discount.'%)'
-                                                        : '' }}
+                                    id="preorder">
+
+                                Pre Order Discount Apply
+                                {{ $settings->discount_type=='percent'
+                                    ? '('.$settings->discount.'%)'
+                                    : '' }}
                             </label>
                         </div>
+
+                        
                         
                         <strong class="text-danger" id="discountAmount">
                             -৳{{ number_format($discount,2) }}
                         </strong>
                     </div>
+
+                    <div id="preorderBox" class="mt-3" style="display:none;">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">
+                                    <span class="text-danger">*</span>(প্রি-অর্ডার ডিসকাউন্ট  সুবিধা পেতে চাইলে আগে পেমেন্ট করুন এবং পণ্যটি গ্রহন করতে ১০ দিন ডেলিভারির জন্য অপেক্ষা করুন।  Transaction ID  ভুল প্রবেশ করলে আপনার অর্ডার গ্রহন করা হবে না।)
+                                </label>
+
+                                <input type="text"
+                                    class="form-control"
+                                    id="transaction_id"
+                                    name="transaction_id"
+                                    placeholder="প্রি-অর্ডার ট্রাঞ্জেকশন আইডি প্রবেশ করুন এইখানে and then click on 🛒 Place Order Button ">
+                            </div>
+
+                           <button type="button" class="pay-btn border-0" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                                    এখনই পেমেন্ট করুন
+                                    <span>Pay now</span>
+                                </button>
+                        </div>
 
                     <div class="summary-row">
                         <span>Tax ({{$settings->tax}}%)</span>
@@ -162,6 +347,45 @@
                             </span>
 
                         </label>
+                         <label class="delivery-option">
+
+                            <input
+                                type="radio"
+                                name="delivery_type"
+                                value="350">
+
+                            <span class="radio-ui"></span>
+
+                            <div>
+                                <strong>ঢাকার ভিতরে (Only LED Mirror)</strong>
+                                <small>Delivery Charge</small>
+                            </div>
+
+                            <span class="delivery-price">
+                                ৳350
+                            </span>
+
+                        </label>
+
+                        <label class="delivery-option">
+
+                            <input
+                                type="radio"
+                                name="delivery_type"
+                                value="1500">
+
+                            <span class="radio-ui"></span>
+
+                            <div>
+                                <strong>ঢাকার বাইরে (Only LED Mirror)</strong>
+                                <small>Delivery Charge</small>
+                            </div>
+
+                            <span class="delivery-price">
+                                ৳1500
+                            </span>
+
+                        </label>
 
                     </div>
 
@@ -198,16 +422,21 @@
                         @if(!auth()->check())
                             <h5 class="mb-3">👤 Customer Information</h5>
 
-                            <div class="mb-2">
+                            <div class="mb-2" style="margin-top:10px;">
                                 <input type="text" name="name" class="form-control" placeholder="Full Name" required>
                             </div>
 
                             <div class="mb-2">
                                 <input type="number" name="phone" class="form-control" placeholder="Mobile No." required>
                             </div>
-
+                            <div class="mb-2">
+                                <input type="text" name="address" class="form-control" placeholder="Delivery Address" required>
+                            </div>
                             <div class="mb-3">
                                 <input type="password" name="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <div class="mb-2" style="margin-top:10px;">
+                                <input type="text" name="note" class="form-control" placeholder="(Note) write here something if need..">
                             </div>
                             <p>If you have an account, please continue to <a href="{{ route('auth.signinPage') }}" style="color:green">Login</a></p>
                         @endif
@@ -276,10 +505,7 @@
                                     </span>
                                 </label>
 
-                                <button type="button" class="pay-btn border-0" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                                    এখনই পেমেন্ট করুন
-                                    <span>Pay now</span>
-                                </button>
+                                
 
                                 <div class="trust-strip">
                                     <span>🔒</span>
@@ -425,14 +651,12 @@
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">
-                            Transaction ID
+                            উপর থেকে আপনার পছন্দমত পেমেন্ট পদ্ধতি নির্বাচন করে পণ্যের মূল্য পরিশোধ করুন এবং Transaction ID টি প্রবেশ করুন প্রি-অর্ডার ট্রাঞ্জেকশন আইডির জায়গায়। 
+                            বিস্তারিত জানতে হোয়াটসঅ্যাপে যোগাযোগ করুনঃ
+                            <a href="https://wa.me/8801575020231" target="_blank">
+                                +8801575020231
+                            </a>
                         </label>
-
-                        <input type="text"
-                               name="transaction_id"
-                               class="form-control"
-                               placeholder="Enter Transaction ID"
-                               required>
                     </div>
 
                 </div>
@@ -445,9 +669,6 @@
                         Cancel
                     </button>
 
-                    <button class="btn btn-success">
-                        Confirm Payment
-                    </button>
 
                 </div>
 
@@ -549,6 +770,40 @@ function calculateTotal(){
 
 // Initial Load
 calculateTotal();
+
+
+//Preorder check section
+const preorder = document.getElementById('preorder');
+const preorderBox = document.getElementById('preorderBox');
+const transactionId = document.getElementById('transaction_id');
+const verifyBtn = document.getElementById('verifyBtn');
+
+preorder.addEventListener('change', function () {
+
+    if (this.checked) {
+        preorderBox.style.display = 'block';
+        transactionId.setAttribute('required', 'required');
+    } else {
+        preorderBox.style.display = 'none';
+        transactionId.removeAttribute('required');
+        transactionId.value = '';
+    }
+
+});
+
+verifyBtn.addEventListener('click', function () {
+
+    if (transactionId.value.trim() === '') {
+        alert('Please enter Transaction ID');
+        transactionId.focus();
+        return;
+    }
+
+    // এখানে AJAX বা form submit করতে পারবেন
+    alert('Transaction ID: ' + transactionId.value);
+
+});
+//preorder check end
 
 </script>
 @endsection
