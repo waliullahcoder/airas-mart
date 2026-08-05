@@ -139,6 +139,7 @@
     <table>
         <thead>
             <tr>
+                <th style="text-align:left;">Code</th>
                 <th style="text-align:left;">Product</th>
                 <th style="text-align:left;">Size/Unit</th>
                 <th>Category</th>
@@ -150,6 +151,7 @@
         <tbody>
             @foreach($order->items as $item)
             <tr>
+                <td>{{ $item->product->code }}</td>
                 <td>{{ $item->product->name }}</td>
                 <td>{{ $item->size }}</td>
                 <td style="text-align:center;">{{ $item->product->category->name ?? '-' }}</td>
