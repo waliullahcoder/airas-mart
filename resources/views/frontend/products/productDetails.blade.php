@@ -24,6 +24,39 @@
 .active-thumb {
     border: 2px solid #dc3545;
 }
+
+/*Zoom lens*/
+#image-container{
+    position:relative;
+    display:inline-block;
+}
+
+#lens{
+    position:absolute;
+    background:rgba(255,255,255,.35);
+    width:140px;
+    height:140px;
+    z-index:999;
+    display:none;
+    cursor:crosshair;
+    pointer-events:none;
+    box-shadow:0 0 8px rgba(0,0,0,.3);
+}
+
+#zoomResult{
+    width:72%;
+    height:600px;
+     background:#1D363F;
+    border:1px solid #ddd;
+    background-repeat:no-repeat;
+    display:none;
+}
+#zoomResult{
+    position:absolute;
+    top:0;
+    left:50%;
+    z-index:999999;
+}
 </style>
 <div class="product-details-page py-4 animate__animated animate__fadeInDownBig">
     <div class="container">
@@ -35,32 +68,26 @@
             <div class="col-lg-9">
                 <div class="product-card" style="background: linear-gradient(135deg, #000000, #0f2027, #203a43, #2c5364);">
 
-                    <div class="row g-4">
+                    <div class="row">
                      <!-- LEFT : PRODUCT IMAGE -->
                     <div class="col-lg-6">
                         <div class="border p-3">
 
                             <!-- MAIN IMAGE -->
-                            <div class="text-center mb-3">
-                                <img id="productThumbnail"
-                                    class="img-fluid product-img"
-                                    src="{{ asset($product->thumbnail) }}"
-                                    alt="{{ $product->name }}"
-                                    style="cursor:pointer; max-height:500px; width:100%; object-fit:contain;"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#imageModal">
-                            </div>
+                           
 
                             <!-- SMALL THUMBNAILS -->
-                            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                             <div class="row">
+                        <div class="col-md-12">
 
-                                {{-- Default Thumbnail --}}
-                                <img src="{{ asset($product->thumbnail) }}"
-                                    class="img-thumbnail small-thumb active-thumb"
-                                    width="70"
-                                    style="cursor:pointer;"
-                                    onclick="changeImage(this)">
-                                {{-- Extra Images --}}
+                            <div class="position-relative d-inline-block" id="image-container">
+                                <img id="productThumbnail"
+                                    class="img-fluid border img-thumbnail small-thumb active-thumb product-img"
+                                    src="{{ asset($product->thumbnail) }}"
+                                    alt="{{ $product->name }}"
+                                    style="cursor:pointer; max-height:500px; width:100%; object-fit:contain;">
+                                  
+                                     {{-- Extra Images --}}
                                 @foreach($product->images->take(4) as $image)
                                     <img src="{{ asset($image->image) }}"
                                         class="img-thumbnail small-thumb"
@@ -69,34 +96,23 @@
                                         onclick="changeImage(this)">
                                 @endforeach
 
+                                <div id="lens"></div>
+
                             </div>
 
                         </div>
-                    </div>
-                    <!-- IMAGE ZOOM MODAL -->
-                    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content shadow-lg border-0">
-                                <div class="modal-header border-0">
-                                    <h5 class="modal-title">{{ $product->name }}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-center p-3">
-                                    <img id="modalImage"
-                                        src="{{ asset($product->thumbnail) }}"
-                                        class="img-fluid"
-                                        style="max-height:80vh; width:auto;">
-                                </div>
-                                <div class="modal-footer justify-content-between border-0">
-                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <div>
-                                        <button class="btn btn-sm btn-primary" id="zoomIn">+</button>
-                                        <button class="btn btn-sm btn-primary" id="zoomOut">-</button>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div class="col-md-6">
+
+                            <div id="zoomResult"></div>
+
                         </div>
                     </div>
+                           
+                        </div>
+                    </div>
+
+                    
                     <script>
                     function changeImage(element) {
 
@@ -116,20 +132,93 @@
                         element.classList.add('active-thumb');
                     }
                     </script>
-                    <script>
-                    let zoomLevel = 1;
-                    const modalImage = document.getElementById('modalImage');
+                     <script>
+                        //Zoom Lens
+                   const image = document.getElementById("productThumbnail");
+                    const lens = document.getElementById("lens");
+                    const result = document.getElementById("zoomResult");
 
-                    document.getElementById('zoomIn').addEventListener('click', () => {
-                        zoomLevel += 0.1;
-                        modalImage.style.transform = `scale(${zoomLevel})`;
-                    });
+                    function initZoom(){
 
-                    document.getElementById('zoomOut').addEventListener('click', () => {
-                        if(zoomLevel > 0.2) zoomLevel -= 0.1;
-                        modalImage.style.transform = `scale(${zoomLevel})`;
-                    });
-                    </script>
+                        result.style.backgroundImage = `url('${image.src}')`;
+
+                        const cx = result.offsetWidth / lens.offsetWidth;
+                        const cy = result.offsetHeight / lens.offsetHeight;
+
+                        result.style.backgroundSize =
+                            (image.width * cx) + "px " +
+                            (image.height * cy) + "px";
+
+                        image.addEventListener("mousemove", moveLens);
+                        lens.addEventListener("mousemove", moveLens);
+
+                        image.addEventListener("mouseenter",()=>{
+                            lens.style.display="block";
+                            result.style.display="block";
+                        });
+
+                        image.addEventListener("mouseleave",()=>{
+                            lens.style.display="none";
+                            result.style.display="none";
+                        });
+
+                       function moveLens(e) {
+
+                        const rect = image.getBoundingClientRect();
+
+                        let x = e.clientX - rect.left;
+                        let y = e.clientY - rect.top;
+
+                        // Lens half size
+                        x = x - lens.offsetWidth / 2;
+                        y = y - lens.offsetHeight / 2;
+
+                        if (x < 0) x = 0;
+                        if (y < 0) y = 0;
+
+                        if (x > image.clientWidth - lens.offsetWidth)
+                            x = image.clientWidth - lens.offsetWidth;
+
+                        if (y > image.clientHeight - lens.offsetHeight)
+                            y = image.clientHeight - lens.offsetHeight;
+
+                        lens.style.left = x + "px";
+                        lens.style.top = y + "px";
+
+                        // Original image scale
+                        let scaleX = image.naturalWidth / image.clientWidth;
+                        let scaleY = image.naturalHeight / image.clientHeight;
+
+                        result.style.backgroundSize =
+                            (image.naturalWidth) + "px " +
+                            (image.naturalHeight) + "px";
+
+                        result.style.backgroundPosition =
+                            "-" + (x * scaleX) + "px -" + (y * scaleY) + "px";
+                    }
+                    }
+
+                    initZoom();
+
+                    function changeImage(el){
+
+                        image.src = el.src;
+
+                        setTimeout(function(){
+
+                            result.style.backgroundImage=`url('${image.src}')`;
+
+                            const cx = result.offsetWidth / lens.offsetWidth;
+                            const cy = result.offsetHeight / lens.offsetHeight;
+
+                            result.style.backgroundSize =
+                                (image.width * cx) + "px " +
+                                (image.height * cy) + "px";
+
+                        },100);
+
+                    }
+                    </script> 
 
 
                         <!-- RIGHT : PRODUCT DETAILS -->

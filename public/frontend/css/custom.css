@@ -246,7 +246,7 @@
     font-size: 14px;
 }
 .table>:not(caption)>*>*{
-    background-color: #77b8d3;
+    background:linear-gradient(135deg, #dbdfe1, #def5ff, #a1b7c1, #264755);
     text-align:left;
     padding: 5px 15px;
 }
