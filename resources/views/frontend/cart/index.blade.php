@@ -3,6 +3,9 @@
 @section('content')
 <style>
     /* Mobile Responsive */
+    .card-body{
+        background:#f3f9fb;
+    }
     .code{
         margin-bottom:0px;
         font-size:11px;

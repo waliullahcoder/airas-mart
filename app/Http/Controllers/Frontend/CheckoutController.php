@@ -65,7 +65,7 @@ class CheckoutController extends Controller
 
     public function placeOrder(Request $request)
     {
-
+         
         if($request->phone){
             $user = User::where('phone', $request->phone)->first();
             if($user){
@@ -134,7 +134,17 @@ class CheckoutController extends Controller
             }
 
             $cart = session('cart');
+           
+            $cart = session()->get('cart', []);
+                        $sizes = $request->size ?? [];
 
+                            foreach ($cart as &$item) {
+
+                                if(isset($sizes[$item['id']])) {
+                                    $item['size'] = $sizes[$item['id']];
+                                }
+
+                            }
             // 2️⃣ Order create (NOW WITH TOTALS)
             $order = Order::create([
                 'user_id'        => $user->id,
@@ -145,6 +155,7 @@ class CheckoutController extends Controller
                 'total'          => $request->total,
                 'payment_method' => $request->payment_method,
                 'status'         => 'pending',
+                'note'       => $request->note,
             ]);
 
             // 3️⃣ Order items + stock reduce
@@ -156,6 +167,7 @@ class CheckoutController extends Controller
                     'product_variant_id' => $item['variant_id'] ?? null,
                     'qty' => $item['qty'],
                     'price' => $item['price'],
+                    'size'=>$item['size'],
                     'total' => $item['price'] * $item['qty'],
                 ]);
 

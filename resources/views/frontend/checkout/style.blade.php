@@ -11,7 +11,7 @@
 }
 
 .checkout-box {
-    background: linear-gradient(180deg, #ffffff, #f8fafc);
+    background: #f3f9fb;
     border: 1px solid #e5e7eb;
     border-radius: 20px;
     padding: 22px;
@@ -237,12 +237,14 @@
 
 /*-------*/
 .order-summary-card {
-    background: #ffffff;
+    background: #99b2bd;
     padding: 22px;
     border: 1px solid #e5e7eb;
     box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
 }
-
+.card-body{
+background: #99b2bd;
+}
 .order-summary-header {
     display: flex;
     align-items: center;
@@ -322,7 +324,8 @@
 
 .summary-total-box {
     margin-top: 18px;
-    background: linear-gradient(180deg, #f8fafc, #ffffff);
+    background: #f3f9fb;
+    
     border: 1px solid #e5e7eb;
     border-radius: 18px;
     padding: 16px;

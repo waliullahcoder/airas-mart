@@ -56,20 +56,15 @@
                                         {{-- Mirror Size --}}
                                         <div class="mt-2">
                                             <div class="row g-2">
-                                                <div class="col-6">
-                                                    <select name="height[{{ $item['id'] }}]" class="form-select form-select-sm">
-                                                        <option value="">Height</option>
-                                                        @for($i = 18; $i <= 72; $i += 6)
-                                                            <option value="{{ $i }}">{{ $i }}"</option>
-                                                        @endfor
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-6">
-                                                    <select name="width[{{ $item['id'] }}]" class="form-select form-select-sm">
-                                                        <option value="">Width</option>
-                                                        @for($i = 18; $i <= 72; $i += 6)
-                                                            <option value="{{ $i }}">{{ $i }}"</option>
+                                                <div class="col-12">
+                                                     <select name="size[{{ $item['id'] }}]" class="form-select form-select-sm">
+                                                        <option value="">Select Size</option>
+                                                        @for($height = 18; $height <= 72; $height += 6)
+                                                            @for($width = 18; $width <= 72; $width += 6)
+                                                                <option value="{{ $height }}X{{ $width }}">
+                                                                    {{ $height }}" X {{ $width }}"
+                                                                </option>
+                                                            @endfor
                                                         @endfor
                                                     </select>
                                                 </div>
@@ -204,7 +199,7 @@
 
                                         {{-- Fragrance Volume --}}
                                         <div class="mt-2">
-                                            <input type="text" name="size">
+                                            <input type="text" name="size[{{ $item['id'] }}]" class="form-control">
                                         </div>
 
                                     @endif
@@ -435,9 +430,7 @@
                             <div class="mb-3">
                                 <input type="password" name="password" class="form-control" placeholder="Password" required>
                             </div>
-                            <div class="mb-2" style="margin-top:10px;">
-                                <input type="text" name="note" class="form-control" placeholder="(Note) write here something if need..">
-                            </div>
+                            
                             <p>If you have an account, please continue to <a href="{{ route('auth.signinPage') }}" style="color:green">Login</a></p>
                         @endif
                         
@@ -445,6 +438,9 @@
 
                         {{-- PAYMENT METHOD --}}
                         <div class="payment-section">
+                            <div class="mb-2" style="margin-top:10px;">
+                                <input type="text" name="note" class="form-control" placeholder="(Note) write here something if need..">
+                            </div>
                             <h5 class="payment-heading">💳 Payment Method</h5>
 
                             <div class="checkout-box">
