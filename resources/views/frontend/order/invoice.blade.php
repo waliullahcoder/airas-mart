@@ -156,8 +156,8 @@
                 <td>{{ $item->size }}</td>
                 <td style="text-align:center;">{{ $item->product->category->name ?? '-' }}</td>
                 <td style="text-align:center;">{{ $item->qty }}</td>
-                <td style="text-align:center;">৳ {{ number_format($item->price,2) }}</td>
-                <td style="text-align:right;">৳ {{ number_format($item->total,2) }}</td>
+                <td style="text-align:center;">৳{{ number_format($item->price,2) }}</td>
+                <td style="text-align:right;">৳{{ number_format($item->total,2) }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -173,17 +173,17 @@
                 <table>
                     <tr>
                         <td>Subtotal</td>
-                        <td style="text-align:right;">৳ {{ number_format($subtotal,2) }}</td>
+                        <td style="text-align:right;">৳{{ number_format($subtotal,2) }}</td>
                     </tr>
                     @if($discount>0)
                     <tr>
                         <td>Discount {{$settings->discount_type=='percent' ? '('.$settings->discount.'%'.')' : ''}}</td>
-                        <td style="text-align:right;">- ৳ {{ number_format($discount,2) }}</td>
+                        <td style="text-align:right;">- ৳{{ number_format($discount,2) }}</td>
                     </tr>
                     @endif
                     <tr>
                         <td>Tax ({{$settings->tax}}%)</td>
-                        <td style="text-align:right;">৳ {{ number_format($tax,2) }}</td>
+                        <td style="text-align:right;">৳{{ number_format($tax,2) }}</td>
                     </tr>
                     <tr>
                        <th>Delivery Charge</th>
