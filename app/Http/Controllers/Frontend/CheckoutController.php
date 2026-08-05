@@ -88,6 +88,7 @@ class CheckoutController extends Controller
                 $user = User::create([
                     'name' => $request->name,
                     'phone' => $request->phone,
+                    'address' => $request->address,
                     'password' => bcrypt($request->password),
                 ]);
                 auth()->login($user);
@@ -106,7 +107,7 @@ class CheckoutController extends Controller
                 $account = Coa::create([
                     'parent_id'   => $parent->id,
                     'head_code'   => $headCode,
-                    'head_name'   => $request->name,
+                    'head_name'   => $parent->head_name,
                     'transaction' => true,
                     'general'     => false,
                     'head_type'   => $parent->head_type,
@@ -114,37 +115,30 @@ class CheckoutController extends Controller
                     'updateable'     => false,
                     'created_by'  => Auth::id(),
                 ]);
-
-                Client::create([
-                    'user_id'  => $user_id,
-                    'region_id' => $request->region_id,
-                    'area_id' => $request->area_id,
-                    'territory_id' => $request->territory_id,
-                    'coa_id' => $account->id,
-                    'code' => $request->code,
-                    'name' => $request->name,
-                    'contact_person' => $request->contact_person,
-                    'phone' => $request->phone,
-                    'email' => $request->phone.'@email.com',
-                    'address' => $request->address,
-                    'bin_no' => $request->bin_no,
-                    'credit_limit' => $request->credit_limit,
-                    'created_by' => Auth::id(),
-                ]);
+                $client=Client::where('user_id',$user_id)->first();
+                if(!$client){
+                    Client::create([
+                        'user_id'  => $user_id,
+                        'region_id' => $request->region_id,
+                        'area_id' => $request->area_id,
+                        'territory_id' => $request->territory_id,
+                        'coa_id' => $account->id,
+                        'code' => $request->code,
+                        'name' => $request->name,
+                        'contact_person' => $request->contact_person,
+                        'phone' => $request->phone,
+                        'email' => $request->phone.'@email.com',
+                        'address' => $request->address,
+                        'bin_no' => $request->bin_no,
+                        'credit_limit' => $request->credit_limit,
+                        'created_by' => Auth::id(),
+                    ]);
+                }
             }
 
             $cart = session('cart');
            
-            $cart = session()->get('cart', []);
-                        $sizes = $request->size ?? [];
-
-                            foreach ($cart as &$item) {
-
-                                if(isset($sizes[$item['id']])) {
-                                    $item['size'] = $sizes[$item['id']];
-                                }
-
-                            }
+            
             // 2️⃣ Order create (NOW WITH TOTALS)
             $order = Order::create([
                 'user_id'        => $user->id,
@@ -158,19 +152,27 @@ class CheckoutController extends Controller
                 'note'       => $request->note,
             ]);
 
+            $cart = session()->get('cart', []);
+            $sizes = $request->size ?? [];
+            foreach ($cart as $key => &$item) {
+                if (isset($sizes[$key])) {
+                    $item['size'] = $sizes[$key];
+                }
+            }
+            unset($item);
+
+
             // 3️⃣ Order items + stock reduce
             foreach ($cart as $item) {
-
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $item['id'],
-                    'product_variant_id' => $item['variant_id'] ?? null,
-                    'qty' => $item['qty'],
-                    'price' => $item['price'],
-                    'size'=>$item['size'],
-                    'total' => $item['price'] * $item['qty'],
-                ]);
-
+                    OrderItem::create([
+                        'order_id'           => $order->id,
+                        'product_id'         => $item['id'],
+                        'product_variant_id' => $item['variant_id'] ?? null,
+                        'qty'                => $item['qty'],
+                        'price'              => $item['price'],
+                        'size'               => $item['size'] ?? null,
+                        'total'              => $item['price'] * $item['qty'],
+                    ]);
                 // Variant stock reduce
                 if (!empty($item['variant_id']) || !empty($item['id'])) {
                     ProductVariant::where('id', $item['variant_id'])->orWhere('product_id', $item['id'])

@@ -116,6 +116,8 @@
             <td width="50%">
                 <strong>Bill To:</strong><br>
                 {{ $order->user->name }}<br>
+                {{ $order->user->address }}<br>
+                {{ $order->user->phone }}<br>
                 {{ $order->user->email }}
             </td>
         </tr>
@@ -138,6 +140,7 @@
         <thead>
             <tr>
                 <th style="text-align:left;">Product</th>
+                <th style="text-align:left;">Size/Unit</th>
                 <th>Category</th>
                 <th class="text-center">Qty</th>
                 <th class="text-right">Price</th>
@@ -148,6 +151,7 @@
             @foreach($order->items as $item)
             <tr>
                 <td>{{ $item->product->name }}</td>
+                <td>{{ $item->size }}</td>
                 <td style="text-align:center;">{{ $item->product->category->name ?? '-' }}</td>
                 <td style="text-align:center;">{{ $item->qty }}</td>
                 <td style="text-align:center;">৳ {{ number_format($item->price,2) }}</td>
@@ -169,10 +173,12 @@
                         <td>Subtotal</td>
                         <td style="text-align:right;">৳ {{ number_format($subtotal,2) }}</td>
                     </tr>
+                    @if($discount>0)
                     <tr>
                         <td>Discount {{$settings->discount_type=='percent' ? '('.$settings->discount.'%'.')' : ''}}</td>
                         <td style="text-align:right;">- ৳ {{ number_format($discount,2) }}</td>
                     </tr>
+                    @endif
                     <tr>
                         <td>Tax ({{$settings->tax}}%)</td>
                         <td style="text-align:right;">৳ {{ number_format($tax,2) }}</td>

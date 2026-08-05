@@ -63,7 +63,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center text-muted">
+                                        <td colspan="9" class="text-center text-muted">
                                             No orders found
                                         </td>
                                     </tr>

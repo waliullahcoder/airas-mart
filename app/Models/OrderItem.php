@@ -13,6 +13,7 @@ class OrderItem extends Model
         'qty',
         'price',
         'total',
+        'size',
     ];
 
     // 🔗 Order
