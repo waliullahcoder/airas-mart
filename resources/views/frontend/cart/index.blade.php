@@ -170,7 +170,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between mb-2">
-                        <span>Discount {{ $settings->discount_type=='percent' ? '('.$settings->discount.'%)' : '' }}</span>
+                        <span>(Only for Pre-Order) Discount {{ $settings->discount_type=='percent' ? '('.$settings->discount.'%)' : '' }}</span>
                         <strong id="discount">- ৳ 0.00</strong>
                     </div>
 

@@ -275,7 +275,7 @@ public function productAll()
     $product = Product::get();
     if($product->count()>4){
     $product = Product::orderBy('id', 'desc')
-        ->get()->random(4);
+        ->get()->random(8);
     }
         return $product;
 }  

@@ -344,10 +344,10 @@
                             <div>
                                 <a href="{{ route('product.details', $item->id) }}"
                                    class="small fw-semibold d-block">
-                                    {{ $item->name }}
+                                   {{ \Illuminate\Support\Str::limit($item->name, 30) }}
                                 </a>
-                                <p>{{ $item->code }}</p><br>
-                                <span class="text-danger small">
+                                <p>{{ $item->code }}</p>
+                                <span class="text-danger">
                                     {{ number_format($item->sale_price ?? $item->regular_price, 2) }} ৳
                                 </span>
                             </div>
