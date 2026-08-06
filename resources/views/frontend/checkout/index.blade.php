@@ -456,7 +456,7 @@
                                     <span class="method-icon cod">✓</span>
                                     <span class="method-info">
                                         <strong>Cash on Delivery</strong>
-                                        <small>বই পেলে টাকা দিন</small>
+                                        <small>পণ্য হাতে পেলে টাকা দিন</small>
                                     </span>
                                 </label>
 
