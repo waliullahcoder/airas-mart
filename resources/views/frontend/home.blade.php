@@ -55,6 +55,37 @@
     </div>
     {{-- End Hero --}}
 
+    {{-- Category --}}
+    <div class="featured-category-section py-4">
+        <div class="container">
+            <div class="position-relative">
+                <div class="swiper carousel" id="category-swiper" data-items="2" data-xl-items="8" data-lg-items="8"
+                    data-md-items="4" data-sm-items="3" data-xs-items="3" data-margin="10" data-dots="false"
+                    data-arrows="true">
+                    <div class="swiper-wrapper">
+                       @foreach($get_sub_category_all_header_product_only as $subCategory)
+                          @if($subCategory->products->count() > 0)
+                               @foreach($subCategory->products as $item)
+                        <div class="swiper-slide">
+                            <a href="{{route('category.singleCategoryPage', $item->id) }}" class="featured-category">
+                                <div class="featured-category-img">
+                                    <img src="{{ asset($item->thumbnail) }}" height="40" alt="">
+                                </div>
+                                <div class="featured-category-text">{{ $item->name }}</div>
+                            </a>
+                        </div>
+                         @endforeach
+                             @else
+                             @include('frontend.categories.partials.notfound')
+                             @endif
+                        @endforeach
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
  
  {{-- All header --}}
 @foreach($get_sub_category_all_header_product_only as $subCategory)
@@ -156,7 +187,9 @@
 
 @push('js')
 <script>
+   
 document.addEventListener("DOMContentLoaded", function () {
+    
 
     const sections = [
         { id: 'lazy-niog', type: 'niog' },

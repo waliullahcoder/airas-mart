@@ -1,6 +1,6 @@
 <div class="header-nav d-lg-block d-none">
         <div class="container">
-            <nav class="main-menu" style="background:#148b86;">
+            <nav class="main-menu" style="background:#052C28;">
                 <ul class="menu-list">
 
                     {{-- Home --}}

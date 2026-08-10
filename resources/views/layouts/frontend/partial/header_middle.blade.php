@@ -152,7 +152,7 @@ body {
     }
 }
 </style>
-<div class="header-middle" style="background:linear-gradient(135deg, #ffffff, #ffffff, #148b86, #148b86);">
+<div class="header-middle" style="background:#073029">
     <div class="container">
 
         <!-- Row 1: Hamburger / Logo / Cart / Login / Desktop search -->
@@ -189,7 +189,7 @@ body {
             <!-- Cart + Login -->
             <div class="d-flex align-items-center gap-2" style="margin-right:50px;">
                 <a href="{{ route('cart.index') }}" class="cart-icon">
-                    <i class="fa-solid fa-cart-shopping"></i>
+                    <i class="fa-solid fa-cart-shopping" style="color:#edff00"></i>
                     <span class="cart-count">{{ count(session('cart', [])) }}</span>
                 </a>
 

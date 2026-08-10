@@ -59,7 +59,9 @@
     z-index: 999;
     animation: fadeSlide .25s ease;
 }
-
+.form-control{
+    background:#f3f9f9;
+}
 /* animation */
 @keyframes fadeSlide {
     from {
