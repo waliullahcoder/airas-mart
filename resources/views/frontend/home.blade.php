@@ -1,6 +1,32 @@
 @extends('layouts.frontend.app')
 
 @section('content')
+<style>
+ 
+
+.featured-category-img img {
+    transition: all 0.4s ease;
+    animation: categoryFloat 3s ease-in-out infinite;
+}
+
+/* হালকা উপরে-নিচে ভাসবে */
+@keyframes categoryFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Mouse hover করলে একটু বেশি সুন্দর effect */
+ .featured-category-img img {
+    transform: translateY(-8px) scale(1.08);
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.15));
+}
+
+    </style>
     {{-- Hero Section --}}
     <div class="hero-section  animate__animated animate__fadeInDown">
         <div class="container">
@@ -64,18 +90,17 @@
 
                     @foreach($homecategories as $item)
 
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-
-                             <a href="{{route('category.singleCategoryPage', $item->id) }}" class="featured-category">
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+                         <a href="{{route('category.singleCategoryPage', $item->id) }}" class="featured-category">
                                 <div class="featured-category-img">
                                     <img src="{{ asset($item->image) }}" height="50" alt="">
                                 </div>
-                                <div class="featured-category-text">{{ \Illuminate\Support\Str::limit($item->name, 30) }}</div>
+                                <div class="featured-category-text">   {{ \Illuminate\Support\Str::limit($item->name, 30) }}</div>
                             </a>
 
-                        </div>
+                    </div>
 
-                    @endforeach
+                @endforeach
 
                 @else
 
