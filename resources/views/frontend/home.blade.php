@@ -56,35 +56,37 @@
     {{-- End Hero --}}
 
     {{-- Category --}}
-    <div class="featured-category-section py-4">
-        <div class="container">
-            <div class="position-relative">
-                <div class="swiper carousel" id="category-swiper" data-items="2" data-xl-items="8" data-lg-items="8"
-                    data-md-items="4" data-sm-items="3" data-xs-items="3" data-margin="10" data-dots="false"
-                    data-arrows="true">
-                    <div class="swiper-wrapper">
-                       @foreach($get_sub_category_all_header_product_only as $subCategory)
-                          @if($subCategory->products->count() > 0)
-                               @foreach($subCategory->products as $item)
-                        <div class="swiper-slide">
-                            <a href="{{route('category.singleCategoryPage', $item->id) }}" class="featured-category">
+<div class="featured-category-section py-4">
+    <div class="container">
+        <div class="row g-3">
+
+                @if($homecategories->count() > 0)
+
+                    @foreach($homecategories as $item)
+
+                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
+
+                             <a href="{{route('category.singleCategoryPage', $item->id) }}" class="featured-category">
                                 <div class="featured-category-img">
-                                    <img src="{{ asset($item->thumbnail) }}" height="40" alt="">
+                                    <img src="{{ asset($item->image) }}" height="50" alt="">
                                 </div>
-                                <div class="featured-category-text">{{ $item->name }}</div>
+                                <div class="featured-category-text">{{ \Illuminate\Support\Str::limit($item->name, 30) }}</div>
                             </a>
+
                         </div>
-                         @endforeach
-                             @else
-                             @include('frontend.categories.partials.notfound')
-                             @endif
-                        @endforeach
-                       
-                    </div>
-                </div>
-            </div>
+
+                    @endforeach
+
+                @else
+
+                    @include('frontend.categories.partials.notfound')
+
+                @endif
+
         </div>
+
     </div>
+</div>
    
  
  {{-- All header --}}

@@ -607,8 +607,8 @@ h6 {
 
 /* =============== Fetured Category CSS =============== */
 .featured-category {
-    background-color: #e8e9ed;
-    border: 2px solid #d40700;
+    background-color: #c5c5c7 !important;
+    border: 1px solid #0c0100;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -627,6 +627,7 @@ h6 {
 
 .featured-category-img {
     flex-shrink: 0;
+    border-radius: 5px;
 }
 
 .featured-category-text {

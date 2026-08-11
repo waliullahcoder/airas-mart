@@ -46,12 +46,13 @@ class ViewController extends Controller
         //ব্র্যান্ডসমূহ
         $get_sub_category_brand_only = $this->frontEndService->getSubCategoryBrandOnly();
  
-
+       $homecategories = Category::whereNotNull('parent_id')->whereIn('position',['header'])->orderBy('serial','asc')->get();
         $homeSections = HomeSection::orderBy('serial', 'asc')->get();
         return view('frontend.home', compact(
             'slides', 
             'homeSections',
             'menus',
+            'homecategories',
             'get_sub_categories_all',
             'get_sub_category_trends_new_book_product_only',
             'get_sub_category_banner_only',

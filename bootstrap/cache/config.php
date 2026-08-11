@@ -117,7 +117,7 @@
   array (
     'name' => 'Airas Mart',
     'env' => 'local',
-    'debug' => false,
+    'debug' => true,
     'url' => 'http://airas-mart.test/',
     'frontend_url' => 'http://localhost:3000',
     'asset_url' => NULL,
