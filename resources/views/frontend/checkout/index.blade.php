@@ -24,7 +24,7 @@
                         <thead>
                             <tr>
                                 <th>Product</th>
-                                <th class="text-center">Size</th>
+                                <th class="text-center">Size/Specific</th>
                                 <th class="text-center">Qty</th>
                                 <th class="text-end">Price</th>
                                 <th class="text-end">Total</th>
@@ -198,9 +198,10 @@
                                      @elseif($type == 'other')
 
                                         {{-- Fragrance Volume --}}
-                                        <div class="mt-2">
+                                        <!-- <div class="mt-2">
                                             <input type="text" name="size[{{ $item['id'] }}]" class="form-control">
-                                        </div>
+                                        </div> -->
+                                        .........
 
                                     @endif
                                 </td>

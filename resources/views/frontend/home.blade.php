@@ -140,8 +140,11 @@
                                             @endif
                                            <a href="{{route('product.details', $product->id)}}">
                                             <figure class="product-card-image ratio" style="--bs-aspect-ratio: 100%">
-                                                <img class="object-fit-contain product-img" loading="lazy" src="{{ asset($product->thumbnail) }}"
-                                                    alt="">
+                                                <img class="object-fit-contain product-img"  
+                                                src="{{ asset($product->thumbnail) }}"
+                                                    alt="{{ $product->name }}" 
+                                                    fetchpriority="high"
+                                                    decoding="async">
                                             </figure>
                                             <div class="product-card-content">
                                                 <h6 class="h6 product-card-title truncate-text" style="--lines: 2;">

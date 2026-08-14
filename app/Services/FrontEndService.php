@@ -157,11 +157,32 @@ return Category::whereNotNull('parent_id')
 }
 public function getSubCategoryAllHeaderProductOnly()
 {
-return Category::whereNotNull('parent_id')
-    ->whereIn('parent_id', [5])
-    ->with(['products' => function($query) {
-            $query->where('status', 1)->inRandomOrder();
-        }, 'products.variants'])
+// return Category::whereNotNull('parent_id')
+//     ->whereIn('parent_id', [5])
+//     ->with(['products' => function($query) {
+//             $query->where('status', 1)->inRandomOrder();
+//         }, 'products.variants'])
+//     ->orderBy('serial', 'asc')
+//     ->get();
+return Category::where('parent_id', 5)
+    ->with([
+        'products' => function ($query) {
+            $query->select([
+                'products.id',
+                'products.code',
+                'products.name',
+                'products.discount',
+                'products.regular_price',
+                'products.sale_price',
+                'products.thumbnail',
+            ])
+            ->where('products.status', 1)
+            ->inRandomOrder()
+            ->limit(6);
+        },
+
+        'products.variants'
+    ])
     ->orderBy('serial', 'asc')
     ->get();
 }
