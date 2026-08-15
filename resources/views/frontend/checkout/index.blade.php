@@ -201,7 +201,7 @@
                                         <!-- <div class="mt-2">
                                             <input type="text" name="size[{{ $item['id'] }}]" class="form-control">
                                         </div> -->
-                                        .........
+                                        -
 
                                     @endif
                                 </td>

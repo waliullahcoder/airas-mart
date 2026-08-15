@@ -321,7 +321,64 @@
                                 </div>
 
                                 <!-- META INFO -->
-                                {!! $product->short_description !!}
+                                 <div style="font-size: 14px; line-height: 1.8;">
+
+                                <p style="margin: 0 0 8px;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ ১০০% ক্যাশ অন ডেলিভারি (হাতে পণ্য পেয়ে মূল্য পরিশোধ করুন)।
+                                    </strong>
+                                </p>
+
+                                <p style="margin: 0 0 8px;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ ঢাকার ভিতরে ১ দিন আর ঢাকার বাহিরে ৩ দিনে পণ্য হাতে পাবেন।
+                                    </strong>
+                                </p>
+
+                                <p style="margin: 0 0 8px;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ অর্ডার করতে Buy Now এ ক্লিক করুন।
+                                    </strong>
+                                </p>
+
+                                <p style="margin: 0 0 8px;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ আপনার নাম, মোবাইল নং এবং ঠিকানা সঠিকভাবে দিন।
+                                    </strong>
+                                </p>
+
+                                <p style="margin: 0 0 8px;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ প্রি-অর্ডার পদ্ধতিতে নিশ্চিত ডিস্কাউন্ট সুবিধা গ্রহণ করুন।
+                                    </strong>
+                                </p>
+
+                                <p style="margin: 0 0 8px;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ পণ্য ফেরত দেওয়ার ক্ষেত্রে রিটার্ন পলিসি দেখুন।
+                                    </strong>
+                                </p>
+
+                                <p style="margin: 0 0 8px;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ অর্ডার করার সময় প্রয়োজনীয় তথ্য সঠিকভাবে প্রদান করুন।
+                                    </strong>
+                                </p>
+
+                                <p style="margin: 0 0 8px;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ ডেলিভারির সময় পণ্যটি ভালোভাবে যাচাই করে গ্রহণ করুন।
+                                    </strong>
+                                </p>
+
+                                <p style="margin: 0;text-align:left !important;">
+                                    <strong style="color: #ff9c00;">
+                                        ✔ আপনার সন্তুষ্টিই আমাদের প্রধান লক্ষ্য—যেকোনো সমস্যায় আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন।
+                                    </strong>
+                                </p>
+
+                            </div>
+                               
 
                             </div>
                         </div>
