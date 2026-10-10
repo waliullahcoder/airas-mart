@@ -5,7 +5,7 @@
                 <div class="product-card">
                     @if($product->discount>0)
                     <div class="{{ $product->discount_type == 'percent' ? 'discount-badge' : 'discount-badge-flat' }}">
-                        <span class="product-discount">{{ number_format($product->discount) }}</span>
+                        <span class="product-discount">{{ ($product->discount_type ?? 'percent') == 'percent' ? number_format($product->discount).'% OFF' : '৳'.number_format($product->discount).' OFF' }}</span>
                     </div>
                     @endif
                     <a class="z-2" href="{{ route('product.details', $product->id) }}">
@@ -40,10 +40,11 @@
                     </a>
 
                     <div class="product-card-action">
-                        <button class="btn btn-sm btn-danger add-to-cart"
+                        <button class="btn btn-sm btn-success add-to-cart"
+                        data-variant-id="{{ $product->variants->first()?->id }}"
                                 data-id="{{ $product->id }}">
-                            Add +
-                        </button>
+                                                    <i class="fas fa-cart-plus me-1"></i> Add to cart
+                                                </button>
                     </div>
 
                 </div>

@@ -1,14 +1,44 @@
+<!-- Service strip -->
+<div class="service-strip">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-6 col-lg-3">
+                <div class="service-item">
+                    <span class="service-icon"><i class="fas fa-leaf"></i></span>
+                    <div><strong>Better Products</strong><span class="service-text">Carefully selected quality</span></div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="service-item">
+                    <span class="service-icon"><i class="fas fa-truck-fast"></i></span>
+                    <div><strong>Home Delivery</strong><span class="service-text">Order online, get it at your door</span></div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="service-item">
+                    <span class="service-icon"><i class="fas fa-shield-halved"></i></span>
+                    <div><strong>Secure Payment</strong><span class="service-text">bKash, Nagad &amp; Cash on delivery</span></div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="service-item">
+                    <span class="service-icon"><i class="fas fa-headset"></i></span>
+                    <div><strong>Customer Support</strong><span class="service-text">We are here to help</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer class="footer-section">
     <div class="container">
         <div class="row g-4">
-            <div class="col-lg-3 col-md-4 col-6">
-                <div class="pb-3">
-                    <a href="{{ Route('home') }}">
-                        <img src="{{ asset(file_exists($settings->logo) ? $settings->logo : 'frontend/images/logo/logo.jpg') }}"
-                            height="50" alt="{{ $settings->app_name }}">
-                    </a>
-                </div>
-                <p style="text-align: justify;color:white;">{{ $settings->description }}</p>
+            <div class="col-lg-3 col-md-12 col-12">
+                <a href="{{ Route('home') }}" class="footer-logo-plate">
+                    <img src="{{ asset(file_exists($settings->logo) ? $settings->logo : 'frontend/images/logo/logo.jpg') }}"
+                        alt="{{ $settings->app_name }}">
+                </a>
+                <p class="footer-about">{{ $settings->description }}</p>
             </div>
             <div class="col-lg-3 col-md-4 col-6">
                 <h5 class="footer-title">Other Links</h5>
@@ -17,6 +47,7 @@
                     @foreach ($menus['footer_col1_menus'] as $menu)
                     <li class="footer-item"><a class="footer-link" href="{{ route('info.page', $menu->id) }}">{{ $menu->name }}</a></li>
                     @endforeach
+                    
                 </ul>
             </div>
             <div class="col-lg-3 col-md-4 col-6">

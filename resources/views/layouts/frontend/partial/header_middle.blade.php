@@ -1,220 +1,100 @@
-<!-- CSS -->
+<!-- CSS (search dropdown) -->
 <style>
-#search-results ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+#search-results ul,
+#mobile-search-results ul { list-style: none; margin: 0; padding: 0; }
+
+#search-results .list-group-item,
+#mobile-search-results .list-group-item {
+    border-color: var(--line);
+    transition: background-color .15s;
 }
 
-#search-results li:hover {
-    background-color: #f8f9fa;
-}
+#search-results .list-group-item:hover,
+#mobile-search-results .list-group-item:hover { background-color: var(--airas-green-50); }
 
-#search-results img {
-    border-radius: 4px;
+#search-results img,
+#mobile-search-results img { border-radius: 8px; object-fit: cover; border: 1px solid var(--line); }
+
+#search-results strong,
+#mobile-search-results strong { color: var(--ink); font-size: 13px; }
+
+#search-results .list-group-item strong + br + small,
+#mobile-search-results small { color: var(--ink-soft); }
+
+#search-results .text-end strong,
+#mobile-search-results .text-end strong { color: var(--airas-red); }
+
+.header-logo img { height: 58px; width: auto; }
+
+@media (max-width: 991.98px) {
+    .header-logo img { height: 44px; }
+    .header-middle { padding: 10px 0 8px; }
 }
 </style>
-<style>
-/* ================== General ================== */
-body {
-    font-family: Arial, sans-serif;
-    margin:0;
-    padding:0;
-}
 
-/* Hamburger */
-.hamburger {
-    background:none;
-    border:none;
-    cursor:pointer;
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    padding:5px;
-}
-
-.hamburger span {
-    display:block;
-    width:25px;
-    height:3px;
-    background:#333;
-    border-radius:2px;
-}
-
-/* Overlay */
-.sidebar-overlay {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.4);
-    z-index:999;
-    display:none;
-}
-
-/* Sidebar */
-.sidebar {
-    position: fixed;
-    top: 0px; /* sticky header height */
-    left: -280px;
-    width: 260px;
-    height: calc(100vh - 60px); /* remaining screen */
-    background: #fff;
-    z-index: 1000;
-    overflow-y: auto;
-    box-shadow: 2px 0 12px rgba(0,0,0,0.2);
-    transition: 0.3s;
-}
-.sidebar.active {
-    left:0;
-}
-
-.sidebar-header {
-    padding:10px;
-    font-weight:bold;
-    font-size:16px;
-    border-bottom:1px solid #eee;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#ebf5f4;
-}
-
-.sidebar-header button {
-    background:none;
-    border:none;
-    font-size:20px;
-    cursor:pointer;
-}
-
-/* Menu Items */
-.sidebar ul {
-    list-style:none;
-    margin:0;
-    padding:0;
-}
-
-.sidebar li {
-    border-bottom:1px solid #f0f0f0;
-}
-
-.sidebar a {
-    display:block;
-    padding:12px 18px;
-    text-decoration:none;
-    color:#333;
-    position:relative;
-    transition:0.2s;
-}
-
-.sidebar a:hover {
-    background:#f5f5f5;
-}
-
-/* Submenu */
-.sidebar .sub-menu {
-    display:none;
-    background:#f9f9f9;
-}
-
-.sidebar .sub-menu a {
-    padding-left:35px;
-}
-
-/* Arrow */
-.sidebar .has-sub > a::after {
-    content:"▸";
-    position:absolute;
-    right:18px;
-    top:0px;
-    font-size: 30px;
-    transition:0.3s;
-    color: #86ada7;
-}
-
-.sidebar .has-sub.open > a::after {
-    transform: rotate(90deg);
-}
-
-/* Scrollbar */
-.sidebar::-webkit-scrollbar {
-    width:6px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.2);
-    border-radius:3px;
-}
-@media (min-width: 992px) {
-    #sidebarToggle {
-        display: none !important;
-    }
-}
-</style>
-<div class="header-middle" style="background:#073029">
+<div class="header-middle">
     <div class="container">
 
-        <!-- Row 1: Hamburger / Logo / Cart / Login / Desktop search -->
-        <div class="d-flex align-items-center justify-content-between mb-2">
+        <!-- Row 1: Hamburger / Logo / Desktop search / Cart + Account -->
+        <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
 
-            <!-- Hamburger for mobile only -->
-          <button id="sidebarToggle" class="hamburger d-block d-lg-none">
+            <!-- Hamburger (mobile only) -->
+            <button id="sidebarToggle" class="hamburger d-block d-lg-none" aria-label="Open menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
 
             <!-- Logo -->
-            <a href="{{ route('home') }}">
+            <a href="{{ route('home') }}" class="header-logo logo-area">
                 <img src="{{ asset(file_exists($settings->logo) ? $settings->logo : 'frontend/images/logo/logo.jpg') }}"
-                     height="40" alt="{{ $settings->app_name }}">
+                     alt="{{ $settings->app_name }}">
             </a>
 
             <!-- Desktop Search (desktop only) -->
-            <div class="d-none d-lg-block flex-grow-1 mx-3 search-area">
-                <form action="#" method="GET" class="position-relative w-100">
+            <div class="d-none d-lg-block flex-grow-1 search-area">
+                <form action="#" method="GET" class="search-box">
                     <input type="search" class="form-control w-100" name="query"
-                           placeholder="Search product's name here" required id="product-search-input">
-                    <button type="submit" class="btn btn-primary position-absolute end-0 top-0 h-100">
+                           placeholder="Search product's name here" required id="product-search-input" autocomplete="off">
+                    <button type="submit" class="search-submit" aria-label="Search">
                         <i class="fas fa-search"></i>
                     </button>
 
-                    <div id="search-results" class="bg-white border shadow-sm"
-                         style="position:absolute; top:100%; left:0; right:0; display:none; z-index:2000; max-height:350px; overflow-y:auto; border-radius:5px;">
-                    </div>
+                    <div id="search-results" class="search-results-box"></div>
                 </form>
             </div>
 
-            <!-- Cart + Login -->
-            <div class="d-flex align-items-center gap-2" style="margin-right:50px;">
-                <a href="{{ route('cart.index') }}" class="cart-icon">
-                    <i class="fa-solid fa-cart-shopping" style="color:#edff00"></i>
+            <!-- Cart + Account -->
+            <div class="header-actions">
+                <a href="{{ route('cart.index') }}" class="header-action cart-icon" aria-label="Cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
                     <span class="cart-count">{{ count(session('cart', [])) }}</span>
                 </a>
 
                 @if(Auth::check())
-                    <a href="{{ Auth::user()->role_status == 0 ? route('frontend.user.dashboard') : route('admin.dashboard') }}">
-                        <b style="font-size: 13px">{{ Auth::user()->name }}</b>
+                    <a class="header-action" href="{{ Auth::user()->role_status == 0 ? route('frontend.user.dashboard') : route('admin.dashboard') }}">
+                        <i class="fa-regular fa-user"></i>
+                        <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                     </a>
                 @else
-                    <a href="{{ route('auth.signinPage') }}">Sign in</a>
+                    <a class="header-action" href="{{ route('auth.signinPage') }}">
+                        <i class="fa-regular fa-user"></i>
+                        <span class="d-none d-md-inline">Sign in</span>
+                    </a>
                 @endif
             </div>
         </div>
 
         <!-- Row 2: Mobile Search only -->
-        <div class="d-lg-none position-relative w-100 mb-2">
-            <form action="#" method="GET" class="w-100 position-relative mobile-search-area">
+        <div class="d-lg-none position-relative w-100 mb-1">
+            <form action="#" method="GET" class="search-box mobile-search-area">
                 <input type="search" class="form-control w-100" name="query"
-                       placeholder="Search product's name here" required id="mobile-product-search-input">
-                <button type="submit" class="btn btn-primary position-absolute end-0 top-0 h-100">
+                       placeholder="Search product's name here" required id="mobile-product-search-input" autocomplete="off">
+                <button type="submit" class="search-submit" aria-label="Search">
                     <i class="fas fa-search"></i>
                 </button>
 
-                <div id="mobile-search-results" class="bg-white border shadow-sm"
-                     style="position:absolute; top:100%; left:0; right:0; display:none; z-index:2000; max-height:350px; overflow-y:auto; border-radius:5px;">
-                </div>
+                <div id="mobile-search-results" class="search-results-box"></div>
             </form>
         </div>
     </div>

@@ -29,7 +29,7 @@
             tabindex="0">
             <h5 class="mb-3 pb-3 fs-17 fw-700" style="border-bottom: 1px dashed #e4e5eb;">Product Information</h5>
             <div class="row g-3">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                 <label for="name" class="form-label"><b>Product Name <span class="text-danger">*</span></b></label>
                   <input type="text"
                         name="name"
@@ -41,134 +41,14 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-               
-                <div class="col-sm-6">
-                    <label for="author_id" class="form-label"><b>Author <span class="text-danger">*</span></b></label>
-                    <select class="form-select" name="author_id" id="author_id"
-                        data-placeholder="Select Author" required>
-                       
-                        @foreach ($authors as $item)
-                            <option value="{{ $item->id }}" {{ old('author_id') == $item->id ? 'selected' : '' }}>
-                                {{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                 <div class="col-sm-6">
-                    <label for="publication_id" class="form-label"><b>Publication <span class="text-danger">*</span></b></label>
-                    <select class="form-select" name="publication_id" id="publication_id"
-                        data-placeholder="Select Publication" required>
-                        @foreach ($publications as $item)
-                            <option value="{{ $item->id }}" {{ old('publication_id') == $item->id ? 'selected' : '' }}>
-                                {{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-sm-6">
-                    <label for="brand_id" class="form-label"><b>Brand</b><span class="text-danger">*</span></b></label>
-                    <select class="form-select select" name="brand_id" id="brand_id" data-placeholder="Select Brand" required>
-                        <option value=""></option>
-                        @foreach ($brands as $item)
-                            <option value="{{ $item->id }}" {{ old('brand_id') == $item->id ? 'selected' : '' }}>
-                                {{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-sm-6">
-                    <label for="uom_id" class="form-label"><b>Unit <span class="text-danger">*</span></b></label>
-                    <select class="form-select" name="uom_id" id="uom_id" data-placeholder="Select Unit"
-                        required>
-                        @foreach ($uoms as $item)
-                            <option value="{{ $item->id }}" {{ old('uom_id') == $item->id ? 'selected' : '' }}>
-                                {{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-6">
-                    <label for="vendor_id" class="form-label"><b>Suppliers</b></label>
-                    <select name="vendor_id[]" id="vendor_id" class="form-select select" data-placeholder="Select Vendors"
-                        multiple>
-                        <option value=""></option>
-                        @foreach ($vendors as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-6">
-                    <label for="tags" class="form-label"><b>Tags</b></label>
-                    <input type="text" class="form-control" id="tags" name="tags[]" value="{{ old('tags.0') }}"
-                        placeholder="Tags">
-                </div>
-                <div class="col-sm-3">
-                    <label for="edition_name" class="form-label"><b>Edition <span class="text-danger">*</span></b></label>
-                    <select name="edition_name" id="edition_name"
-                        class="form-control @error('edition_name') is-invalid @enderror" required>
-                        @php
-                            $editions = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh'];
-                        @endphp
-                        @foreach($editions as $edition)
-                            <option value="{{ $edition }} Edition"
-                                {{ old('edition_name') == $edition . ' Edition' ? 'selected' : '' }}>
-                                {{ $edition }} Edition
-                            </option>
-                        @endforeach
-                    </select>
 
-                    @error('edition_name')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                 <div class="col-sm-3">
-                    <label for="product_type" class="form-label"><b>Type <span class="text-danger">*</span></b></label>
-                            <select class="form-control select" name="product_type"
-                                data-placeholder="Select Product Type" required>
-                                <option value="other" {{ old('product_type') == 'other' ? 'selected' : '' }}>Other</option>
-                                <option value="fragrance" {{ old('product_type') == 'fragrance' ? 'selected' : '' }}>Fragrance</option>
-                                <option value="mirror" {{ old('product_type') == 'mirror' ? 'selected' : '' }}>Mirror</option>
-                                <option value="cloths" {{ old('product_type') == 'cloths' ? 'selected' : '' }}>Cloths</option>
-                                <option value="frozen" {{ old('product_type') == 'frozen' ? 'selected' : '' }}>Frozen</option>
-                                <option value="ornaments" {{ old('product_type') == 'ornaments' ? 'selected' : '' }}>Ornaments</option>
-                                <option value="book" {{ old('product_type') == 'book' ? 'selected' : '' }}>Book
-                                </option>
-                            </select>
-                        </div>
-                <div class="col-12">
-                   
-                    <div class="row g-2">
-                        <label for="favorite" class="col-sm-3 col-md-3 col-lg-2 control-label"><b>Is Favorite:</b></label>
-                        <div class="col-sm-9 col-md-9 col-lg-10">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="favorite" name="favorite"
-                                    {{ old('favorite') ? 'checked' : '' }}>
-                                <label for="favorite" class="custom-control-label"></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="row g-2">
-                        <label for="custom_barcode" class="col-sm-3 col-md-3 col-lg-2 control-label"><b>Is Custom
-                                Barcode:</b></label>
-                        <div class="col-sm-9 col-md-9 col-lg-10">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="custom_barcode"
-                                    name="custom_barcode" {{ old('custom_barcode') ? 'checked' : '' }}>
-                                <label for="custom_barcode" class="custom-control-label"></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12" id="barcodeWrapper"
-                    style="display: {{ old('custom_barcode') ? 'block' : 'none' }};">
-                    <div class="row g-2">
-                        <label for="barcode" class="col-sm-3 col-md-3 col-lg-2 control-label"><b>Custom
-                                Barcode:</b></label>
-                        <div class="col-sm-9 col-md-9 col-lg-10">
-                            <input type="text" class="form-control" id="barcode" name="barcode"
-                                placeholder="Barcode" value="{{ old('barcode') }}"
-                                {{ old('custom_barcode') ? 'required' : '' }}>
-                        </div>
-                    </div>
-                </div>
+                <input type="hidden" name="author_id" value="1">
+                <input type="hidden" name="publication_id" value="1">
+                <input type="hidden" name="brand_id" value="1">
+                <input type="hidden" name="vendor_id" value="1">
+                <input type="hidden" name="edition_name" value="First">
+                <input type="hidden" name="product_type" value="other">
+
                 <div class="col-12">
                     <label for="description" class="form-label"><b>Short Description</b></label>
                     <textarea class="form-control description" id="description" name="short_description" cols="30"
@@ -251,39 +131,78 @@
                                 </option>
                             </select>
                         </div>
+
+                        <!-- Size & Price -->
+<div class="row g-3">
+    <label class="col-md-3 col-form-label">
+        <b>Size & Price</b>
+    </label>
+
+    <div class="col-md-9">
+        <div id="sizePriceContainer">
+
+            <!-- First Row -->
+            <div class="row g-2 mb-2 size-price-row">
+
+                <!-- UOM -->
+                <div class="col-md-4">
+                    <select class="form-select uom-select"
+                            name="uom_id[]"
+                            required>
+
+                        <option value="" selected disabled>
+                            Select Unit
+                        </option>
+
+                        @foreach ($uoms as $item)
+                            <option value="{{ $item->id }}"
+                                    data-uom-name="{{ $item->name }}">
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
+
+                    </select>
+                </div>
+
+                <!-- Size -->
+                <div class="col-md-3">
+                    <input type="text"
+                           name="size[]"
+                           class="form-control size-input"
+                           placeholder="Size"
+                           required>
+                </div>
+
+                <!-- Price -->
+                <div class="col-md-3">
+                    <input type="number"
+                           name="price[]"
+                           class="form-control"
+                           min="0"
+                           step="0.01"
+                           placeholder="Price"
+                           required>
+                </div>
+
+                <!-- Add More -->
+                <div class="col-md-2">
+                    <button type="button"
+                            class="btn btn-success add-more">
+                        <i class="fa fa-plus"></i> Add More
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <div class="row g-3">
-                        <label class="col-md-3 col-from-label" for="sku"><b>SKU</b></label>
-                        <div class="col-md-6">
-                            <input type="text" name="sku" id="sku" class="form-control" placeholder="SKU"
-                                value="{{ old('sku') }}">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="row g-3">
-                        <div class="col-md-3">
-                            <input type="text" class="form-control" value="Attributes" disabled>
-                        </div>
-                        <div class="col-md-8">
-                            <select name="choice_attributes[]" id="choice_attributes" class="form-control select"
-                                data-selected-text-format="count" data-live-search="true" multiple
-                                data-placeholder="Choose Attributes">
-                                @foreach ($attributes as $attribute)
-                                    <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <p>Choose the attributes of this product and then input values of each attribute</p>
-                </div>
+                
 
                 <div class="col-12">
                     <div class="customer_choice_options row g-3" id="customer_choice_options">
@@ -444,5 +363,110 @@
                 updateSku();
             });
         });
+
+
+
+         // UOM change Body
+
+    const container = document.getElementById('sizePriceContainer');
+
+    container.addEventListener('change', function (e) {
+
+        if (e.target.classList.contains('uom-select')) {
+
+            const select = e.target;
+
+            const selectedOption =
+                select.options[select.selectedIndex];
+
+            const uomName =
+                selectedOption.getAttribute('data-uom-name');
+
+            const row =
+                select.closest('.size-price-row');
+
+            const sizeInput =
+                row.querySelector('.size-input');
+
+            if (uomName) {
+                sizeInput.placeholder = 'Enter ' + uomName;
+            } else {
+                sizeInput.placeholder = 'Size';
+            }
+        }
+
+    });
+
+
+    // Add More / Remove
+    container.addEventListener('click', function (e) {
+
+        // Add More
+        if (e.target.closest('.add-more')) {
+
+            const row = document.createElement('div');
+
+            row.className = 'row g-2 mb-2 size-price-row';
+
+            row.innerHTML = `
+                <div class="col-md-4">
+                    <select class="form-select uom-select"
+                            name="uom_id[]"
+                            required>
+
+                        <option value="" selected disabled>
+                            Select Unit
+                        </option>
+
+                        @foreach ($uoms as $item)
+                            <option value="{{ $item->id }}"
+                                    data-uom-name="{{ $item->name }}">
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
+
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="text"
+                           name="size[]"
+                           class="form-control size-input"
+                           placeholder="Size"
+                           required>
+                </div>
+
+                <div class="col-md-3">
+                    <input type="number"
+                           name="price[]"
+                           class="form-control"
+                           min="0"
+                           step="0.01"
+                           placeholder="Price"
+                           required>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button"
+                            class="btn btn-danger remove-row">
+                        <i class="fa fa-trash"></i> Remove
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(row);
+        }
+
+
+        // Remove
+        if (e.target.closest('.remove-row')) {
+
+            const row =
+                e.target.closest('.size-price-row');
+
+            row.remove();
+        }
+
+    });
     </script>
 @endpush

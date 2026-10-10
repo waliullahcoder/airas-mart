@@ -1,32 +1,6 @@
 @extends('layouts.frontend.app')
 
 @section('content')
-<style>
- 
-
-.featured-category-img img {
-    transition: all 0.4s ease;
-    animation: categoryFloat 3s ease-in-out infinite;
-}
-
-/* হালকা উপরে-নিচে ভাসবে */
-@keyframes categoryFloat {
-    0%, 100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-6px);
-    }
-}
-
-/* Mouse hover করলে একটু বেশি সুন্দর effect */
- .featured-category-img img {
-    transform: translateY(-8px) scale(1.08);
-    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.15));
-}
-
-    </style>
     {{-- Hero Section --}}
     <div class="hero-section  animate__animated animate__fadeInDown">
         <div class="container">
@@ -81,38 +55,7 @@
     </div>
     {{-- End Hero --}}
 
-    {{-- Category --}}
-<div class="featured-category-section py-4">
-    <div class="container">
-        <div class="row g-3">
-
-                @if($homecategories->count() > 0)
-
-                    @foreach($homecategories as $item)
-
-                    <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-xl-2">
-                         <a href="{{route('category.singleCategoryPage', $item->id) }}" class="featured-category">
-                                <div class="featured-category-img">
-                                    <img src="{{ asset($item->image) }}" height="50" alt="">
-                                </div>
-                                <div class="featured-category-text">   {{ \Illuminate\Support\Str::limit($item->name, 30) }}</div>
-                            </a>
-
-                    </div>
-
-                @endforeach
-
-                @else
-
-                    @include('frontend.categories.partials.notfound')
-
-                @endif
-
-        </div>
-
-    </div>
-</div>
-   
+    
  
  {{-- All header --}}
 @foreach($get_sub_category_all_header_product_only as $subCategory)
@@ -135,7 +78,7 @@
                                         <div class="product-card">
                                              @if($product->discount>0)
                                             <div class="discount-badge">
-                                                <span class="product-discount">{{number_format($product->discount)}}</span>
+                                                <span class="product-discount">{{ ($product->discount_type ?? 'percent') == 'percent' ? number_format($product->discount).'% OFF' : '৳'.number_format($product->discount).' OFF' }}</span>
                                             </div>
                                             @endif
                                            <a href="{{route('product.details', $product->id)}}">
@@ -171,10 +114,11 @@
                                             </div>
                                             </a>
                                             <div class="product-card-action">
-                                                <button class="btn btn-sm btn-danger add-to-cart"
+                                                <button class="btn btn-sm btn-success add-to-cart"
+                                                data-variant-id="{{ $product->variants->first()?->id }}"
                                                             data-id="{{ $product->id }}">
-                                                           <span>+</span>
-                                                        </button>
+                                                    <i class="fas fa-cart-plus me-1"></i> Add to cart
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

@@ -7,14 +7,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-<title>{{ $settings->meta_name ?? 'Airas Mart - Smart Ecommerce & All type of products Platform' }}</title>
+<title>{{ $settings->meta_name ?? 'Airas Mart - Better Products, Better Life' }}</title>
 
-<meta name="keywords" content="{{ $settings->meta_keywords ?? 'Airas Mart, ecommerce platform Bangladesh, POS system, inventory management, online shop software, business management system, Airas Mart marketplace' }}">
+<meta name="keywords" content="{{ $settings->meta_keywords ?? 'Airas Mart, online shop Bangladesh, grocery, daily products, home delivery, better products better life' }}">
 
-<meta name="description" content="{{ $settings->meta_description ?? 'Airas Mart is a powerful ecommerce and business management platform designed to manage products, inventory, sales, invoices, and customers easily. Grow your business smarter with Airas Mart.' }}">
+<meta name="description" content="{{ $settings->meta_description ?? 'Airas Mart - Better Products, Better Life. Shop quality products online with easy ordering and fast delivery.' }}">
 
-<meta property="og:title" content="{{ $settings->meta_name ?? 'Airas Mart - Smart Ecommerce Platform' }}">
-<meta property="og:description" content="{{ $settings->meta_description ?? 'Manage your business, products, inventory, and sales easily with Airas Mart ecommerce platform.' }}">
+<meta property="og:title" content="{{ $settings->meta_name ?? 'Airas Mart - Better Products, Better Life' }}">
+<meta property="og:description" content="{{ $settings->meta_description ?? 'Shop quality products online at Airas Mart. Better Products, Better Life.' }}">
 <meta property="og:image" content="{{ asset($settings->meta_image ?? 'frontend/images/logo/logo.png') }}">
 <meta property="og:type" content="website">
 
@@ -24,13 +24,25 @@
     @include('layouts.frontend.partial.styles')
 </head>
 
-<body style="background: linear-gradient(135deg, #000000, #0f2027, #203a43, #2c5364);">
+<body>
     @include('layouts.frontend.partial.header')
     @yield('content')
     <script type="text/javascript" src="{{ asset('frontend/js/sweetalert2@11.js') }}"></script>
     @include('layouts.frontend.partial.alert')
     @include('layouts.frontend.partial.footer')
     @include('layouts.frontend.partial.scripts')
+
+ <!-- Floating WhatsApp Button -->
+<a href="https://wa.me/8801575020231" 
+   class="floating-whatsapp" 
+   target="_blank" 
+   rel="noopener noreferrer"
+   aria-label="Chat with us on WhatsApp">
+
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+
     {{-- <script type="text/javascript" src="{{ asset('frontend/js/jquery-3.6.0.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 
@@ -265,44 +277,93 @@ $(document).ready(function(){
 {{-- Add + --}}
 <script>
 $(document).on('click', '.add-to-cart', function(e) {
+
     e.preventDefault();
+
     let button = $(this);
 
     let productId = button.data('id');
-    let variantId = button.data('variant_id');
+
+    // IMPORTANT: HTML এ data-variant-id হলে এখানে এভাবেই নিতে হবে
+    let variantId = button.attr('data-variant-id');
+
     let image = button.closest('.product-card').find('.product-img');
+
     let cart = $('.cart-icon');
 
-    if (!image.length) {
-        console.warn('Product image not found for flying animation');
+
+    console.log('Product ID:', productId);
+    console.log('Variant ID:', variantId);
+
+
+    // Variant অবশ্যই থাকতে হবে
+    if (!variantId) {
+        alert('Please select a variant first.');
         return;
     }
 
-    let flyingImg = image.clone()
-        .css({
-            position: 'absolute',
-            zIndex: 999,
-            width: image.width(),
-            top: image.offset().top,
-            left: image.offset().left
-        })
-        .appendTo('body');
 
-    flyingImg.animate({
-        top: cart.offset().top,
-        left: cart.offset().left,
-        width: 20,
-        opacity: 0.5
-    }, 700, function () {
-        flyingImg.remove();
-    });
+    // Flying image
+    if (image.length && cart.length) {
 
-    $.post("{{ route('cart.add') }}", {
-        _token: "{{ csrf_token() }}",
-        product_id: productId,
-        variant_id: variantId
-    }, function (res) {
-        $('.cart-count').text(res.count);
+        let flyingImg = image.clone()
+            .css({
+                position: 'absolute',
+                zIndex: 9999,
+                width: image.width(),
+                top: image.offset().top,
+                left: image.offset().left
+            })
+            .appendTo('body');
+
+
+        flyingImg.animate({
+            top: cart.offset().top,
+            left: cart.offset().left,
+            width: 20,
+            opacity: 0.5
+        }, 700, function () {
+
+            flyingImg.remove();
+
+        });
+
+    }
+
+
+    // Add to cart
+    $.ajax({
+
+        url: "{{ route('cart.add') }}",
+
+        method: "POST",
+
+        data: {
+
+            _token: "{{ csrf_token() }}",
+
+            product_id: productId,
+
+            variant_id: variantId
+
+        },
+
+        success: function(res) {
+
+            $('.cart-count').text(res.count);
+
+            console.log('Added:', res);
+
+        },
+
+        error: function(xhr) {
+
+            console.log(xhr.responseText);
+
+            alert('Unable to add product to cart.');
+
+        }
+
     });
 
 });

@@ -82,7 +82,7 @@
 
                         <p class="text-center mt-3 mb-0">
                             Already have an account?
-                            <a href="{{route('auth.signinPage') }}" style="color:#1a8961">Login</a>
+                            <a href="{{route('auth.signinPage') }}" style="color:var(--airas-green);font-weight:600">Login</a>
                         </p>
 
                     </div>

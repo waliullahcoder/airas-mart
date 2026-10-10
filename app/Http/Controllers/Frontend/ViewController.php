@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
+use App\Models\ProductCategory;
+use App\Models\SubCategory;
 use App\Models\HomeSection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -155,8 +157,7 @@ class ViewController extends Controller
         $authors = $this->frontEndService->getAuthor();
         $publications = $this->frontEndService->getPublication();
         $bookcat_count = Category::where('type', 'book')->where('id', $sub_cat_id)->count();
-        $relatedProducts = Product::where('category_id', $sub_cat_id)
-                    ->latest()
+        $relatedProducts = Product::latest()
                     ->take(8)
                     ->get();
         return view('frontend.categories.single_sub_category_page', compact('menus','subcategories','single_sub_category','authors','publications','bookcat_count','relatedProducts'));
@@ -348,7 +349,26 @@ class ViewController extends Controller
     {
         $menus = $this->frontEndService->getMenu();
         $product = $this->frontEndService->productDetails($id);
-        $relatedProducts = $this->frontEndService->productAll();
+        // $relatedProducts = $this->frontEndService->productAll();
+        $cat_id = ProductCategory::where('product_id', $id)->first()->category_id;
+        
+        $pivotCategoryIds = \DB::table('category_subcategory')
+            ->where('parent_id', $cat_id)
+            ->orWhere('subcategory_id', $cat_id)
+            ->pluck('subcategory_id');
+        $pivotCategories = Category::whereIn('id', $pivotCategoryIds);
+        $category = $pivotCategories->with([
+                'products' => function($query) {
+                    $query->where('status', 1)->inRandomOrder();
+                },
+                'products.variants',
+                'subcategories'
+            ])
+            ->orderBy('serial', 'asc')
+            ->first();
+        $relatedProducts=$category? $category->products->take(7) : null;
+   
+        
         $review_count=Review::where('product_id', $id)->where('user_id',Auth::id())->count();
         return view('frontend.products.productDetails', compact('product','menus','relatedProducts','review_count'));
     }

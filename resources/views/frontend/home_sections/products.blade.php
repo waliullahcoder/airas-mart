@@ -20,6 +20,11 @@
                                 <div class="p-sm-2 p-1">
                                     <div class="product-card-wrapper">
                                         <div class="product-card">
+                                            @if($product->discount > 0)
+                                            <div class="discount-badge">
+                                                <span class="product-discount">{{ ($product->discount_type ?? 'percent') == 'percent' ? number_format($product->discount).'% OFF' : '৳'.number_format($product->discount).' OFF' }}</span>
+                                            </div>
+                                            @endif
                                             <a href="{{ route('product.details', $product->id) }}">
                                                 <figure class="product-card-image ratio" style="--bs-aspect-ratio: 100%">
                                                     <img class="object-fit-contain product-img"
@@ -48,9 +53,10 @@
                                             </a>
 
                                             <div class="product-card-action">
-                                                <button class="btn btn-sm btn-danger add-to-cart"
+                                                <button class="btn btn-sm btn-success add-to-cart"
+                                                data-variant-id="{{ $product->variants->first()?->id }}"
                                                     data-id="{{ $product->id }}">
-                                                    Add +
+                                                    <i class="fas fa-cart-plus me-1"></i> Add to cart
                                                 </button>
                                             </div>
                                         </div>

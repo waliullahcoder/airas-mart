@@ -5,7 +5,7 @@
 @section('content')
 <style>
     .table{
-        background:red !important;
+        background:#fff;
     }
 .small-thumb {
     transition: 0.3s;
@@ -18,11 +18,8 @@
 .product-card img{
     width:20%
 }
-.gap-2{
-    gap:0px !important;
-}
 .active-thumb {
-    border: 2px solid #dc3545;
+    border: 2px solid var(--airas-green);
 }
 
 /*Zoom lens*/
@@ -46,8 +43,10 @@
 #zoomResult{
     width:72%;
     height:600px;
-     background:#1D363F;
-    border:1px solid #ddd;
+     background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    box-shadow:var(--shadow-md);
     background-repeat:no-repeat;
     display:none;
 }
@@ -57,7 +56,50 @@
     left:50%;
     z-index:999999;
 }
+ .singlembtn{
+      margin:0;
+     }
+
+/* ---- Airas Mart product page design ---- */
+.product-details-page .product-card{
+    display:block;
+    text-align:left;
+    height:auto;
+    padding:14px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-sm);
+}
+.product-details-page .product-card:hover{ box-shadow:var(--shadow-sm); }
+.product-details-page h2{ font-size:24px; font-weight:700; color:var(--airas-green-900); }
+.product-details-page .border.p-3{ border-radius:var(--radius); background:#fff; }
+.product-details-page .img-thumbnail{ border-radius:10px; border-color:var(--line); }
+.product-details-page .bg-white.border{ border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+.variant-options{ display:flex; flex-wrap:wrap; gap:8px; }
+.variant-btn{
+    background:#fff !important;
+    color:var(--airas-green) !important;
+    border:1.5px solid var(--airas-green) !important;
+    border-radius:999px !important;
+    padding:.4rem 1.1rem !important;
+    font-weight:600;
+}
+.variant-btn:hover{ background:var(--airas-green-50) !important; }
+.variant-btn.active{ background:var(--airas-green) !important; color:#fff !important; }
+.action-buttons .btn{ padding:.65rem 1.4rem; border-radius:999px; }
+.action-buttons form{ display:inline-block; }
+.product-details-page .related-item{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:8px;
+    background:#fff;
+    transition:border-color .2s, box-shadow .2s;
+}
+.product-details-page .related-item:hover{ border-color:var(--airas-green); box-shadow:var(--shadow-md); }
+
 </style>
+
 <div class="product-details-page py-4 animate__animated animate__fadeInDownBig">
     <div class="container">
 
@@ -66,7 +108,7 @@
 
             <!-- PRODUCT CARD (JS TARGET FOR FLYING IMAGE) -->
             <div class="col-lg-9">
-                <div class="product-card" style="background: linear-gradient(135deg, #000000, #0f2027, #203a43, #2c5364);">
+                <div class="product-card">
 
                     <div class="row">
                      <!-- LEFT : PRODUCT IMAGE -->
@@ -269,113 +311,345 @@
                                     {!! $product->short_description !!}
                                 </div> -->
 
-                                <!-- PRICE -->
-                                <div class="mb-4">
-                                        <h3 class="text-danger">
-                                            {{ number_format($product->sale_price, 2) }} ৳
-                                            @if($product->discount>0)
-                                            <del class="fs-6 text-muted ms-2">
-                                                {{ number_format($product->regular_price, 2) }} ৳
-                                            </del>
-                                            @endif
-                                        </h3>
-                                </div>
+                               <!-- PRICE -->
+<div class="mb-3">
 
-                                <!-- ACTION BUTTONS -->
-                                <div class="d-flex gap-2 mb-4" style="gap:0.5rem !important">
-                                    <button class="btn btn-sm btn-danger add-to-cart"
-                                            data-id="{{ $product->id }}">
-                                        Add +
-                                    </button>
-                                   
-                                    @php
-                                        $alreadyWishlisted = auth()->check() &&
-                                            auth()->user()->wishlists()->where('product_id', $product->id)->exists();
-                                    @endphp
-                                    @if($alreadyWishlisted)
-                                        <button class="btn btn-sm btn-danger" disabled>
-                                            ❤️ Wishlisted
-                                        </button>
-                                    @else
-                                        <form action="{{ route('wishlist.store', $product->id) }}"
-                                            method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            <button class="btn btn-sm btn-danger"{{$product->variants->sum('stock')>0 ? '' : 'disabled'}}>
-                                                🤍 Add to Wishlist
-                                            </button>
-                                        </form>
-                                    @endif
-                                    <form action="{{ route('cart.buyNow') }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <input type="hidden" name="variant_id" value="">
-                                        <button type="submit" class="btn btn-sm btn-warning">
-                                            Buy Now
-                                        </button>
-                                    </form>
-                                    <a href="https://wa.me/8801575020231?text=Hello%20I%20want%20to%20contact%20you" target="_blank" class="btn btn-sm btn-success">
-                                           Whatsapp Us
-                                    </a>
+    <!-- Selected Variant Price -->
+    <div id="selectedPrice">
+        @if($product->variants->count() > 0)
+            <h3 class="text-danger fw-bold mb-0">
+                {{ number_format($product->variants->first()->sale_price, 2) }} ৳
+            </h3>
 
-                                </div>
+            @if($product->variants->first()->regular_price > $product->variants->first()->sale_price)
+                <del class="fs-6 text-muted">
+                    {{ number_format($product->variants->first()->regular_price, 2) }} ৳
+                </del>
+            @endif
+        @else
+            <h3 class="text-danger fw-bold">
+                {{ number_format($product->sale_price, 2) }} ৳
+
+                @if($product->discount > 0)
+                    <del class="fs-6 text-muted ms-2">
+                        {{ number_format($product->regular_price, 2) }} ৳
+                    </del>
+                @endif
+            </h3>
+        @endif
+    </div>
+
+</div>
+
+
+<!-- VARIANTS -->
+@if($product->variants->count() > 0)
+
+    <div class="mb-4">
+
+        <label class="fw-semibold mb-2 d-block">
+            Select Size / Variant:
+        </label>
+
+        <div class="variant-options">
+
+            @foreach($product->variants as $key => $variant)
+
+                <button
+                    type="button"
+                    class="btn btn-small btn-success variant-btn {{ $key == 0 ? 'active' : '' }}"
+                    data-variant-id="{{ $variant->id }}"
+                    data-price="{{ $variant->sale_price }}"
+                    data-regular-price="{{ $variant->regular_price }}"
+                    data-stock="{{ $variant->stock }}"
+                >
+                    {{ $variant->variant }} {{$product->uom->name}}
+                </button>
+
+            @endforeach
+
+        </div>
+
+        <small id="stockMessage" class="text-muted d-block mt-2"></small>
+
+    </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const variantButtons = document.querySelectorAll('.variant-btn');
+
+    const selectedPrice = document.getElementById('selectedPrice');
+
+    const stockMessage = document.getElementById('stockMessage');
+
+    const buyNowVariantId = document.getElementById('buyNowVariantId');
+
+    const buyNowBtn = document.getElementById('buyNowBtn');
+
+    const addToCartBtn = document.querySelector('.add-to-cart');
+
+
+    variantButtons.forEach(button => {
+
+        button.addEventListener('click', function () {
+
+            const variantId = this.dataset.variantId;
+
+            const price = parseFloat(this.dataset.price);
+
+            const regularPrice = parseFloat(this.dataset.regularPrice);
+
+            const stock = parseInt(this.dataset.stock);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Remove active
+            |--------------------------------------------------------------------------
+            */
+
+            variantButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Active selected variant
+            |--------------------------------------------------------------------------
+            */
+
+            this.classList.add('active');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Update Price
+            |--------------------------------------------------------------------------
+            */
+
+            let priceHtml = `
+                <h3 class="text-danger fw-bold mb-0">
+                    ${price.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })} ৳
+                </h3>
+            `;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Regular Price
+            |--------------------------------------------------------------------------
+            */
+
+            if (regularPrice > price) {
+
+                priceHtml += `
+                    <del class="fs-6 text-muted">
+                        ${regularPrice.toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })} ৳
+                    </del>
+                `;
+
+            }
+
+
+            selectedPrice.innerHTML = priceHtml;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Update Variant ID - Add To Cart
+            |--------------------------------------------------------------------------
+            */
+
+            if (addToCartBtn) {
+
+                addToCartBtn.dataset.variantId = variantId;
+
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Update Variant ID - Buy Now
+            |--------------------------------------------------------------------------
+            */
+
+            if (buyNowVariantId) {
+
+                buyNowVariantId.value = variantId;
+
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Stock
+            |--------------------------------------------------------------------------
+            */
+
+            // if (stock > 0) {
+
+            //     stockMessage.innerHTML =
+            //         `<span class="text-success">
+            //             <i class="fas fa-check-circle"></i>
+            //             In Stock (${stock})
+            //         </span>`;
+
+            //     if (buyNowBtn) {
+            //         buyNowBtn.disabled = false;
+            //     }
+
+            //     if (addToCartBtn) {
+            //         addToCartBtn.disabled = false;
+            //     }
+
+            // } else {
+
+            //     stockMessage.innerHTML =
+            //         `<span class="text-danger">
+            //             <i class="fas fa-times-circle"></i>
+            //             Out of Stock
+            //         </span>`;
+
+            //     if (buyNowBtn) {
+            //         buyNowBtn.disabled = true;
+            //     }
+
+            //     if (addToCartBtn) {
+            //         addToCartBtn.disabled = true;
+            //     }
+
+            // }
+
+        });
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Automatically select first variant
+    |--------------------------------------------------------------------------
+    */
+
+    if (variantButtons.length > 0) {
+
+        variantButtons[0].click();
+
+    }
+
+});
+</script>
+@endif
+
+<!-- ACTION BUTTONS -->
+<div class="d-flex flex-wrap gap-2 mb-4 action-buttons">
+
+    <!-- ADD TO CART -->
+    <button
+        type="button"
+        class="btn btn-success add-to-cart singlembtn"
+        data-id="{{ $product->id }}"
+        data-variant-id="{{ $product->variants->first()->id ?? '' }}"
+    >
+        <i class="fas fa-shopping-cart me-1"></i>
+        Add to Cart
+    </button>
+
+
+    <!-- WISHLIST -->
+    @php
+        $alreadyWishlisted = auth()->check() &&
+            auth()->user()->wishlists()
+                ->where('product_id', $product->id)
+                ->exists();
+    @endphp
+
+    @if($alreadyWishlisted)
+
+        <button
+            class="btn btn-outline-danger singlembtn"
+            disabled
+        >
+            ❤️ Wishlisted
+        </button>
+
+    @else
+
+        <form
+            action="{{ route('wishlist.store', $product->id) }}"
+            method="POST"
+            class="d-inline singlembtn"
+        >
+            @csrf
+
+            <button
+                type="submit"
+                class="btn btn-outline-danger">
+                🤍 Wishlist
+            </button>
+
+        </form>
+
+    @endif
+
+
+    <!-- BUY NOW -->
+    <form
+        action="{{ route('cart.buyNow') }}"
+        method="POST"
+        class="d-inline singlembtn"
+        id="buyNowForm"
+    >
+        @csrf
+
+        <input
+            type="hidden"
+            name="product_id"
+            value="{{ $product->id }}"
+        >
+
+        <input
+            type="hidden"
+            name="variant_id"
+            id="buyNowVariantId"
+            value="{{ $product->variants->first()->id ?? '' }}"
+        >
+
+        <button
+            type="submit"
+            class="btn btn-danger"
+            id="buyNowBtn"
+        >
+            <i class="fas fa-bolt me-1"></i>
+            Buy Now
+        </button>
+
+    </form>
+
+
+    <!-- WHATSAPP -->
+    <!-- <a
+        href="https://wa.me/8801575020231?text=Hello%20I%20want%20to%20contact%20you"
+        target="_blank"
+        class="btn btn-success"
+    >
+        <i class="fab fa-whatsapp me-1"></i>
+        WhatsApp
+    </a> -->
+
+</div>
 
                                 <!-- META INFO -->
                                  <div style="font-size: 14px; line-height: 1.8;">
 
-                                <p style="margin: 0 0 8px;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ ১০০% ক্যাশ অন ডেলিভারি (হাতে পণ্য পেয়ে মূল্য পরিশোধ করুন)।
-                                    </strong>
-                                </p>
-
-                                <p style="margin: 0 0 8px;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ ঢাকার ভিতরে ১ দিন আর ঢাকার বাহিরে ৩ দিনে পণ্য হাতে পাবেন।
-                                    </strong>
-                                </p>
-
-                                <p style="margin: 0 0 8px;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ অর্ডার করতে Buy Now এ ক্লিক করুন।
-                                    </strong>
-                                </p>
-
-                                <p style="margin: 0 0 8px;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ আপনার নাম, মোবাইল নং এবং ঠিকানা সঠিকভাবে দিন।
-                                    </strong>
-                                </p>
-
-                                <p style="margin: 0 0 8px;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ প্রি-অর্ডার পদ্ধতিতে নিশ্চিত ডিস্কাউন্ট সুবিধা গ্রহণ করুন।
-                                    </strong>
-                                </p>
-
-                                <p style="margin: 0 0 8px;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ পণ্য ফেরত দেওয়ার ক্ষেত্রে রিটার্ন পলিসি দেখুন।
-                                    </strong>
-                                </p>
-
-                                <p style="margin: 0 0 8px;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ অর্ডার করার সময় প্রয়োজনীয় তথ্য সঠিকভাবে প্রদান করুন।
-                                    </strong>
-                                </p>
-
-                                <p style="margin: 0 0 8px;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ ডেলিভারির সময় পণ্যটি ভালোভাবে যাচাই করে গ্রহণ করুন।
-                                    </strong>
-                                </p>
-
-                                <p style="margin: 0;text-align:left !important;">
-                                    <strong style="color: #ff9c00;">
-                                        ✔ আপনার সন্তুষ্টিই আমাদের প্রধান লক্ষ্য—যেকোনো সমস্যায় আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করুন।
-                                    </strong>
-                                </p>
+                                 {!! $product->short_description !!}
 
                             </div>
                                
@@ -393,17 +667,17 @@
                     <h6 class="mb-3">Related Products</h6>
 
                     @foreach($relatedProducts ?? [] as $item)
-                        <div class="border d-flex mb-3" style="margin-top:10px;">
+                        <div class="border d-flex mb-3 related-item" style="margin-top:10px;">
                             <img src="{{ asset($item->thumbnail) }}"
                                  class="me-2"
                                  width="60"
                                  alt="">
                             <div>
                                 <a href="{{ route('product.details', $item->id) }}"
-                                   class="small fw-semibold d-block">
+                                   class="small fw-semibold d-block" style="color: var(--airas-green-900)">
                                    {{ \Illuminate\Support\Str::limit($item->name, 30) }}
                                 </a>
-                                <p>{{ $item->code }}</p>
+                                <p style="color: var(--ink-soft)">{{ $item->code }}</p>
                                 <span class="text-danger">
                                     {{ number_format($item->sale_price ?? $item->regular_price, 2) }} ৳
                                 </span>

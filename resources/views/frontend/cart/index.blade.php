@@ -4,7 +4,7 @@
 <style>
     /* Mobile Responsive */
     .card-body{
-        background:#f3f9fb;
+        background: #ffff;
     }
     .code{
         margin-bottom:0px;
@@ -193,12 +193,12 @@
 
                     <form action="{{ route('cart.clear') }}" method="POST">
                         @csrf
-                        <button class="btn btn-outline-danger w-100 mb-2">
+                        <button class="btn btn-outline-warning w-100 mb-2">
                             Empty Cart
                         </button>
                     </form>
 
-                    <a href="{{ route('checkout') }}" class="btn btn-success w-100">
+                    <a href="{{ route('checkout') }}" class="btn btn-warning w-100">
                         Proceed to Checkout
                     </a>
 

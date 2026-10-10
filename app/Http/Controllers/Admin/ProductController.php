@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Attribute;
 use App\Models\ProductTag;
+use App\Models\ProductVariant;
 use App\Models\ProductEdition;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
@@ -162,18 +163,53 @@ class ProductController extends Controller
             
             // $product = $this->productService->store($request->except(['_token', 'choice']));
             // ✅ generate code
-            $data = $request->except(['_token','choice']);
+            $data = $request->except(['_token', 'choice']);
+
+            // uom_id[] থেকে Product-এর জন্য প্রথম UOM নিন
+            if (is_array($data['uom_id'] ?? null)) {
+                $data['uom_id'] = $data['uom_id'][0] ?? null;
+            }
+
             $data['code'] = $this->codeNo();
 
             // ✅ PRODUCT STORE
             $product = $this->productService->store($data);
 
-                // ✅ VARIANT (safe)
-                if ($request->filled('choice_no')) {
-                    $this->productVariantService->store(
-                        $request->only(['choice_no', 'purchase_price', 'sale_price', 'sku']),
-                        $product
-                    );
+                // ✅ VARIANT
+                if ($request->filled('uom_id') && is_array($request->uom_id)) {
+
+                    foreach ($request->uom_id as $key => $uomId) {
+
+                        if (empty($uomId)) {
+                            continue;
+                        }
+
+                        $regularPrice = $request->price[$key] ?? 0;
+
+                        $discount = $request->discount ?? 0;
+                        $discountType = $request->discount_type ?? 'amount';
+
+                        if ($discountType === 'percent') {
+                            $salePrice = $regularPrice - ($regularPrice * $discount / 100);
+                        } else {
+                            $salePrice = $regularPrice - $discount;
+                        }
+
+                        $salePrice = max(0, $salePrice);
+
+                        ProductVariant::create([
+                            'product_id'     => $product->id,
+                            'uom_id'         => $uomId,
+                            'variant'        => $request->size[$key] ?? null,
+                            'sku'            => $request->sku,
+                            'purchase_price' => $request->purchase_price,
+                            'regular_price'  => $regularPrice,
+                            'discount_type'  => $discountType,
+                            'discount'       => $discount,
+                            'sale_price'     => $salePrice,
+                            'status'         => true,
+                        ]);
+                    }
                 }
 
                 // ✅ IMAGES (NULL SAFE)
@@ -293,6 +329,7 @@ class ProductController extends Controller
         }
 
         $additionalData = [
+            
             'brands' => Brand::where('status', true)->orderBy('name', 'asc')->get(),
             'uoms' => Uom::where('status', true)->orderBy('name', 'asc')->get(),
             'categories' => Category::whereNotNull('parent_id')->whereIn('position', ['header','homepage'])->where('status', true)->orderBy('name', 'asc')->get(),
@@ -311,7 +348,7 @@ class ProductController extends Controller
        
         $request->validate([
             'name'        => 'required',
-            'uom_id'      => 'required',
+            // 'uom_id'      => 'required',
             // 'category_id' => 'required',
             'category_ids' => 'required|array',
             'category_ids.*' => 'exists:categories,id',
@@ -322,14 +359,77 @@ class ProductController extends Controller
             DB::transaction(function () use ($request, $id) {
 
                 $product = $this->model::findOrFail($id);
-                $data = $request->except(['_token','choice']);
+                $data = $request->except(['uom_id', '_token','choice']);
                 if(empty($request->code)){
                     $date = date('Ymd');
                     $data['code'] = 'COD' . $date . $id;
                 }
                 // ✅ PRODUCT UPDATE
                 $product = $this->productService->update($data, $product);
-                // $product = $this->productService->update($request->except(['_token', 'choice']), $product);
+                
+                // ✅ VARIANT UPDATE
+                    if ($request->filled('uom_id') && is_array($request->uom_id)) {
+
+                        $keepIds      = [];
+                        $discount     = $request->discount ?? 0;
+                        $discountType = $request->discount_type ?? 'amount';
+
+                        foreach ($request->uom_id as $key => $uomId) {
+
+                            if (empty($uomId)) {
+                                continue;
+                            }
+
+                            $regularPrice = $request->price[$key] ?? 0;
+
+                            if ($discountType === 'percent') {
+                                $salePrice = $regularPrice - ($regularPrice * $discount / 100);
+                            } else {
+                                $salePrice = $regularPrice - $discount;
+                            }
+
+                            $salePrice = max(0, $salePrice);
+
+                            $data = [
+                                'uom_id'         => $uomId,
+                                'variant'        => $request->size[$key] ?? null,
+                                'sku'            => $request->sku,
+                                'purchase_price' => $request->purchase_price,
+                                'regular_price'  => $regularPrice,
+                                'discount_type'  => $discountType,
+                                'discount'       => $discount,
+                                'sale_price'     => $salePrice,
+                                'status'         => true,
+                            ];
+
+                            // existing variant hole update
+                            $variantId = $request->variant_id[$key] ?? null;
+
+                            if ($variantId) {
+                                $variant = ProductVariant::where('product_id', $product->id)
+                                    ->where('id', $variantId)
+                                    ->first();
+
+                                if ($variant) {
+                                    $variant->update($data);
+                                    $keepIds[] = $variant->id;
+                                    continue;
+                                }
+                            }
+
+                            // notun variant hole create
+                            $newVariant = ProductVariant::create($data + [
+                                'product_id' => $product->id,
+                            ]);
+
+                            $keepIds[] = $newVariant->id;
+                        }
+
+                        // form theke remove kora variant gulo delete
+                        ProductVariant::where('product_id', $product->id)
+                            ->whereNotIn('id', $keepIds)
+                            ->delete();
+                    }
 
                 // ✅ VARIANT (NULL SAFE)
                 if ($request->filled('choice_no')) {
