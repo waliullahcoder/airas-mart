@@ -762,7 +762,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Main navigation bar */
 .header-nav {
     background: var(--airas-green);
-    border-top: 3px solid var(--airas-red);
+    border-top: 3px solid #0bff20;
 }
 
 .menu-list {
@@ -838,11 +838,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .hamburger span {
     display: block;
-    width: 20px;
-    height: 2.5px;
+    width: 34px;
+    height: 4.5px;
     background: #fff;
     border-radius: 2px;
-    margin: 0;
+    margin: 5px;
 }
 
 .sidebar-overlay {
@@ -949,7 +949,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
     margin-top: 10px;
-    padding: 16px 14px 14px;
+    padding: 6px 4px 4px;
 }
 
 .section-header {
@@ -1008,7 +1008,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #fff;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 10px;
+    /* padding: 10px; */
     text-align: center;
     transition: border-color .2s, box-shadow .2s;
 }
@@ -1118,7 +1118,6 @@ del .Price-amount { text-decoration: line-through; }
     color: #fff;
     padding: .45rem .6rem;
     font-size: 13px;
-    border-radius: 999px;
 }
 
 .product-card-action .btn:hover,
