@@ -26,7 +26,11 @@
 
                                 @foreach ($chunk as $item)
                                     <a href="{{ route('category.singleCategoryPage', $item->id) }}">
-                                        {{ $item->name }}
+                                    <img
+                                        src="{{ asset($item->image) }}"
+                                        alt="{{ $item->name }}"
+                                        class="mega-icon-img"
+                                    > {{ $item->name }}
                                     </a>
                                 @endforeach
                             </div>

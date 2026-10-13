@@ -29,6 +29,7 @@ $menus = Category::whereNull('parent_id')
         'id',
         'id as category_id',
         'name',
+        'image',
         'url as menu_url',
         'name as category_name',
         'slug as category_slug',
@@ -50,6 +51,7 @@ $data['sub_menus'] = Category::whereNotNull('parent_id')
     ->select(
         'id',
         'name',
+        'image',
         'parent_id',
         'slug as category_slug'
     )

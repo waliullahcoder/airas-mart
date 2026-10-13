@@ -85,7 +85,11 @@ return $subCategory->products;
                             <div class="p-sm-2 p-1">
                                 <div class="product-card-wrapper">
                                     <div class="product-card">
-
+                                             @if($product->discount>0)
+                                            <div class="{{ $product->discount_type == 'percent' ? 'discount-badge' : 'discount-badge-flat' }}">
+                                                <span class="product-discount">{{ ($product->discount_type ?? 'percent') == 'percent' ? number_format($product->discount).'% OFF' : '৳'.number_format($product->discount).' OFF' }}</span>
+                                            </div>
+                                            @endif
                                         <a href="{{ route('product.details', $product->id) }}">
                                             <figure class="product-card-image ratio" style="--bs-aspect-ratio: 100%">
                                                 <img class="object-fit-contain product-img"
@@ -101,16 +105,23 @@ return $subCategory->products;
                                                 <p>{{ $product->code }}</p>
 
                                                 <span class="product-card-price">
-                                                    @if($product->discount > 0)
-                                                    <del>
-                                                        {{ number_format($product->regular_price) }} ৳
-                                                    </del>
-                                                    @endif
-
-                                                    <ins>
-                                                        {{ number_format($product->sale_price) }} ৳
-                                                    </ins>
-                                                </span>
+                                                        @if($product->discount>0)
+                                                        <del>
+                                                            <span class="Price-amount">
+                                                                 {{ number_format($product->regular_price) }} <span class="Price-currencySymbol">৳</span>
+                                                            </span>
+                                                        </del>
+                                                        @endif
+                                                       
+                                                        @if($product->discount > 0) <span class="price-discount"> <i class="fa-solid fa-tag"></i> Save 
+                                                        @if($product->discount_type=='percent')
+                                                        {{ number_format($product->discount) }}% @else {{ number_format($product->discount) }}৳ @endif</span> @endif
+                                                        <ins>
+                                                            <span class="Price-amount">
+                                                                 {{ number_format($product->sale_price) }} <span class="Price-currencySymbol">৳</span>
+                                                            </span>
+                                                        </ins>
+                                                    </span>
                                             </div>
                                         </a>
 

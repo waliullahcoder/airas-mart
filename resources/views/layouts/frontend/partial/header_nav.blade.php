@@ -1,3 +1,4 @@
+
 <div class="header-nav d-lg-block d-none">
     <div class="container">
         <nav class="main-menu">
@@ -25,6 +26,7 @@
                 @endforeach
 
             </ul>
+            @include('layouts.frontend.partial.mega_menu')
         </nav>
     </div>
 </div>
