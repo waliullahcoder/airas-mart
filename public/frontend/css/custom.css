@@ -48,10 +48,10 @@
 
 .navbar {
     display: flex;
-    gap: 22px;
-    background: #fff;
+    background: #e6ffea;
     padding: 8px 4px;
     align-items: center;
+    border:1px solid #61df49;
 }
 
 .navbar a {
@@ -59,8 +59,9 @@
     text-decoration: none;
     font-size: 13px;
     font-weight: 600;
-    padding: 2px;
+    padding:2px;
     position: relative;
+    border-right: 1px solid #34bd60;
 }
 
 .navbar a::after {

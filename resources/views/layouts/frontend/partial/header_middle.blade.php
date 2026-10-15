@@ -117,7 +117,7 @@
                 </li>
             @endforeach
 
-            <!-- <div class="sidebar-header">Mega Menu</div>
+            <div class="sidebar-header">Mega Menu</div>
 
             @foreach ($menus['mega_menus'] as $menu)
                 <li class="{{ isset($menus['sub_menus'][$menu->id]) ? 'has-sub' : '' }}">
@@ -148,7 +148,7 @@
                     @endif
                 </li>
             @endforeach
-        </ul> -->
+        </ul>
     </div>
 
     <!-- Sidebar Overlay -->
