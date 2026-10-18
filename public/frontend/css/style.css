@@ -1104,7 +1104,6 @@ del .Price-amount { text-decoration: line-through; }
     position: static;
     width: 100%;
     margin-top: auto;
-    padding: 8px 0 0;
     background: transparent;
     visibility: visible;
     opacity: 1;

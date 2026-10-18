@@ -17,7 +17,7 @@
 
                         <div class="product-card-content">
                             <h6 class="h6 product-card-title truncate-text" style="--lines: 1;">
-                                {{ $product->name }}
+                                 {{ \Illuminate\Support\Str::limit($product->name, 30) }}
                             </h6>
                             <p class="product-card-title truncate-text" style="--lines: 1;">
                                 {{ $product->code }}

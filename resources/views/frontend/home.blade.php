@@ -99,7 +99,7 @@ return $subCategory->products;
 
                                             <div class="product-card-content">
                                                 <h6 class="product-card-title">
-                                                    {{ $product->name }}
+                                                     {{ \Illuminate\Support\Str::limit($product->name, 25) }}
                                                 </h6>
 
                                                 <p>{{ $product->code }}</p>
