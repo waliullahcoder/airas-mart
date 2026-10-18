@@ -6,9 +6,11 @@
 * {
     box-sizing: border-box;
 }
-
+.mt-5{
+    margin-top: 0.5rem !important;
+}
 .price-discount{
-    background-color: #f77002;
+    background-color: #39c53c;
     padding:2px 5px;
     color:white;
     border-radius: 2px;

@@ -33,7 +33,7 @@
                                                        
                                                         @if($product->discount > 0) <span class="price-discount"> <i class="fa-solid fa-tag"></i> Save 
                                                         @if($product->discount_type=='percent')
-                                                        {{ number_format($product->discount) }}% @else {{ number_format($product->discount) }}৳ @endif</span> @endif
+                                                        {{ number_format($product->regular_price-$product->sale_price) }}৳ @else {{ number_format($product->discount) }}৳ @endif</span> @endif
                                                         <ins>
                                                             <span class="Price-amount">
                                                                  {{ number_format($product->sale_price) }} <span class="Price-currencySymbol">৳</span>
