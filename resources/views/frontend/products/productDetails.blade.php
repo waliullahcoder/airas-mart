@@ -312,7 +312,7 @@
                             <div class="p-3">
 
                                 <h2 class="mb-2">{{ $product->name }}</h2>
-
+                                <b>{{ $product->code }}</b>
                                 <!-- BADGES -->
                                 <div class="mb-2">
                                     @if($product->best_seller)
