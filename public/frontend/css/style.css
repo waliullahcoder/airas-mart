@@ -1013,6 +1013,10 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
     transition: border-color .2s, box-shadow .2s;
 }
+.list-group-item{
+    display: flex !important;
+    flex-direction: row !important;
+}
 
 .product-card-wrapper:hover .product-card {
     border-color: var(--airas-green);
