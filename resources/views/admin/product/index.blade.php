@@ -6,10 +6,40 @@
     $ajaxUrl = route($currentRouteName);
     $deletePermission = str_replace('index', 'destroy', $currentRouteName);
     $deleteUrl = route($deletePermission, 0);
+
+    $creators = \App\Models\User::whereIn('id', \App\Models\Product::select('created_by')->whereNotNull('created_by'))
+        ->orderBy('name')
+        ->get(['id', 'name']);
+
+    $filtercategories = \App\Models\Category::whereNotNull('parent_id')
+        ->whereIn('position', ['header', 'child_mega'])
+        ->orderBy('name')
+        ->get(['id', 'name']);
 @endphp
 
 <div class="card">
     <div class="card-body">
+
+        {{-- Filter --}}
+       <div class="row mb-3">
+            <div class="col-md-3">
+                <select id="filter_created_by" class="form-select">
+                    <option value="">All Created By</option>
+                    @foreach($creators as $creator)
+                        <option value="{{ $creator->id }}">{{ $creator->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="filter_category" class="form-select">
+                    <option value="">All Categories</option>
+                    @foreach($filtercategories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
         <table class="dataTable table table-bordered table-hover align-middle w-100">
             <thead>
                 <tr class="text-nowrap align-middle">
@@ -18,7 +48,7 @@
                     <th>Code</th>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Edition</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -57,7 +87,8 @@ $(document).ready(function() {
             url: "{{ $ajaxUrl }}",
             type: "GET",
             data: function(d) {
-                d.type = $('#filter').val();
+                d.created_by = $('#filter_created_by').val();
+                 d.category_id = $('#filter_category').val();
             }
         },
         columns: [
@@ -65,9 +96,9 @@ $(document).ready(function() {
             { data: 'thumbnail', name: 'thumbnail', orderable: false, searchable: false, width: '70px' },
             { data: 'code', name: 'code' },
             { data: 'name', name: 'name' },
-            // { data: 'categories.name', name: 'categories.name', defaultContent: '', width: '150px' },
-           { data: 'category_names', name: 'category_names', orderable: false, searchable: true, width: '150px' },
-            { data: 'edition.name', name: 'edition.name', defaultContent: '', width: '100px' },
+            { data: 'category_names', name: 'category_names', orderable: false, searchable: true, width: '150px' },
+            { data: 'user.name', name: 'user.name', defaultContent: '', orderable: false, width: '150px' },
+            
             { data: 'status', name: 'status', orderable: false, searchable: false, className: 'text-center', width: '90px' },
             { data: 'actions', name: 'actions', orderable: false, searchable: false, className: 'text-end', width: '120px' }
         ],
@@ -80,7 +111,7 @@ $(document).ready(function() {
                 let status = $(this).is(':checked') ? 'active' : 'inactive';
 
                 $.ajax({
-                    url: route("admin.product.edit",d.id),
+                    url: route("admin.product.edit", id),
                     method: 'get',
                     data: { id: id, status: status, _token: '{{ csrf_token() }}' },
                     success: function(res){
@@ -89,6 +120,11 @@ $(document).ready(function() {
                 });
             });
         }
+    });
+
+    // Filter change -> reload table
+    $('#filter_created_by, #filter_category').on('change', function() {
+        table.ajax.reload();
     });
 
     // Select All checkbox

@@ -51,20 +51,35 @@ class ProductController extends Controller
     //     return HelperClass::resourceDataView($this->model::with(['category', 'uom'])->where('product_type', 'book')->orderBy('id', 'desc'), 'thumbnail', null, $this->path, $this->title);
     // }
 
-     public function index()
-        {
-            return HelperClass::resourceDataView(
-                $this->model::with(['categories', 'uom','edition'])
-                    ->select('id','code','name','uom_id','thumbnail','status')
-                    ->orderBy('id', 'desc'),
-                'thumbnail',
-                null,
-                $this->path,
-                $this->title,
-                null // এখানে relation_data null রাখো
-            );
-        }
+    public function index(Request $request)
+    {
+        // Dropdown-er jonno category list
+        $filtercategories = \App\Models\Category::whereNotNull('parent_id')
+            ->whereIn('position', ['header', 'mega_menu_child'])
+            ->orderBy('name')
+            ->get(['id', 'name']);
 
+        $query = $this->model::with(['categories', 'uom', 'user:id,name'])
+            ->select('id', 'code', 'name', 'uom_id', 'thumbnail', 'status', 'created_by')
+            ->when($request->filled('created_by'), function ($q) use ($request) {
+                $q->where('created_by', $request->created_by);
+            })
+            ->when($request->filled('category_id'), function ($q) use ($request) {
+                $q->whereHas('categories', function ($c) use ($request) {
+                    $c->where('categories.id', $request->category_id);
+                });
+            })
+            ->orderBy('id', 'desc');
+
+        return HelperClass::resourceDataView(
+            $query,
+            'thumbnail',
+            null,
+            $this->path,
+            $this->title,
+            null
+        );
+    }
     
     public function skuCombination(Request $request)
     {

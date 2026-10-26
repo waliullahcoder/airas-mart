@@ -20,6 +20,13 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id')->withTimestamps();
     }
+  
+    public function filtercategories()
+    {
+        return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id')
+            ->whereNotNull('categories.parent_id')
+            ->whereIn('categories.position', ['header', 'mega_menu_child']);
+    }
 
     public function authors()
     {
