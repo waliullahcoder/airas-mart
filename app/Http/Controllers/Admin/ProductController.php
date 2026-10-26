@@ -60,7 +60,7 @@ class ProductController extends Controller
             ->get(['id', 'name']);
 
         $query = $this->model::with(['categories', 'uom', 'user:id,name'])
-            ->select('id', 'code', 'name', 'uom_id', 'thumbnail', 'status', 'created_by')
+            ->select('id', 'code', 'name', 'uom_id', 'thumbnail', 'status', 'created_by','created_at')
             ->when($request->filled('created_by'), function ($q) use ($request) {
                 $q->where('created_by', $request->created_by);
             })

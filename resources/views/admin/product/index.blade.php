@@ -49,6 +49,7 @@
                     <th>Name</th>
                     <th>Category</th>
                     <th>Created By</th>
+                    <th>Created At</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -61,7 +62,7 @@
                     <th class="text-center">
                         <input type="checkbox" id="selectAll">
                     </th>
-                    <th colspan="7">
+                    <th colspan="8">
                         <div class="text-end">
                             <button type="button" id="bulk_delete" data-url="{{ $deleteUrl }}"
                                 class="btn btn-xs btn-danger">Delete</button>
@@ -98,6 +99,12 @@ $(document).ready(function() {
             { data: 'name', name: 'name' },
             { data: 'category_names', name: 'category_names', orderable: false, searchable: true, width: '150px' },
             { data: 'user.name', name: 'user.name', defaultContent: '', orderable: false, width: '150px' },
+            { data: 'created_at', name: 'created_at', width: '150px',
+                render: function(data) {
+                    if (!data) return '';
+                    return moment(data).format('DD-MMM-YYYY hh:mm A');
+                }
+                },
             
             { data: 'status', name: 'status', orderable: false, searchable: false, className: 'text-center', width: '90px' },
             { data: 'actions', name: 'actions', orderable: false, searchable: false, className: 'text-end', width: '120px' }
