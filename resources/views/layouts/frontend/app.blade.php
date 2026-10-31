@@ -32,15 +32,79 @@
     @include('layouts.frontend.partial.footer')
     @include('layouts.frontend.partial.scripts')
 
- <!-- Floating WhatsApp Button -->
-<a href="https://wa.me/8801575020231" 
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/8801577720969" 
    class="floating-whatsapp" 
    target="_blank" 
    rel="noopener noreferrer"
    aria-label="Chat with us on WhatsApp">
-
     <i class="fab fa-whatsapp"></i>
 </a>
+<style>
+    .floating-whatsapp {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
+    background: #25d366;
+    color: #fff;
+    font-size: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+    animation: wa-shake 3s ease-in-out infinite;
+}
+
+/* Pulse ring (duto ring, ektu delay diye) */
+.floating-whatsapp::before,
+.floating-whatsapp::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #25d366;
+    z-index: -1;
+    animation: wa-pulse 2s ease-out infinite;
+}
+
+.floating-whatsapp::after {
+    animation-delay: 1s;
+}
+
+.floating-whatsapp:hover {
+    color: #fff;
+    animation-play-state: paused;
+    transform: scale(1.1);
+}
+
+@keyframes wa-pulse {
+    0%   { transform: scale(1);   opacity: .6; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Protita 3 second-e ekbar halka nere uthbe */
+@keyframes wa-shake {
+    0%, 70%, 100% { transform: rotate(0); }
+    75%  { transform: rotate(-12deg); }
+    80%  { transform: rotate(12deg); }
+    85%  { transform: rotate(-10deg); }
+    90%  { transform: rotate(10deg); }
+    95%  { transform: rotate(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .floating-whatsapp,
+    .floating-whatsapp::before,
+    .floating-whatsapp::after {
+        animation: none;
+    }
+}
+    </style>
 
 
     {{-- <script type="text/javascript" src="{{ asset('frontend/js/jquery-3.6.0.min.js') }}"></script>

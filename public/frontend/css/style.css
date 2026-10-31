@@ -555,8 +555,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .scrollTop {
     position: fixed;
-    right: 25px;
-    bottom: 90px;
+    right: 140px;
+    bottom: 25px;
     background-color: var(--airas-red);
     color: #fff;
     width: 42px;
@@ -779,7 +779,7 @@ h1, h2, h3, h4, h5, h6 {
 .menu-link {
     display: inline-flex;
     align-items: center;
-    border: 1px solid #31b169 !important;
+    border-right: 1px solid #31b169 !important;
     height: 34px;
     padding: 0 8px;
     color: #fff;
