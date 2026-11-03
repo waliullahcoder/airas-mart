@@ -240,12 +240,7 @@
                         <b>Categories <span class="text-danger">*</span></b>
                     </label>
 
-                    <select class="form-select select2" 
-                            name="category_ids[]" 
-                            multiple 
-                            data-placeholder="Select Categories" 
-                            required
-                            style="width:100%;height:400px;">
+                    <select name="category_ids[]" id="category_ids" class="form-select select" data-placeholder="Select Categories" multiple>
 
                         @foreach ($additionalData['categories'] as $item)
                             <option value="{{ $item->id }}"

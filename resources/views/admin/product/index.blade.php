@@ -15,10 +15,14 @@
         ->whereIn('position', ['header', 'child_mega'])
         ->orderBy('name')
         ->get(['id', 'name']);
-@endphp
 
+       
+@endphp
+ 
 <div class="card">
     <div class="card-body">
+ 
+
 
         {{-- Filter --}}
        <div class="row mb-3">

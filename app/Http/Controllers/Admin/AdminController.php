@@ -125,6 +125,13 @@ class AdminController extends Controller
             'user_name'  => $request->user_name,
             'email'      => $request->email,
             'phone'      => $request->phone,
+            'total_qty'  => $request->total_qty,
+            'paid_qty'   => $request->paid_qty,
+            'pending_qty'=> $request->pending_qty,
+            'per_rate'   => $request->per_rate,
+            'total_amount'  => $request->total_amount,
+            'paid_amount'   => $request->paid_amount,
+            'pending_amount' => $request->pending_amount,
             'image'       => isset($validated['image']) ? HelperClass::saveImage($validated['image'], 300, $this->path, $data->image) : $data->image,
             'updated_by' => Auth::id(),
         ]);
