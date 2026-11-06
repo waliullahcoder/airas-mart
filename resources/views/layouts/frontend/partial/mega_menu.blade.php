@@ -16,12 +16,12 @@
         @foreach ($menus['mega_menus'] as $menu)
             @if(isset($menus['sub_menus'][$menu->id]))
                 @php
-                    $items = $menus['sub_menus'][$menu->id]->take(45);
+                    $items = $menus['sub_menus'][$menu->id]->take(30);
                 @endphp
                 <div class="mega-menu" id="menu-{{ $menu->id }}">
                     <div class="mega-grid">
 
-                        @foreach ($items->chunk(9) as $chunk)
+                        @foreach ($items->chunk(6) as $chunk)
                             <div class="mega-column">
 
                                 @foreach ($chunk as $item)
@@ -36,7 +36,7 @@
                             </div>
                         @endforeach
                     </div>
-                    @if($menus['sub_menus'][$menu->id]->count() > 45)
+                    @if($menus['sub_menus'][$menu->id]->count() > 30)
                                 <a href="{{ route('category.index', [$menu->category_id, $menu->category_slug,$menu->name]) }}" data-menu="menu-{{ $menu->id }}" style="padding-left:30px; color:#549a95;">
                                     Read More →
                                 </a>

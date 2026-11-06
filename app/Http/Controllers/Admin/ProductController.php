@@ -125,7 +125,7 @@ class ProductController extends Controller
         $title = $this->create_title;
         $brands = Brand::where('status', true)->orderBy('name', 'asc')->get();
         $uoms = Uom::where('status', true)->orderBy('name', 'asc')->get();
-       $subcategories = Category::whereNotNull('parent_id')->whereIn('position', ['header','homepage'])->where('status', true)->orderBy('name', 'asc')->get();
+       $subcategories = Category::whereNotNull('parent_id')->whereIn('position', ['header','mega_menu_child'])->where('status', true)->orderBy('name', 'asc')->get();
         $vendors = Vendor::where('status', true)->orderBy('name', 'asc')->get();
         $attributes = Attribute::where('status', true)->orderBy('name', 'asc')->get();
         $authors = Author::where('status', true)->orderBy('name', 'asc')->get();
@@ -347,7 +347,7 @@ class ProductController extends Controller
             
             'brands' => Brand::where('status', true)->orderBy('name', 'asc')->get(),
             'uoms' => Uom::where('status', true)->orderBy('name', 'asc')->get(),
-            'categories' => Category::whereNotNull('parent_id')->whereIn('position', ['header','homepage'])->where('status', true)->orderBy('name', 'asc')->get(),
+            'categories' => Category::whereNotNull('parent_id')->whereIn('position', ['header','mega_menu_child'])->where('status', true)->orderBy('name', 'asc')->get(),
             'vendors' => Vendor::where('status', true)->orderBy('name', 'asc')->get(),
             'publications' => Publication::where('status', true)->orderBy('name', 'asc')->get(),
             'attributes' => Attribute::where('status', true)->orderBy('name', 'asc')->get()
