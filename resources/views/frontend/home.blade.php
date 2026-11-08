@@ -72,8 +72,11 @@ return $subCategory->products;
                 <a href="{{ route('category.index', [$category->id, $category->slug, $category->name]) }}" class="section-link">
                     See All
                 </a>
+               
             </div>
-
+           <div class="header-image-wrapper">
+                <img src="{{ $category->image!= null ? asset($category->image) : asset('frontend/images/blank_header.jpg') }}" class="header-live-animation">
+            </div>
             <div class="position-relative">
                 <div class="swiper carousel" data-items="2" data-xl-items="6" data-lg-items="5" data-md-items="4"
                     data-sm-items="3" data-xs-items="2" data-margin="5" data-dots="false" data-arrows="true">

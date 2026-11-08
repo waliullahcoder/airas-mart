@@ -5,7 +5,7 @@
 <div class="category-page py-4 animate__animated animate__fadeInLeft">
     <div class="container">
         <div class="row">
-
+           
             <!-- LEFT SIDEBAR -->
             <div class="col-lg-3 d-none d-lg-block">
                 <div class="filter-box">
@@ -139,8 +139,11 @@
            
     <div class="col-lg-9">
     <div class="category-product-section pb-4">
-
         <div class="container">
+            
+                    <div class="header-image-wrapper">
+                        <img src="{{ \App\Models\Category::find($subcategories->first()->parent_id)->image!= null ? asset(\App\Models\Category::find($subcategories->first()->parent_id)->image) : asset('frontend/images/blank_header.jpg') }}" class="header-live-animation">
+                    </div>
              <div id="default-products">
                 @include('frontend.categories.partials.product_list')
             </div>

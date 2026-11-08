@@ -155,6 +155,30 @@
                                       <option value="12" {{ $data->serial == '12' ? 'selected' : '' }}>
                                         12
                                       </option>
+                                      <option value="13" {{ $data->serial == '13' ? 'selected' : '' }}>
+                                        13
+                                      </option>
+                                      <option value="14" {{ $data->serial == '14' ? 'selected' : '' }}>
+                                        14
+                                      </option>
+                                      <option value="15" {{ $data->serial == '15' ? 'selected' : '' }}>
+                                        15
+                                      </option>
+                                      <option value="16" {{ $data->serial == '16' ? 'selected' : '' }}>
+                                        16
+                                      </option>
+                                      <option value="17" {{ $data->serial == '17' ? 'selected' : '' }}>
+                                        17
+                                      </option>
+                                      <option value="18" {{ $data->serial == '18' ? 'selected' : '' }}>
+                                        18
+                                      </option>
+                                      <option value="19" {{ $data->serial == '19' ? 'selected' : '' }}>
+                                        19
+                                      </option>
+                                      <option value="20" {{ $data->serial == '20' ? 'selected' : '' }}>
+                                        20
+                                      </option>
                                 </select>
                         </div>
                         <div class="mb-2">

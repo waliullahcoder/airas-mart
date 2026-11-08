@@ -21,6 +21,44 @@
     border-radius:10px;
     object-fit: contain;
 }
+.header-image-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 0;
+}
+
+.header-live-animation {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    animation: liveHeader 1s ease-in-out infinite alternate;
+    transform-origin: center center;
+    will-change: transform, filter;
+}
+
+@keyframes liveHeader {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: scale(1.015);
+        filter: brightness(1.04);
+    }
+
+    100% {
+        transform: scale(1.025);
+        filter: brightness(1.02);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .header-live-animation {
+        animation: none;
+    }
+}
 /* ---------- Container ---------- */
 .container,
 .container-fluid,
