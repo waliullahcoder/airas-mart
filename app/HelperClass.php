@@ -199,6 +199,51 @@ class HelperClass
     /**
      * Store image in the storage folder and return the path.
      */
+    // public static function storeImage($file, $size, $storagePath, $oldImage = null)
+    // {
+    //     if (!Storage::disk('public')->exists($storagePath)) {
+    //         Storage::disk('public')->makeDirectory($storagePath, 0777, true);
+    //     }
+
+    //     // If $file is a string path instead of UploadedFile
+    //     if (is_string($file)) {
+    //         $originalExtension = pathinfo($file, PATHINFO_EXTENSION);
+    //         $mime = mime_content_type($file);
+    //     } else {
+    //         $originalExtension = $file->getClientOriginalExtension();
+    //         $mime = $file->getMimeType();
+    //     }
+
+    //     $fileName = Carbon::now()->toDateString() . '-' . Str::random(40);
+
+    //     if (str_starts_with($mime, 'image/') && $originalExtension !== 'svg') {
+    //         $manager = new ImageManager(new GdDriver());
+    //         $fileName .= '.webp';
+    //         $image = $manager->read($file);
+    //         $image->scaleDown(height: $size);
+
+    //         $filePath = $storagePath . '/' . $fileName;
+    //         Storage::disk('public')->put($filePath, (string) $image->toWebp(100));
+    //     } else {
+    //         $fileName .= '.' . $originalExtension;
+    //         $filePath = $storagePath . '/' . $fileName;
+
+    //         if (is_string($file)) {
+    //             Storage::disk('public')->put($filePath, file_get_contents($file));
+    //         } else {
+    //             $file->storeAs($storagePath, $fileName, 'public');
+    //         }
+    //     }
+
+    //     // Remove old image if it exists
+    //     $oldImage = preg_replace('/^storage\//', '', $oldImage);
+    //     if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+    //         Storage::disk('public')->delete($oldImage);
+    //     }
+
+    //     return ['status' => 'success', 'path_name' => 'storage/' . $filePath];
+    // }
+
     public static function storeImage($file, $size, $storagePath, $oldImage = null)
     {
         if (!Storage::disk('public')->exists($storagePath)) {
@@ -219,11 +264,34 @@ class HelperClass
         if (str_starts_with($mime, 'image/') && $originalExtension !== 'svg') {
             $manager = new ImageManager(new GdDriver());
             $fileName .= '.webp';
-            $image = $manager->read($file);
-            $image->scaleDown(height: $size);
+
+            $maxBytes   = 100 * 1024; // 100KB
+            $minQuality = 40;         // er niche quality jabe na (blur hoye jabe)
+
+            $image   = $manager->read($file);
+            $encoded = null;
+
+            // Dimension komate komate chole, ratio same thakbe
+            for ($attempt = 0; $attempt < 10; $attempt++) {
+
+                // Prothome quality komiye try
+                for ($quality = 90; $quality >= $minQuality; $quality -= 5) {
+                    $encoded = (string) $image->toWebp($quality);
+                    if (strlen($encoded) <= $maxBytes) {
+                        break 2; // size thik ache, duto loop theke berhoye jao
+                    }
+                }
+
+                // Quality komiyeo hocche na, tai dimension 10% komao (ratio same)
+                $newWidth = (int) round($image->width() * 0.9);
+                if ($newWidth < 50) {
+                    break;
+                }
+                $image = $image->scale(width: $newWidth);
+            }
 
             $filePath = $storagePath . '/' . $fileName;
-            Storage::disk('public')->put($filePath, (string) $image->toWebp(100));
+            Storage::disk('public')->put($filePath, $encoded);
         } else {
             $fileName .= '.' . $originalExtension;
             $filePath = $storagePath . '/' . $fileName;
