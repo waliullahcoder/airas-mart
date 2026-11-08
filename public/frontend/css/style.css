@@ -636,6 +636,38 @@ h1, h2, h3, h4, h5, h6 {
     padding: 8px 0;
 }
 
+
+/* Right side sticky */
+.related-sticky {
+    position: sticky;
+    top: 90px; /* header height onujayi adjust korun */
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+
+/* Sticky kaj korar jonno row te align-items start dite hobe */
+.product-details-page .row.g-4 {
+    align-items: flex-start;
+}
+
+/* Optional: sundor scrollbar */
+.related-sticky::-webkit-scrollbar {
+    width: 4px;
+}
+.related-sticky::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 4px;
+}
+
+/* Mobile e sticky off */
+@media (max-width: 991px) {
+    .related-sticky {
+        position: static;
+        max-height: none;
+        overflow: visible;
+    }
+}
+
 @keyframes slideDown {
     0% { transform: translateY(-100%); -webkit-transform: translateY(-100%); }
     to { transform: translateY(0); -webkit-transform: translateY(0); }

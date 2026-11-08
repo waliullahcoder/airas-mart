@@ -146,6 +146,10 @@
     border-color: var(--airas-green);
     box-shadow: var(--shadow-md);
 }
+
+
+/* ticky leftside css */
+
 </style>
 
 <div class="product-details-page py-4 animate__animated animate__fadeInDownBig">
@@ -155,7 +159,7 @@
         <div class="row g-4">
 
             <!-- PRODUCT CARD (JS TARGET FOR FLYING IMAGE) -->
-            <div class="col-lg-9">
+            <div class="col-lg-9 related-sticky">
                 <div class="product-card">
 
                     <div class="row">

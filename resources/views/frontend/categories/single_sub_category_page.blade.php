@@ -120,7 +120,7 @@
   
             <!-- RIGHT CONTENT -->
             <div class="col-lg-9" style="margin-top:-9px;">
-                <div class="category-product-section pb-4">
+                <div class="category-product-section pb-4 related-sticky">
                     <div class="container">
 
                         <div class="section-card">

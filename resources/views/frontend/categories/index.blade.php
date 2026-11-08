@@ -137,7 +137,7 @@
             <!-- RIGHT CONTENT -->
 
            
-    <div class="col-lg-9">
+    <div class="col-lg-9 related-sticky">
     <div class="category-product-section pb-4">
         <div class="container">
             
