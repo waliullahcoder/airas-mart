@@ -761,8 +761,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Main navigation bar */
 .header-nav {
-    background: var(--airas-green);
-    border-top: 3px solid #0bff20;
+    background: #00a13b;
+    /* border-top: 3px solid #0bff20; */
 }
 
 .menu-list {
