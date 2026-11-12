@@ -22,6 +22,13 @@
     href="{{ asset(file_exists($settings->favicon) ? $settings->favicon : 'frontend/images/logo/favicon.png') }}"
     type="image/x-icon">
     @include('layouts.frontend.partial.styles')
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NQBRQRSV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    </script> 
 </head>
 
 <body>

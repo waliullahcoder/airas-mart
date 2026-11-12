@@ -50,6 +50,63 @@
 {{-- End Hero --}}
 
 
+@php 
+
+$middlecategories = App\Models\Category::whereNull('parent_id')->where('position','header')->get();
+$megacategories = App\Models\Category::whereNull('parent_id')->where('position','mega_menu_parent')->get();
+@endphp
+<div class="featured-category-section py-4">
+        <div class="container">
+            <div class="position-relative">
+                <div class="swiper carousel" id="category-swiper" data-items="2" data-xl-items="6" data-lg-items="5"
+                    data-md-items="4" data-sm-items="3" data-xs-items="3" data-margin="10" data-dots="false"
+                    data-arrows="true">
+                    <div class="swiper-wrapper">
+                        @foreach ($middlecategories as $mcat)
+                        <div class="swiper-slide">
+                        <a href="{{ route('category.index', [$mcat->id, $mcat->slug, $mcat->name]) }}" class="featured-category">
+                                <div class="featured-category-img">
+                                    <img src="{{ ($mcat->image!=null) ? asset($mcat->image) : asset('frontend/images/blank_header.jpg') }}" width="80" height="40" alt="{{$mcat->name}}" style="border-radius:5px;">
+                                </div>
+                                <div class="featured-category-text">{{ $mcat->name }}</div>
+                            </a>
+                        </div>
+                        @endforeach
+                       
+                    </div>
+                </div>
+                @include('layouts.frontend.partial.svgbutton')
+            </div>
+        </div>
+    </div>
+
+    <div class="author-section pb-4">
+        <div class="container">
+            <div class="section-card">
+                <div class="section-header mb-3">
+                    <h5 class="section-title">Mega Categories</h5>
+                </div>
+                <div class="position-relative">
+                    <div class="swiper carousel" data-items="2" data-xl-items="7" data-lg-items="6" data-md-items="5"
+                        data-sm-items="4" data-xs-items="3" data-margin="5" data-dots="false" data-arrows="true">
+                        <div class="swiper-wrapper">
+                            @foreach ($megacategories as $megacat)
+                            <div class="swiper-slide">
+                                <a href="{{ route('category.index', [$megacat->id, $megacat->slug, $megacat->name]) }}" class="author-card">
+                                    <img src="{{ ($megacat->image!=null) ? asset($megacat->image) : asset('frontend/images/blank_header.jpg') }}" alt="{{$mcat->name}}" width="120" height="80">
+                                    <p class="author-card-text">{{ $megacat->name }}</p>
+                                </a>
+                            </div>
+                            @endforeach
+                           
+                        </div>
+                    </div>
+                     @include('layouts.frontend.partial.svgbutton')
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 {{-- All header --}}
 @foreach($get_sub_category_all_header_product_only as $category)
@@ -61,7 +118,9 @@ return $subCategory->products;
 })
 ->unique('id')
 ->take(6);
+
 @endphp
+
 
 <div class="category-product-section pb-4 animate__animated animate__fadeInUp">
     <div class="container">

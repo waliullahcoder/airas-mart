@@ -149,6 +149,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 35px;
+    background: linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(211, 242, 217, 1) 55%, rgba(83, 237, 116, 1) 100%);
 }
 
 .mega-column h3 {
