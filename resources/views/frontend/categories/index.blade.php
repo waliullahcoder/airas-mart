@@ -2,6 +2,7 @@
 
 @section('content')
  @if($subcategories->count()>0)
+ @include('frontend.categories.left_style')
 <div class="category-page py-4 animate__animated animate__fadeInLeft"
      id="category-page"
      data-category-id="{{ $subcategories->first()->parent_id }}">

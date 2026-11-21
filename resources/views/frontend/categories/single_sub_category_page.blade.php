@@ -1,6 +1,7 @@
 @extends('layouts.frontend.app')
 
 @section('content')
+@include('frontend.categories.left_style')
 <div class="category-page py-4 animate__animated animate__fadeInRight"
      id="sub-category-page"
      data-category-id="{{ $single_sub_category->id }}">
