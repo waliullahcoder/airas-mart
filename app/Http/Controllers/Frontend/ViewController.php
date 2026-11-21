@@ -126,6 +126,7 @@ class ViewController extends Controller
                             ->map(function($product){
                                 return [
                                     'id' => $product->id,
+                                    'code' => $product->code,
                                     'name' => $product->name,
                                     'slug' => $product->slug,
                                     'thumbnail' => asset($product->thumbnail), // ✅ full URL

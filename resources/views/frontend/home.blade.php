@@ -55,6 +55,103 @@
 $middlecategories = App\Models\Category::whereNull('parent_id')->where('position','header')->get();
 $megacategories = App\Models\Category::whereNull('parent_id')->where('position','mega_menu_parent')->get();
 @endphp
+<style>
+    /* Slide gap নিয়ন্ত্রণ */
+.author-section .swiper-slide {
+    height: auto;
+    display: flex;
+}
+
+/* Card */
+.author-section .author-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 8px;
+    background: #fff;
+    border: 1px solid #eef0f4;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.author-section .author-card:hover {
+    transform: translateY(-4px);
+    border-color: transparent;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .10);
+}
+
+/* Image */
+.author-section .author-card-img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+
+.author-section .author-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .35s ease;
+}
+
+.author-section .author-card:hover .author-card-img img {
+    transform: scale(1.08);
+}
+
+/* Text */
+.author-section .author-card-text {
+    margin: 8px 0 2px;
+    width: 100%;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.author-section .author-card:hover .author-card-text {
+    color: #e63946; /* নিজের theme color দিন */
+}
+
+/* Section card */
+.author-section .section-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .05);
+}
+
+.author-section .section-title {
+    font-weight: 700;
+    position: relative;
+    padding-left: 12px;
+    margin: 0;
+}
+
+.author-section .section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 15%;
+    height: 70%;
+    width: 4px;
+    border-radius: 4px;
+    background: #e63946; /* theme color */
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .author-section .author-card-text { font-size: 12px; }
+    .author-section .section-card { padding: 12px; }
+}
+</style>
 <div class="featured-category-section py-4">
         <div class="container">
             <div class="position-relative">
@@ -93,7 +190,9 @@ $megacategories = App\Models\Category::whereNull('parent_id')->where('position',
                             @foreach ($megacategories as $megacat)
                             <div class="swiper-slide">
                                 <a href="{{ route('category.index', [$megacat->id, $megacat->slug, $megacat->name]) }}" class="author-card">
-                                    <img src="{{ ($megacat->image!=null) ? asset($megacat->image) : asset('frontend/images/blank_header.jpg') }}" alt="{{$mcat->name}}" width="120" height="80">
+                                    <div class="author-card-img">
+                                        <img src="{{ ($megacat->image != null) ? asset($megacat->image) : asset('frontend/images/blank_header.jpg') }}" alt="{{ $megacat->name }}" loading="lazy">
+                                    </div>
                                     <p class="author-card-text">{{ $megacat->name }}</p>
                                 </a>
                             </div>

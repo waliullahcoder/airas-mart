@@ -247,6 +247,7 @@ $(document).ready(function(){
                                             <img class="product-img" src="${item.thumbnail}" style="position:relative; z-index:999;width:50px; height:50px; border-radius:10px;" alt="${item.name}">
                                             <div>
                                                 <strong>${item.name}</strong><br>
+                                                <strong>${item.code}</strong><br>
                                                 <small>${item.authors}</small>
                                             </div>
                                         </a>
@@ -294,6 +295,7 @@ $(document).ready(function(){
                                             <img class="product-img" src="${item.thumbnail}" style="position:relative; z-index:999;width:50px; height:50px; border-radius:10px;" alt="${item.name}">
                                             <div>
                                                 <strong>${item.name}</strong><br>
+                                                <strong>${item.code}</strong><br>
                                                 <small>${item.authors}</small>
                                             </div>
                                         </a>
