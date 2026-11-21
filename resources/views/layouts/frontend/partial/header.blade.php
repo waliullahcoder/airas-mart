@@ -12,7 +12,7 @@
     <div class="news-viewport">
         <div class="news-track">
                 <div class="news-group">
-                    <h4>{{$settings->google_map}}</h4>
+                    <h6>{{$settings->google_map}}</h6>
                 </div>
            
         </div>

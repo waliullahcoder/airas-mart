@@ -123,6 +123,9 @@ $(document).ready(function(){
 
     $(document).on('change', '.publication-filter, .author-filter, input[name="price_sort"], .price-range-filter', function(){
 
+        let categoryId = $('#category-page').data('category-id');
+        if(!categoryId) return; // ei page na hole kichu korbe na
+
         let publications = [];
         let authors = [];
         let priceSort = $('input[name="price_sort"]:checked').val() || null;
@@ -136,18 +139,17 @@ $(document).ready(function(){
             authors.push($(this).val());
         });
 
-         $('.price-range-filter:checked').each(function(){
+        $('.price-range-filter:checked').each(function(){
             priceRanges.push($(this).val());
         });
 
-
-        // যদি যেকোনো একটাও checked থাকে
         if(publications.length > 0 || authors.length > 0 || priceSort != null || priceRanges.length > 0){
 
             $.ajax({
                 url: "{{ route('filter.products') }}",
                 type: "GET",
-                data: { 
+                data: {
+                    category_id: categoryId,
                     publications: publications,
                     authors: authors,
                     price_sort: priceSort,
@@ -159,24 +161,24 @@ $(document).ready(function(){
                 }
             });
 
-        }else{
-
-            // সব unchecked হলে default show
+        } else {
             $('#filtered-products').hide().html('');
             $('#default-products').show();
         }
-
     });
 
 });
 </script>
 
 
-{{--Sub Cat page for filterleft side --}}
+{{-- Sub Cat page for filterleft side --}}
 <script>
 $(document).ready(function(){
 
-    $(document).on('change', '.publication-filter-sub, .author-filter-sub, .author-filter-sub, input[name="price_sort_sub"], .price-range-filter-sub', function(){
+    $(document).on('change', '.publication-filter-sub, .author-filter-sub, input[name="price_sort_sub"], .price-range-filter-sub', function(){
+
+        let subCategoryId = $('#sub-category-page').data('category-id');
+        if(!subCategoryId) return; // ei page na hole kichu korbe na
 
         let publications = [];
         let authors = [];
@@ -191,18 +193,17 @@ $(document).ready(function(){
             authors.push($(this).val());
         });
 
-         $('.price-range-filter-sub:checked').each(function(){
+        $('.price-range-filter-sub:checked').each(function(){
             priceRanges.push($(this).val());
         });
 
-
-        // যদি যেকোনো একটাও checked থাকে
         if(publications.length > 0 || authors.length > 0 || priceSort != null || priceRanges.length > 0){
 
             $.ajax({
                 url: "{{ route('filter.sub.products') }}",
                 type: "GET",
-                data: { 
+                data: {
+                    category_id: subCategoryId,
                     publications: publications,
                     authors: authors,
                     price_sort: priceSort,
@@ -214,13 +215,10 @@ $(document).ready(function(){
                 }
             });
 
-        }else{
-
-            // সব unchecked হলে default show
+        } else {
             $('#filtered-products-sub').hide().html('');
             $('#default-products-sub').show();
         }
-
     });
 
 });

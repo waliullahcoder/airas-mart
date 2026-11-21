@@ -2,7 +2,9 @@
 
 @section('content')
  @if($subcategories->count()>0)
-<div class="category-page py-4 animate__animated animate__fadeInLeft">
+<div class="category-page py-4 animate__animated animate__fadeInLeft"
+     id="category-page"
+     data-category-id="{{ $subcategories->first()->parent_id }}">
     <div class="container">
         <div class="row">
            

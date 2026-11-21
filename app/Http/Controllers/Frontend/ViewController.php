@@ -164,185 +164,81 @@ class ViewController extends Controller
     }
 
     //Category Page Left Filter
-   public function filterProducts(Request $request)
-    {
-        $publicationIds = $request->publications ?? [];
-        $authorIds      = $request->authors ?? [];
-        $priceSort      = $request->price_sort ?? null; // low_high / high_low
-        $priceRanges    = $request->price_ranges ?? [];
+// ---------- Common product filter (category + sub category duita tei use hobe) ----------
+private function applyProductFilters($query, Request $request)
+{
+    $publicationIds = $request->publications ?? [];
+    $authorIds      = $request->authors ?? [];
+    $priceRanges    = $request->price_ranges ?? [];
 
-        $subcategories = Category::whereIn('type', ['other','book'])
-            ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
-
-                // Publication filter
-                if (!empty($publicationIds)) {
-                    $query->whereIn('publication_id', $publicationIds);
-                }
-
-                // Author filter via many-to-many
-                if (!empty($authorIds)) {
-                    $query->whereHas('authors', function($q) use ($authorIds) {
-                        $q->whereIn('author_id', $authorIds);
-                    });
-                }
-                // Price sorting // low_high / high_low
-                if(!empty($priceSort)) {
-                if ($priceSort === 'low_high') {
-                    $query->orderBy('sale_price', 'asc');
-                } elseif ($priceSort === 'high_low') {
-                    $query->orderBy('sale_price', 'desc');
-                }
-                }
-
-                // Price Range filter
-                if (!empty($priceRanges)) {
-                    $query->where(function($q) use ($priceRanges){
-                        foreach($priceRanges as $range){
-                            if($range === '0-200'){
-                                $q->orWhereBetween('sale_price', [0,200]);
-                            } elseif($range === '201-500'){
-                                $q->orWhereBetween('sale_price', [201,500]);
-                            } elseif($range === '500+'){
-                                $q->orWhere('sale_price', '>', 500);
-                            }
-                        }
-                    });
-                }
-
-
-            })
-            ->with(['products' => function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
-
-                if (!empty($publicationIds)) {
-                    $query->whereIn('publication_id', $publicationIds);
-                }
-
-                if (!empty($authorIds)) {
-                    $query->whereHas('authors', function($q) use ($authorIds) {
-                        $q->whereIn('author_id', $authorIds);
-                    });
-                }
-                // Price sorting // low_high / high_low
-                if(!empty($priceSort)) {
-                    if ($priceSort === 'low_high') {
-                    $query->orderBy('sale_price', 'asc');
-                    } elseif ($priceSort === 'high_low') {
-                        $query->orderBy('sale_price', 'desc');
-                    }
-                }
-
-                 // Price Range filter
-                if (!empty($priceRanges)) {
-                $query->where(function($q) use ($priceRanges){
-                    foreach($priceRanges as $range){
-                        if($range === '0-200'){
-                            $q->orWhereBetween('sale_price', [0,200]);
-                        } elseif($range === '201-500'){
-                            $q->orWhereBetween('sale_price', [201,500]);
-                        } elseif($range === '500+'){
-                            $q->orWhere('sale_price', '>', 500);
-                        }
-                    }
-                });
-                }
-
-
-            }])
-            ->get();
-
-        return view('frontend.categories.partials.product_list', compact('subcategories'))->render();
+    // Publication / Brand filter
+    if (!empty($publicationIds)) {
+        $query->whereIn('publication_id', $publicationIds);
     }
 
-    //Sub Category Page Left Filter
-    public function subFilterProducts(Request $request)
-    {
-       
-        $publicationIds = $request->publications ?? [];
-        $authorIds      = $request->authors ?? [];
-        $priceSort      = $request->price_sort ?? null; // low_high / high_low
-        $priceRanges    = $request->price_ranges ?? [];
-
-        $single_sub_category = Category::whereIn('type', ['other','book'])
-            ->whereHas('products', function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
-
-                // Publication filter
-                if (!empty($publicationIds)) {
-                    $query->whereIn('publication_id', $publicationIds);
-                }
-
-                // Author filter via many-to-many
-                if (!empty($authorIds)) {
-                    $query->whereHas('authors', function($q) use ($authorIds) {
-                        $q->whereIn('author_id', $authorIds);
-                    });
-                }
-                // Price sorting // low_high / high_low
-                if(!empty($priceSort)) {
-                if ($priceSort === 'low_high') {
-                    $query->orderBy('sale_price', 'asc');
-                } elseif ($priceSort === 'high_low') {
-                    $query->orderBy('sale_price', 'desc');
-                }
-                }
-
-                // Price Range filter
-                if (!empty($priceRanges)) {
-                    $query->where(function($q) use ($priceRanges){
-                        foreach($priceRanges as $range){
-                            if($range === '0-200'){
-                                $q->orWhereBetween('sale_price', [0,200]);
-                            } elseif($range === '201-500'){
-                                $q->orWhereBetween('sale_price', [201,500]);
-                            } elseif($range === '500+'){
-                                $q->orWhere('sale_price', '>', 500);
-                            }
-                        }
-                    });
-                }
-
-
-            })
-            ->with(['products' => function ($query) use ($publicationIds, $authorIds,$priceSort,$priceRanges) {
-
-                if (!empty($publicationIds)) {
-                    $query->whereIn('publication_id', $publicationIds);
-                }
-
-                if (!empty($authorIds)) {
-                    $query->whereHas('authors', function($q) use ($authorIds) {
-                        $q->whereIn('author_id', $authorIds);
-                    });
-                }
-                // Price sorting // low_high / high_low
-                if(!empty($priceSort)) {
-                    if ($priceSort === 'low_high') {
-                    $query->orderBy('sale_price', 'asc');
-                    } elseif ($priceSort === 'high_low') {
-                        $query->orderBy('sale_price', 'desc');
-                    }
-                }
-
-                 // Price Range filter
-                if (!empty($priceRanges)) {
-                $query->where(function($q) use ($priceRanges){
-                    foreach($priceRanges as $range){
-                        if($range === '0-200'){
-                            $q->orWhereBetween('sale_price', [0,200]);
-                        } elseif($range === '201-500'){
-                            $q->orWhereBetween('sale_price', [201,500]);
-                        } elseif($range === '500+'){
-                            $q->orWhere('sale_price', '>', 500);
-                        }
-                    }
-                });
-                }
-
-
-            }])
-            ->first();
-    return view('frontend.categories.partials.sub_product_list', 
-    compact('single_sub_category'))->render();
+    // Author / Vendor filter (many-to-many)
+    if (!empty($authorIds)) {
+        $query->whereHas('authors', function ($q) use ($authorIds) {
+            $q->whereIn('author_id', $authorIds);
+        });
     }
+
+    // Price Range filter (sale_price na thakle regular_price)
+    if (!empty($priceRanges)) {
+        $query->where(function ($q) use ($priceRanges) {
+            foreach ($priceRanges as $range) {
+                if ($range === '0-200') {
+                    $q->orWhereRaw('COALESCE(NULLIF(sale_price,0), regular_price) BETWEEN 0 AND 200');
+                } elseif ($range === '201-500') {
+                    $q->orWhereRaw('COALESCE(NULLIF(sale_price,0), regular_price) BETWEEN 201 AND 500');
+                } elseif ($range === '500+') {
+                    $q->orWhereRaw('COALESCE(NULLIF(sale_price,0), regular_price) > 500');
+                }
+            }
+        });
+    }
+
+    // Price Sort
+    if ($request->price_sort === 'low_high') {
+        $query->orderByRaw('COALESCE(NULLIF(sale_price,0), regular_price) ASC');
+    } elseif ($request->price_sort === 'high_low') {
+        $query->orderByRaw('COALESCE(NULLIF(sale_price,0), regular_price) DESC');
+    }
+
+    return $query;
+}
+
+// ---------- Category Page Left Filter ----------
+public function filterProducts(Request $request)
+{
+    $categoryId = $request->category_id; // current (parent) category id
+
+    $subcategories = Category::whereIn('type', ['other', 'book'])
+        ->where('parent_id', $categoryId) // shudhu ei category r sub category
+        ->whereHas('products', function ($query) use ($request) {
+            $this->applyProductFilters($query, $request);
+        })
+        ->with(['products' => function ($query) use ($request) {
+            $this->applyProductFilters($query, $request);
+        }])
+        ->get();
+
+    return view('frontend.categories.partials.product_list', compact('subcategories'))->render();
+}
+
+// ---------- Sub Category Page Left Filter ----------
+public function subFilterProducts(Request $request)
+{
+    $categoryId = $request->category_id; // current sub category id
+
+    $single_sub_category = Category::where('id', $categoryId)
+        ->with(['products' => function ($query) use ($request) {
+            $this->applyProductFilters($query, $request);
+        }])
+        ->first();
+
+    return view('frontend.categories.partials.sub_product_list', compact('single_sub_category'))->render();
+}
 
     
     public function productDetails($id)
