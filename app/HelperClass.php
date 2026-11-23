@@ -243,8 +243,8 @@ class HelperClass
 
     //     return ['status' => 'success', 'path_name' => 'storage/' . $filePath];
     // }
-
-    public static function storeImage($file, $size, $storagePath, $oldImage = null)
+    
+     public static function storeImage($file, $size, $storagePath, $oldImage = null)
     {
         if (!Storage::disk('public')->exists($storagePath)) {
             Storage::disk('public')->makeDirectory($storagePath, 0777, true);

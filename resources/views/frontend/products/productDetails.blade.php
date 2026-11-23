@@ -146,10 +146,6 @@
     border-color: var(--airas-green);
     box-shadow: var(--shadow-md);
 }
-
-
-/* ticky leftside css */
-
 </style>
 
 <div class="product-details-page py-4 animate__animated animate__fadeInDownBig">

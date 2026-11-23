@@ -53,6 +53,7 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+         set_time_limit(300);              // 300 second (5 minute)
         // Dropdown-er jonno category list
         $filtercategories = \App\Models\Category::whereNotNull('parent_id')
             ->whereIn('position', ['header', 'mega_menu_child'])
@@ -157,6 +158,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        
+         set_time_limit(300);              // 300 second (5 minute)
+         
         $request->validate([
             'name'        => 'required',
             'uom_id'      => 'required',
@@ -361,6 +365,8 @@ class ProductController extends Controller
    public function update(Request $request, string $id)
     {
        
+        set_time_limit(300);              // 300 second (5 minute)
+        
         $request->validate([
             'name'        => 'required',
             // 'uom_id'      => 'required',

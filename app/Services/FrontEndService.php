@@ -160,7 +160,7 @@ return Category::whereNotNull('parent_id')
 public function getSubCategoryAllHeaderProductOnly()
 {
     return Category::whereNull('parent_id')
-        ->whereIn('position', ['header', 'mega_menu_parent'])
+      ->whereIn('position', ['header', 'mega_menu_parent'])
         ->with([
             'subcategories' => function ($query) {
                 $query->orderBy('serial', 'asc');

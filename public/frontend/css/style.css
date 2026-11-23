@@ -636,38 +636,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 8px 0;
 }
 
-
-/* Right side sticky */
-.related-sticky {
-    position: sticky;
-    top: 90px; /* header height onujayi adjust korun */
-    max-height: calc(100vh - 110px);
-    overflow-y: auto;
-}
-
-/* Sticky kaj korar jonno row te align-items start dite hobe */
-.product-details-page .row.g-4 {
-    align-items: flex-start;
-}
-
-/* Optional: sundor scrollbar */
-.related-sticky::-webkit-scrollbar {
-    width: 4px;
-}
-.related-sticky::-webkit-scrollbar-thumb {
-    background: var(--line);
-    border-radius: 4px;
-}
-
-/* Mobile e sticky off */
-@media (max-width: 991px) {
-    .related-sticky {
-        position: static;
-        max-height: none;
-        overflow: visible;
-    }
-}
-
 @keyframes slideDown {
     0% { transform: translateY(-100%); -webkit-transform: translateY(-100%); }
     to { transform: translateY(0); -webkit-transform: translateY(0); }
@@ -768,6 +736,7 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--airas-red);
     box-shadow: 0 0 0 2px #fff;
 }
+
 
 .count {
     background-color: var(--airas-red);
@@ -979,7 +948,7 @@ h1, h2, h3, h4, h5, h6 {
 .section-card {
     background: #fff;
     border: 1px solid var(--line);
-    /* border-radius: var(--radius-lg); */
+    /*border-radius: var(--radius-lg);*/
     box-shadow: var(--shadow-sm);
     margin-top: 10px;
     padding: 6px 4px 4px;
@@ -1374,4 +1343,37 @@ del .Price-amount { text-decoration: line-through; }
 @media (max-width: 576px) {
     .floating-whatsapp { width: 48px; height: 48px; right: 14px; bottom: 14px; font-size: 26px; }
     .scrollTop { right: 18px; bottom: 74px; width: 38px; height: 38px; }
+}
+
+
+
+/* Right side sticky */
+.related-sticky {
+    position: sticky;
+    top: 90px; /* header height onujayi adjust korun */
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+
+/* Sticky kaj korar jonno row te align-items start dite hobe */
+.product-details-page .row.g-4 {
+    align-items: flex-start;
+}
+
+/* Optional: sundor scrollbar */
+.related-sticky::-webkit-scrollbar {
+    width: 4px;
+}
+.related-sticky::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 4px;
+}
+
+/* Mobile e sticky off */
+@media (max-width: 991px) {
+    .related-sticky {
+        position: static;
+        max-height: none;
+        overflow: visible;
+    }
 }

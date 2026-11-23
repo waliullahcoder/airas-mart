@@ -16,11 +16,37 @@
     border-radius: 2px;
 }
 .mega-icon-img{
-    width: 40px; 
+     width: 40px; 
     height: 30px; 
-    border-radius:10px;
+    border-radius:10px; 
     object-fit: contain;
 }
+/* ---------- Container ---------- */
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+    width: 100%;
+    padding-right: 16px;
+    padding-left: 16px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl{
+    padding-left :8px !important;
+    padding-right :8px !important;
+}
+@media (min-width: 576px)  { .container, .container-sm { max-width: 540px; } }
+@media (min-width: 768px)  { .container, .container-md, .container-sm { max-width: 720px; } }
+@media (min-width: 992px)  { .container, .container-lg, .container-md, .container-sm { max-width: 960px; } }
+@media (min-width: 1200px) { .container, .container-lg, .container-md, .container-sm, .container-xl { max-width: 1920px; } }
+@media (min-width: 1400px) { .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl { max-width: 1920px; } }
+
+
+
 .header-image-wrapper {
     width: 100%;
     overflow: hidden;
@@ -59,29 +85,6 @@
         animation: none;
     }
 }
-/* ---------- Container ---------- */
-.container,
-.container-fluid,
-.container-lg,
-.container-md,
-.container-sm,
-.container-xl,
-.container-xxl {
-    width: 100%;
-    padding-right: 16px;
-    padding-left: 16px;
-    margin-right: auto;
-    margin-left: auto;
-}
-.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl{
-    padding-left :8px !important;
-    padding-right :8px !important;
-}
-@media (min-width: 576px)  { .container, .container-sm { max-width: 540px; } }
-@media (min-width: 768px)  { .container, .container-md, .container-sm { max-width: 720px; } }
-@media (min-width: 992px)  { .container, .container-lg, .container-md, .container-sm { max-width: 960px; } }
-@media (min-width: 1200px) { .container, .container-lg, .container-md, .container-sm, .container-xl { max-width: 1920px; } }
-@media (min-width: 1400px) { .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl { max-width: 1920px; } }
 
 /* ==========Desktop mega menu (partial: mega_menu.blade.php)=========== */
 .nav-wrapper {
